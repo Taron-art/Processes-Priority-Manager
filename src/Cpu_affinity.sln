@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35521.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cpu_affinity", "Cpu_affinity\Cpu_affinity.csproj", "{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{E0D81163-B89D-4BBC-AA33-2115C5353C76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Affinity_manager", "Affinity_manager\Affinity_manager.csproj", "{CCDACF48-3B6C-4DAC-A9AC-B32D536E1D41}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B69F6662-E1F8-4D32-96B6-32853EC9E787}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		tune.ico = tune.ico
+		SolutionInfo.cs = SolutionInfo.cs
+	EndProjectSection
+EndProject
+Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "Affinity_Manager_Installer", "Affinity_Manager_Installer\Affinity_Manager_Installer.wixproj", "{381D2FD8-630A-49DA-A88C-A75C95F76F4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Debug|x64.Build.0 = Debug|Any CPU
+		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Debug|x86.Build.0 = Debug|Any CPU
+		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Release|x64.ActiveCfg = Release|x64
+		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Release|x64.Build.0 = Release|x64
+		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Release|x86.ActiveCfg = Release|Any CPU
+		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Release|x86.Build.0 = Release|Any CPU
+		{E0D81163-B89D-4BBC-AA33-2115C5353C76}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E0D81163-B89D-4BBC-AA33-2115C5353C76}.Debug|x64.Build.0 = Debug|Any CPU
+		{E0D81163-B89D-4BBC-AA33-2115C5353C76}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E0D81163-B89D-4BBC-AA33-2115C5353C76}.Debug|x86.Build.0 = Debug|Any CPU
+		{E0D81163-B89D-4BBC-AA33-2115C5353C76}.Release|x64.ActiveCfg = Release|Any CPU
+		{E0D81163-B89D-4BBC-AA33-2115C5353C76}.Release|x64.Build.0 = Release|Any CPU
+		{E0D81163-B89D-4BBC-AA33-2115C5353C76}.Release|x86.ActiveCfg = Release|Any CPU
+		{E0D81163-B89D-4BBC-AA33-2115C5353C76}.Release|x86.Build.0 = Release|Any CPU
+		{CCDACF48-3B6C-4DAC-A9AC-B32D536E1D41}.Debug|x64.ActiveCfg = Debug|x64
+		{CCDACF48-3B6C-4DAC-A9AC-B32D536E1D41}.Debug|x64.Build.0 = Debug|x64
+		{CCDACF48-3B6C-4DAC-A9AC-B32D536E1D41}.Debug|x86.ActiveCfg = Debug|x86
+		{CCDACF48-3B6C-4DAC-A9AC-B32D536E1D41}.Debug|x86.Build.0 = Debug|x86
+		{CCDACF48-3B6C-4DAC-A9AC-B32D536E1D41}.Release|x64.ActiveCfg = Release|x64
+		{CCDACF48-3B6C-4DAC-A9AC-B32D536E1D41}.Release|x64.Build.0 = Release|x64
+		{CCDACF48-3B6C-4DAC-A9AC-B32D536E1D41}.Release|x86.ActiveCfg = Release|x86
+		{CCDACF48-3B6C-4DAC-A9AC-B32D536E1D41}.Release|x86.Build.0 = Release|x86
+		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Debug|x64.ActiveCfg = Debug|x64
+		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Debug|x64.Build.0 = Debug|x64
+		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Debug|x86.ActiveCfg = Debug|x86
+		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Debug|x86.Build.0 = Debug|x86
+		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Release|x64.ActiveCfg = Release|x64
+		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Release|x64.Build.0 = Release|x64
+		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Release|x86.ActiveCfg = Release|x86
+		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

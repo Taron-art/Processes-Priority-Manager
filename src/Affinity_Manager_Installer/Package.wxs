@@ -1,0 +1,13 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+	<Package Name="Processes Priority Manager" Manufacturer="Artur Kharin" Version="0.1.0.0" UpgradeCode="9e97a052-3a55-4c2b-ae36-934275d1f976">
+		<Property Id="DISABLEADVTSHORTCUTS" Value="1" />
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+		<ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER"/>
+		<Feature Id="Main">
+			<ComponentGroupRef Id="AppComponents" />
+		</Feature>
+		<CustomActionRef Id="RemoveProfiles" />
+		<Icon Id="tune.ico" SourceFile="!(bindpath.x64)\Assets\tune.ico"/>
+		<Property Id="ARPPRODUCTICON" Value="tune.ico" />
+	</Package>
+</Wix>

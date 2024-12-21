@@ -1,0 +1,19 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <ComponentGroup Id="AppComponents" Directory="INSTALLFOLDER">
+		<Component>
+			<File Source="!(bindpath.x64)\Affinity_manager.exe" Id="MainExecutable"/>
+			<Shortcut Name="!(bind.Property.ProductName)" Directory="ProgramMenuFolder" IconIndex="0" Advertise="yes"/>
+		</Component>
+		<File Source="!(bindpath.x64)\Cpu_affinity.exe" Id="Affinity_setter" />
+		<Files Include="!(bindpath.x64)\*.dll"/>
+		<Files Include="!(bindpath.x64)\*.json"/>
+		<Files Include="!(bindpath.x64)\*.pri"/>
+		<Files Include="!(bindpath.x64)\**.png">
+			<Exclude Files="!(bindpath.x64)\WindowsAppRuntime.png"/>
+		</Files>
+		<Files Include="!(bindpath.x64)\**.ico"/>
+		<Files Include="!(bindpath.x64)\en-us\*.mui" Directory="EN_US"/>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

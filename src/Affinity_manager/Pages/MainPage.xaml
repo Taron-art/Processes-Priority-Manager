@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Affinity_manager.Pages.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Affinity_manager.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:model="using:Affinity_manager.Model" 
+    xmlns:viewWrappers ="using:Affinity_manager.ViewWrappers"
+    xmlns:xamlHelpers ="using:Affinity_manager.XamlHelpers" Loaded="Page_Loaded" Loading="Page_Loading">
+
+    <Grid x:Name="rootPanel" Padding="20" RowDefinitions="Auto, Auto, *, Auto" ColumnDefinitions="*" DataContext="{x:Bind ViewModel}">
+        <Grid RowDefinitions="Auto" ColumnDefinitions="Auto, *, Auto, Auto" ColumnSpacing="5" Grid.Column="0" Grid.Row="0">
+            <TextBlock Text="Add new: " Grid.Column="0" VerticalAlignment="Center"></TextBlock>
+            <TextBox Grid.Column="1" Text="{x:Bind ViewModel.NewProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Enter Application Name (e.g. AlanWake2.exe)">
+                <TextBox.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Enter" Invoked="KeyboardAccelerator_Invoked"></KeyboardAccelerator>
+                </TextBox.KeyboardAccelerators>
+            </TextBox>
+            <Button Grid.Column="2" Command="{x:Bind ViewModel.AddCommand}" x:Name="addButton">Add</Button>
+        </Grid>
+        <Grid x:Name="gridHeader" Padding="16,12" ColumnSpacing="16" Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.4*" />
+                <ColumnDefinition Width="0.3*" MaxWidth="200" />
+                <ColumnDefinition Width="150"  />
+                <ColumnDefinition Width="125" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           x:Uid="ApplicationNameColumn" TextTrimming="CharacterEllipsis" FontWeight="SemiBold" />
+            <TextBlock Grid.Column="1"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Text="CPU Affinity" FontWeight="SemiBold" />
+            <TextBlock Grid.Column="2"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Text="CPU Priority" FontWeight="SemiBold" />
+            <TextBlock Grid.Column="3"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Text="IO Priority" FontWeight="SemiBold" />
+        </Grid>
+        <ListView x:Name="processesGrid" DataContext="{x:Bind ViewModel}"
+                  ItemsSource="{x:Bind ViewModel.ProcessAffinities, Mode=OneWay}"  
+                  Grid.Column="0" Grid.Row="2" 
+                  SingleSelectionFollowsFocus="True" SelectionMode="Single" SelectionChanged="processesGrid_SelectionChanged" SelectedItem="{x:Bind ViewModel.SelectedView, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="viewWrappers:ProcessAffinityView">
+                    <Grid ColumnSpacing="16" 
+                          Background ="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                          BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                          CornerRadius="{ThemeResource ControlCornerRadius}"
+                          BorderThickness="1"
+                          Padding="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.4*" />
+                            <ColumnDefinition Width="0.3*" MaxWidth="200" />
+                            <ColumnDefinition Width="150" MaxWidth="200" />
+                            <ColumnDefinition Width="125" MaxWidth="200" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" TextDecorations="{x:Bind IsDirty, Mode=OneWay, Converter={StaticResource BoolToFontStyleConverterKey}}">
+                        </TextBlock>
+
+                        <Grid Grid.Column="1" VerticalAlignment="Center" RowDefinitions="Auto" ColumnDefinitions="*, Auto" DataContext="{x:Bind AffinityView, Mode=OneWay}">
+                            <TextBlock Grid.Column="0" Text="{x:Bind AffinityView.FriendlyView, Mode=OneWay}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"></TextBlock>
+                            <Button x:Name="affinityButton" Grid.Column="1" Padding="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="affinityButton_Click">
+                                <SymbolIcon Symbol="Edit">
+                                </SymbolIcon>
+                            </Button>
+                        </Grid>
+                        <ComboBox HorizontalAlignment="Stretch" Grid.Column="2" ItemsSource="{x:Bind CpuPriorities}" SelectedItem="{x:Bind CpuPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName"/>
+                        <ComboBox HorizontalAlignment="Stretch" Grid.Column="3" ItemsSource="{x:Bind IoPriorities}" SelectedItem="{x:Bind IoPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource DefaultListViewItemStyle}"
+                   TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <ContentThemeTransition/>
+                    <ReorderThemeTransition/>
+                    <EntranceThemeTransition IsStaggeringEnabled="False"/>
+                </TransitionCollection>
+            </ListView.ItemContainerTransitions>
+        </ListView>
+        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="0" Grid.Row="3" Spacing="5">
+            <Button IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Width="100" AccessKey="C" Command="{x:Bind ViewModel.ReloadCommand}">Cancel</Button>
+            <Button x:Name="saveButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" Command="{x:Bind ViewModel.SaveChangesCommand}" Width="100" Content="Save" AccessKey="S"/>
+        </StackPanel>
+    </Grid>
+
+    <Page.Resources>
+        <xamlHelpers:BoolToFontStyleConverter x:Key="BoolToFontStyleConverterKey"></xamlHelpers:BoolToFontStyleConverter>
+    </Page.Resources>
+</Page>

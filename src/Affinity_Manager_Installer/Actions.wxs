@@ -1,0 +1,8 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Fragment>
+		<CustomAction Id="RemoveProfiles" FileRef="MainExecutable" ExeCommand="--clear" Execute="immediate"/>
+		<InstallExecuteSequence>
+			<Custom Action="RemoveProfiles" Before='RemoveFiles' Condition='(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")'/>
+		</InstallExecuteSequence>
+	</Fragment>
+</Wix>

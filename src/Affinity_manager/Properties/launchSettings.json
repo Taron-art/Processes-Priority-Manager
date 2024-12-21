@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Affinity_manager (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Affinity_manager (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
