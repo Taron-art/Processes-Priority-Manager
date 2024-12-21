@@ -43,4 +43,4 @@ jobs:
 
     # Publish
     - name: Publish the application
-      run: dotnet test src
+      run: dotnet publish src
