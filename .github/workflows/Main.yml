@@ -1,8 +1,6 @@
 name: .NET Core Desktop
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -13,6 +11,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Release]
+        platform: [x64]
 
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
@@ -38,8 +37,8 @@ jobs:
 
     # Build
     - name: Build the application
-      run: dotnet build src\Affinity_Manager_Installer\Affinity_Manager_Installer.wixproj -c ${{ matrix.configuration}}
+      run: dotnet build src\Affinity_Manager_Installer\Affinity_Manager_Installer.wixproj -c ${{ matrix.configuration}} -p:Platform=${{ matrix.platform }}
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test src -c ${{ matrix.configuration}}
+      run: dotnet test src -c ${{ matrix.configuration}} -p:Platform=${{ matrix.platform }}
