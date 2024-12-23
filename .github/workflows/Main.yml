@@ -37,7 +37,7 @@ jobs:
 
     # Build
     - name: Build the application
-      run: dotnet build src\Affinity_Manager_Installer\Affinity_Manager_Installer.wixproj -c ${{ matrix.configuration}} -p:Platform=${{ matrix.platform }}
+      run: dotnet build src\PPM.InstallerBundle\PPM.InstallerBundle.wixproj -c ${{ matrix.configuration}} -p:Platform=${{ matrix.platform }}
 
     # Execute all unit tests in the solution
     - name: Execute unit tests

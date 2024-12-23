@@ -12,11 +12,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B69F6662-E1F8-4D32-96B6-32853EC9E787}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		tune.ico = tune.ico
 		SolutionInfo.cs = SolutionInfo.cs
+		tune.ico = tune.ico
 	EndProjectSection
 EndProject
 Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "Affinity_Manager_Installer", "Affinity_Manager_Installer\Affinity_Manager_Installer.wixproj", "{381D2FD8-630A-49DA-A88C-A75C95F76F4E}"
+EndProject
+Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "PPM.InstallerBundle", "PPM.InstallerBundle\PPM.InstallerBundle.wixproj", "{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,8 +28,8 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Debug|x64.Build.0 = Debug|Any CPU
+		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Debug|x64.ActiveCfg = Debug|x64
+		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Debug|x64.Build.0 = Debug|x64
 		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Debug|x86.Build.0 = Debug|Any CPU
 		{4E760BB0-5F0C-4D54-BD52-F4A2460A150B}.Release|x64.ActiveCfg = Release|x64
@@ -58,6 +60,14 @@ Global
 		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Release|x64.Build.0 = Release|x64
 		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Release|x86.ActiveCfg = Release|x86
 		{381D2FD8-630A-49DA-A88C-A75C95F76F4E}.Release|x86.Build.0 = Release|x86
+		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Debug|x64.ActiveCfg = Debug|x64
+		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Debug|x64.Build.0 = Debug|x64
+		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Debug|x86.ActiveCfg = Debug|x86
+		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Debug|x86.Build.0 = Debug|x86
+		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Release|x64.ActiveCfg = Release|x64
+		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Release|x64.Build.0 = Release|x64
+		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Release|x86.ActiveCfg = Release|x86
+		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
