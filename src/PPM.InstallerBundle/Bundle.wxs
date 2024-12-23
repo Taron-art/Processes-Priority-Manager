@@ -1,0 +1,15 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal">
+  <Bundle Name="Processes Priority Manager" Manufacturer="Processes Priority Manager Authors" Version="!(bind.packageVersion.MainInstaller)" 
+		  UpgradeCode="a672eb32-98ef-4e21-890b-a5b56f85f724"
+		  IconSourceFile="..\tune.ico">
+    <BootstrapperApplication >
+		<bal:WixStandardBootstrapperApplication Theme="rtfLicense" LicenseFile="License.rtf"/>
+    </BootstrapperApplication>
+	<Variable Name="InstallFolder" Type="formatted" Value="[ProgramFiles6432Folder][WixBundleName]"/>
+    <Chain>
+		<MsiPackage SourceFile="Affinity_Manager_Installer.msi" Compressed="true" Id="MainInstaller">
+			<MsiProperty Name="INSTALLFOLDER" Value="[InstallFolder]"/>	
+		</MsiPackage>
+    </Chain>
+  </Bundle>
+</Wix>
