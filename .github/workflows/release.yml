@@ -41,5 +41,8 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
-        files: src\Release\PPM.InstallerBundle.exe
+        files: src/Release/PPM.InstallerBundle.exe
+        fail_on_unmatched_files: true
+        prerelease: true
+        generate_release_notes: true
         
