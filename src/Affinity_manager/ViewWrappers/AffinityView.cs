@@ -10,13 +10,13 @@ namespace Affinity_manager.ViewWrappers
     {
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(FriendlyView))]
-        private uint _affinityMask;
+        private ulong _affinityMask;
         private readonly uint _numberOfLogicalCpus;
         private string? _friendlyView;
         private bool _changingCoreValue;
         private readonly CoreView[] _coreViews;
 
-        public AffinityView(uint affinityMask, uint numberOfLogicalCpus)
+        public AffinityView(ulong affinityMask, uint numberOfLogicalCpus)
         {
             _affinityMask = affinityMask;
             _numberOfLogicalCpus = numberOfLogicalCpus;
@@ -83,14 +83,14 @@ namespace Affinity_manager.ViewWrappers
             OnPropertyChanged(nameof(LogicalCpus));
         }
 
-        partial void OnAffinityMaskChanged(uint value)
+        partial void OnAffinityMaskChanged(ulong value)
         {
             _friendlyView = null;
         }
 
         private void UpdateAffinityMask(IReadOnlyList<CoreView> logicalCpus)
         {
-            uint affinityMask = 0;
+            ulong affinityMask = 0;
             for (int i = 0; i < logicalCpus.Count; i++)
             {
                 if (logicalCpus[i].Value)
@@ -99,9 +99,9 @@ namespace Affinity_manager.ViewWrappers
                 }
             }
 
-            for (int i = logicalCpus.Count; i < sizeof(uint) * 8; i++)
+            for (int i = logicalCpus.Count; i < sizeof(ulong) * 8; i++)
             {
-                affinityMask |= 1u << i;
+                affinityMask |= 1ul << i;
             }
 
             AffinityMask = affinityMask;

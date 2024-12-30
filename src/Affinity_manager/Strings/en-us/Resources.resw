@@ -159,4 +159,13 @@
   <data name="AllCpus" xml:space="preserve">
     <value>All CPUs</value>
   </data>
+  <data name="ServiceNotFountErrorMessage" xml:space="preserve">
+    <value>Service that supports the application is not found in the system. Some of the features won't work. Please reinstall the application.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
 </root>

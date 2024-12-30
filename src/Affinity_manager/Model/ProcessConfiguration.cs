@@ -2,15 +2,15 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Affinity_manager.Model
 {
-    public sealed partial class ProcessAffinity : ObservableObject
+    public sealed partial class ProcessConfiguration : ObservableObject
     {
-        public const uint AffinityDefaultValue = uint.MaxValue;
+        public const ulong AffinityDefaultValue = ulong.MaxValue;
         public const CpuPriorityClass CpuPriorityDefaultValue = CpuPriorityClass.Normal;
         public const IoPriority IoPriorityDefaultValue = IoPriority.Normal;
 
 
         [ObservableProperty]
-        private uint _cpuAffinityMask = AffinityDefaultValue;
+        private ulong _cpuAffinityMask = AffinityDefaultValue;
 
         [ObservableProperty]
         public CpuPriorityClass _cpuPriority = CpuPriorityDefaultValue;
@@ -18,7 +18,7 @@ namespace Affinity_manager.Model
         [ObservableProperty]
         public IoPriority _ioPriority = IoPriorityDefaultValue;
 
-        public ProcessAffinity(string name)
+        public ProcessConfiguration(string name)
         {
             Name = name;
             IoPriority = IoPriority.Normal;

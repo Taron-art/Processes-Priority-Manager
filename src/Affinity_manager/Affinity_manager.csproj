@@ -5,8 +5,8 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>Affinity_manager</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Platforms>x86;x64;ARM64</Platforms>
-    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <Platforms>x64</Platforms>
+    <RuntimeIdentifiers>;win-x64</RuntimeIdentifiers>
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
@@ -46,12 +46,11 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
-    <PackageReference Include="ReswPlus" Version="0.2.6" Publish="false" />
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="4.0.4" />
+    <PackageReference Include="ReswPlus" Version="0.2.6" Publish="false">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.0" />
     <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.4" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Cpu_affinity\Cpu_affinity.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -129,6 +128,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\pm_affinityservice\target\release\PPM_Service.exe" Link="PPM_Service.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 	<Target Name="WindowsAppSdk_Issue_3843_Workaround_MsixContent" AfterTargets="AddMicrosoftWindowsAppSDKPayloadFiles">
 		<ItemGroup>
@@ -315,4 +319,10 @@
 			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\zh-TW\Microsoft.UI.Xaml.Phone.dll.mui" />
 		</ItemGroup>
 	</Target>
+  <Target Name="Rust Build" BeforeTargets="Compile">
+	 <Exec Command="cargo b --release" WorkingDirectory="..\pm_affinityservice" />
+  </Target>
+	<ItemGroup>
+		<UpToDateCheckInput Include="..\pm_affinityservice" />
+	</ItemGroup>
 </Project>

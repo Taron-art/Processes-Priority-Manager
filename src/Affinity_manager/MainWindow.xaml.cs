@@ -1,4 +1,3 @@
-using Affinity_manager.Utils;
 using Microsoft.UI.Xaml;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -14,15 +13,6 @@ namespace Affinity_manager
         public MainWindow()
         {
             this.InitializeComponent();
-            base.Activated += MainWindow_Activated;
-        }
-
-        private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
-        {
-            if (RusDetector.Check())
-            {
-                // TODO: show message;
-            }
         }
     }
 }

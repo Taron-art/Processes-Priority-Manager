@@ -1,6 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
-using Affinity_manager.Model;
+using Affinity_manager.Model.CRUD;
 using Affinity_manager.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -22,6 +23,13 @@ namespace Affinity_manager
         public App()
         {
             this.InitializeComponent();
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        {
+            // Add some pre-crash window here.
+            Trace.WriteLine(e.ExceptionObject);
         }
 
         /// <summary>
@@ -32,7 +40,7 @@ namespace Affinity_manager
         {
             if (Environment.GetCommandLineArgs().Contains("--clear"))
             {
-                Cleaner cleaner = new();
+                ProcessConfigurationsRepository cleaner = new();
                 cleaner.Clean();
                 Environment.Exit(0);
             }
