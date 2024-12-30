@@ -25,6 +25,9 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+            
+    - name: Set up a Rust toolchain
+      uses: hecrj/setup-rust-action@v2.0.1
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
@@ -41,7 +44,7 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
-        files: src/Release/PPM.InstallerBundle.exe
+        files: src/Release/*.exe
         fail_on_unmatched_files: true
         prerelease: true
         generate_release_notes: true
