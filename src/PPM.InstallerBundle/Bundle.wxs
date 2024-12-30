@@ -1,9 +1,9 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal">
   <Bundle Name="Processes Priority Manager" Manufacturer="Processes Priority Manager Authors" Version="!(bind.packageVersion.MainInstaller)" 
 		  UpgradeCode="a672eb32-98ef-4e21-890b-a5b56f85f724"
-		  IconSourceFile="..\tune.ico">
-    <BootstrapperApplication >
-		<bal:WixStandardBootstrapperApplication Theme="rtfLicense" LicenseFile="License.rtf"/>
+		  IconSourceFile="..\tune.ico" DisableModify="yes" AboutUrl="https://github.com/Taron-art/Processes-Priority-Manager">
+    <BootstrapperApplication>
+		<bal:WixStandardBootstrapperApplication Theme="rtfLicense" LicenseFile="License.rtf" ShowVersion="yes"/>
     </BootstrapperApplication>
 	<Variable Name="InstallFolder" Type="formatted" Value="[ProgramFiles6432Folder][WixBundleName]"/>
     <Chain>

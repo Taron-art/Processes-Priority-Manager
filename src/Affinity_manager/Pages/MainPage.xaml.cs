@@ -1,4 +1,5 @@
 using System;
+using Affinity_manager.ViewModels;
 using Affinity_manager.ViewWrappers;
 using Microsoft.UI.Xaml.Controls;
 
@@ -15,6 +16,7 @@ namespace Affinity_manager.Pages
         public MainPage()
         {
             this.InitializeComponent();
+            ViewModel.ShowMessage += ViewModelShowMessage;
         }
 
         public MainPageViewModel ViewModel { get; } = new MainPageViewModel();
@@ -34,42 +36,6 @@ namespace Affinity_manager.Pages
 
         private async void affinityButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            //var selectorControl = new AffinitySelector();
-            //selectorControl.ProcessAffinity = (AffinityView)((Button)sender).DataContext;
-
-            //var affinityDialog = new ContentDialog
-            //{
-            //    Title = "Bla",
-            //    XamlRoot = XamlRoot,
-            //    Content = selectorControl,
-            //    PrimaryButtonText = "OK",
-            //    CloseButtonText = "Cancel"
-            //};
-            ////ContentDialog dialog = new ContentDialog();
-
-            ////// XamlRoot must be set in the case of a ContentDialog running in a Desktop app
-            ////dialog.XamlRoot = this.XamlRoot;
-            ////dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-            ////dialog.Title = "Save your work?";
-            ////dialog.PrimaryButtonText = "Save";
-            ////dialog.SecondaryButtonText = "Don't Save";
-            ////dialog.CloseButtonText = "Cancel";
-            ////dialog.DefaultButton = ContentDialogButton.Primary;
-            ////dialog.ShowAsync();
-
-            ////editAffinityDialog.DataContext = (AffinityView)((Button)sender).DataContext;
-            ////editAffinityDialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-            ////ContentDialogResult result = await editAffinityDialog.ShowAsync();
-
-            //var result = await affinityDialog.ShowAsync();
-            //if (result == ContentDialogResult.Primary)
-            //{
-            //    selectorControl.ProcessAffinity.ApplyChanges();
-            //}
-            //else
-            //{
-            //    selectorControl.ProcessAffinity.CancelChanges();
-            //}
             AffinitySelectorDialog dialog = new AffinitySelectorDialog((AffinityView)((Button)sender).DataContext);
             dialog.XamlRoot = XamlRoot;
             await dialog.ShowAsync();
@@ -93,7 +59,19 @@ namespace Affinity_manager.Pages
 
         private async void Page_Loading(Microsoft.UI.Xaml.FrameworkElement sender, object args)
         {
-            await ViewModel.Reload();
+            await ViewModel.ReloadAsync();
+        }
+
+        private async void ViewModelShowMessage(object? sender, string message)
+        {
+            ContentDialog messageDialog = new()
+            {
+                Title = Strings.Resources.Error,
+                Content = message,
+                CloseButtonText = Strings.Resources.OK,
+                XamlRoot = XamlRoot
+            };
+            await messageDialog.ShowAsync();
         }
     }
 }

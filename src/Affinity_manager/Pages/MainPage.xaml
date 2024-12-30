@@ -46,7 +46,7 @@
                   Grid.Column="0" Grid.Row="2" 
                   SingleSelectionFollowsFocus="True" SelectionMode="Single" SelectionChanged="processesGrid_SelectionChanged" SelectedItem="{x:Bind ViewModel.SelectedView, Mode=TwoWay}">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="viewWrappers:ProcessAffinityView">
+                <DataTemplate x:DataType="viewWrappers:ProcessConfigurationView">
                     <Grid ColumnSpacing="16" 
                           Background ="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
                           BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -90,7 +90,7 @@
         </ListView>
         <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="0" Grid.Row="3" Spacing="5">
             <Button IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Width="100" AccessKey="C" Command="{x:Bind ViewModel.ReloadCommand}">Cancel</Button>
-            <Button x:Name="saveButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" Command="{x:Bind ViewModel.SaveChangesCommand}" Width="100" Content="Save" AccessKey="S"/>
+            <Button x:Name="saveButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" Command="{x:Bind ViewModel.SaveChangesCommand}" Width="100" Content="Apply" AccessKey="A"/>
         </StackPanel>
     </Grid>
 

@@ -17,7 +17,7 @@ namespace Affinity_manager.Pages
         public static readonly DependencyProperty ProcessAffinityProperty =
             DependencyProperty.Register(
                 nameof(ProcessAffinity),
-                typeof(ProcessAffinityView),
+                typeof(ProcessConfigurationView),
                 typeof(AffinitySelector),
                 null);
 

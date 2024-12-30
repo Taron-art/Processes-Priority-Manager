@@ -7,26 +7,26 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Affinity_manager.ViewWrappers
 {
-    public partial class ProcessAffinityView : ObservableObject, IComparable<ProcessAffinityView>
+    public partial class ProcessConfigurationView : ObservableObject, IComparable<ProcessConfigurationView>
     {
         private bool _isDirty = false;
 
-        public ProcessAffinityView(ProcessAffinity processAffinity, OptionsProvider optionsProvider)
+        public ProcessConfigurationView(ProcessConfiguration configuration, OptionsProvider optionsProvider)
         {
-            ProcessAffinity = processAffinity;
+            ProcessConfiguration = configuration;
             OptionsProvider = optionsProvider;
-            AffinityView = new AffinityView(processAffinity.CpuAffinityMask, 16);
+            AffinityView = new AffinityView(configuration.CpuAffinityMask, 16);
 
-            ProcessAffinity.PropertyChanged += ProcessAffinity_PropertyChanged;
-            AffinityView.PropertyChanged += AffinityView_PropertyChanged;
+            ProcessConfiguration.PropertyChanged += OnProcessConfigurationPropertyChanged;
+            AffinityView.PropertyChanged += OnAffinityViewPropertyChanged;
         }
 
-        public ProcessAffinity ProcessAffinity { get; }
+        public ProcessConfiguration ProcessConfiguration { get; }
         public OptionsProvider OptionsProvider { get; }
 
-        public string Name => ProcessAffinity.Name;
+        public string Name => ProcessConfiguration.Name;
 
-        public uint CpuAffinityMask => ProcessAffinity.CpuAffinityMask;
+        public ulong CpuAffinityMask => ProcessConfiguration.CpuAffinityMask;
 
         public AffinityView AffinityView { get; }
 
@@ -38,11 +38,11 @@ namespace Affinity_manager.ViewWrappers
         {
             get
             {
-                return OptionsProvider.IoPriorities.First(wrapper => wrapper.Value.Equals(ProcessAffinity.IoPriority));
+                return OptionsProvider.IoPriorities.First(wrapper => wrapper.Value.Equals((object)ProcessConfiguration.IoPriority));
             }
             set
             {
-                ProcessAffinity.IoPriority = value.Value;
+                ProcessConfiguration.IoPriority = value.Value;
             }
         }
 
@@ -50,11 +50,11 @@ namespace Affinity_manager.ViewWrappers
         {
             get
             {
-                return OptionsProvider.CpuPriorities.First(wrapper => wrapper.Value == ProcessAffinity.CpuPriority);
+                return OptionsProvider.CpuPriorities.First(wrapper => wrapper.Value == ProcessConfiguration.CpuPriority);
             }
             set
             {
-                ProcessAffinity.CpuPriority = value.Value;
+                ProcessConfiguration.CpuPriority = value.Value;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Affinity_manager.ViewWrappers
             }
         }
 
-        public int CompareTo(ProcessAffinityView? other)
+        public int CompareTo(ProcessConfigurationView? other)
         {
             if (ReferenceEquals(this, other)) return 0;
             if (other is null) return 1;
@@ -83,31 +83,31 @@ namespace Affinity_manager.ViewWrappers
             IsDirty = true;
         }
 
-        private void ProcessAffinity_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private void OnProcessConfigurationPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             IsDirty = true;
 
             switch (e.PropertyName)
             {
-                case nameof(ProcessAffinity.CpuPriority):
+                case nameof(ProcessConfiguration.CpuPriority):
                     OnPropertyChanged(nameof(CpuPriority));
                     break;
-                case nameof(ProcessAffinity.IoPriority):
+                case nameof(ProcessConfiguration.IoPriority):
                     OnPropertyChanged(nameof(IoPriority));
                     break;
-                case nameof(ProcessAffinity.CpuAffinityMask):
+                case nameof(ProcessConfiguration.CpuAffinityMask):
                     OnPropertyChanged(nameof(CpuAffinityMask));
                     break;
             }
         }
 
 
-        private void AffinityView_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private void OnAffinityViewPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case nameof(AffinityView.AffinityMask):
-                    ProcessAffinity.CpuAffinityMask = AffinityView.AffinityMask;
+                    ProcessConfiguration.CpuAffinityMask = AffinityView.AffinityMask;
                     break;
             }
         }

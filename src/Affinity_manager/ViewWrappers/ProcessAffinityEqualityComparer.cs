@@ -1,23 +1,23 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Affinity_manager.ViewWrappers
 {
-    internal class ProcessAffinityEqualityComparer : IEqualityComparer<ProcessAffinityView>
+    internal class ProcessConfigurationEqualityComparer : IEqualityComparer<ProcessConfigurationView>
     {
-        public bool Equals(ProcessAffinityView? x, ProcessAffinityView? y)
+        public bool Equals(ProcessConfigurationView? x, ProcessConfigurationView? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(y, null)) return false;
             if (ReferenceEquals(x, null)) return false;
 
-            return x.ProcessAffinity.Name.Equals(y.ProcessAffinity.Name, StringComparison.OrdinalIgnoreCase);
+            return x.ProcessConfiguration.Name.Equals(y.ProcessConfiguration.Name, StringComparison.OrdinalIgnoreCase);
         }
 
-        public int GetHashCode([DisallowNull] ProcessAffinityView obj)
+        public int GetHashCode([DisallowNull] ProcessConfigurationView obj)
         {
-            return obj.ProcessAffinity.Name.GetHashCode(StringComparison.OrdinalIgnoreCase);
+            return obj.ProcessConfiguration.Name.GetHashCode(StringComparison.OrdinalIgnoreCase);
         }
     }
 }

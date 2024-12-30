@@ -2,41 +2,40 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Affinity_manager.Exceptions;
 using Affinity_manager.Model;
+using Affinity_manager.Model.CRUD;
 using Affinity_manager.Utils;
 using Affinity_manager.ViewWrappers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace Affinity_manager
+namespace Affinity_manager.ViewModels
 {
-    public partial class MainPageViewModel : ObservableObject
+    public partial class MainPageViewModel : ObservableObject, IShowsMessages
     {
-        private readonly ProcessAffinityEqualityComparer _affinityEqualityComparer = new();
+        private readonly ProcessConfigurationEqualityComparer _affinityEqualityComparer = new();
 
         [ObservableProperty]
         private string? _newProcessName;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(SaveCancelAvailable))]
-        private BindingCollectionWithUniqunessCheck<ProcessAffinityView> _processAffinities = new BindingCollectionWithUniqunessCheck<ProcessAffinityView>();
+        private BindingCollectionWithUniqunessCheck<ProcessConfigurationView> _processAffinities = new BindingCollectionWithUniqunessCheck<ProcessConfigurationView>();
 
         [ObservableProperty]
         private CpuPriorityClass _cpuPriority = CpuPriorityClass.Normal;
 
         [ObservableProperty]
-        private ProcessAffinityView? _selectedView;
+        private ProcessConfigurationView? _selectedView;
 
         public MainPageViewModel()
         {
             OptionsProvider = new OptionsProvider();
-            ProcessAffinitiesManager = new ProcessAffinitiesManager();
+            Repository = new ProcessConfigurationsRepository();
         }
 
         public bool SaveCancelAvailable => ProcessAffinities.Any(item => item.IsDirty);
-
-        internal OptionsProvider OptionsProvider { get; }
-        internal ProcessAffinitiesManager ProcessAffinitiesManager { get; }
 
         public bool IsInterfaceVisible
         {
@@ -45,6 +44,10 @@ namespace Affinity_manager
                 return RusDetector.Check();
             }
         }
+
+        internal OptionsProvider OptionsProvider { get; }
+
+        private ProcessConfigurationsRepository Repository { get; }
 
         [RelayCommand]
         public void Add()
@@ -55,8 +58,8 @@ namespace Affinity_manager
                 return;
             }
 
-            ProcessAffinity processAffinity = new(processName);
-            ProcessAffinityView viewItem = new(processAffinity, OptionsProvider);
+            ProcessConfiguration processAffinity = new(processName);
+            ProcessConfigurationView viewItem = new(processAffinity, OptionsProvider);
             viewItem.MarkDirty();
             if (!ProcessAffinities.TryAddItem(viewItem))
             {
@@ -70,14 +73,20 @@ namespace Affinity_manager
         }
 
         [RelayCommand]
-        public async Task SaveChanges()
+        public async Task SaveChangesAsync()
         {
-            await Task.Run(() => ProcessAffinitiesManager.SaveToRegistry(ProcessAffinities.Where(item => item.IsDirty).Select(item => item.ProcessAffinity)));
-            await FillProcesses();
+            try
+            {
+                await Repository.SaveAsync(ProcessAffinities.Where(item => item.IsDirty).Select(item => item.ProcessConfiguration), FillProcesses);
+            }
+            catch (ServiceNotInstalledException)
+            {
+                OnShowMessage(Strings.Resources.ServiceNotFountErrorMessage);
+            }
         }
 
         [RelayCommand]
-        public Task Reload()
+        public Task ReloadAsync()
         {
             return FillProcesses();
         }
@@ -93,8 +102,8 @@ namespace Affinity_manager
                 selectedProcessName = SelectedView.Name;
             }
 
-            ProcessAffinities = await Task.Run(() => new BindingCollectionWithUniqunessCheck<ProcessAffinityView>(
-                ProcessAffinitiesManager.LoadFromRegistry().Select(process => new ProcessAffinityView(process, OptionsProvider)),
+            ProcessAffinities = await Task.Run(() => new BindingCollectionWithUniqunessCheck<ProcessConfigurationView>(
+                Repository.Get().Select(process => new ProcessConfigurationView(process, OptionsProvider)),
                 _affinityEqualityComparer));
 
             if (selectedProcessName != null)
@@ -107,7 +116,7 @@ namespace Affinity_manager
             }
         }
 
-        partial void OnProcessAffinitiesChanged(BindingCollectionWithUniqunessCheck<ProcessAffinityView>? oldValue, BindingCollectionWithUniqunessCheck<ProcessAffinityView> newValue)
+        partial void OnProcessAffinitiesChanged(BindingCollectionWithUniqunessCheck<ProcessConfigurationView>? oldValue, BindingCollectionWithUniqunessCheck<ProcessConfigurationView> newValue)
         {
             if (oldValue != null)
             {
@@ -123,5 +132,12 @@ namespace Affinity_manager
         {
             OnPropertyChanged(nameof(SaveCancelAvailable));
         }
+
+        private void OnShowMessage(string message)
+        {
+            ShowMessage?.Invoke(this, message);
+        }
+
+        public event EventHandler<string>? ShowMessage;
     }
 }

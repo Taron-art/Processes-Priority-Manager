@@ -1,19 +1,28 @@
-<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
   <Fragment>
     <ComponentGroup Id="AppComponents" Directory="INSTALLFOLDER">
 		<Component>
 			<File Source="!(bindpath.x64)\Affinity_manager.exe" Id="MainExecutable"/>
 			<Shortcut Name="!(bind.Property.ProductName)" Directory="ProgramMenuFolder" IconIndex="0" Advertise="yes"/>
 		</Component>
-		<File Source="!(bindpath.x64)\Cpu_affinity.exe" Id="Affinity_setter" />
+		<Component>
+			<File Source="!(bindpath.x64)\PPM_Service.exe" Id="PPM_Service" />
+			<ServiceInstall Id="PPM_Service" Name="PPM_Service" DisplayName="!(loc.PpmServiceName)" Description="!(loc.PpmServiceDescription)" Start="auto" Type="ownProcess" ErrorControl="ignore" Account="LocalSystem" Vital="yes" Interactive="no">
+				<util:ServiceConfig FirstFailureActionType="restart" SecondFailureActionType="restart" ThirdFailureActionType="none" ResetPeriodInDays="1" RestartServiceDelayInSeconds="60"/>
+			</ServiceInstall>
+			<ServiceControl Id="PPM_Service_control" Name="PPM_Service" Start="install" Stop="both" Remove="uninstall" Wait="no"/>
+		</Component>
 		<Files Include="!(bindpath.x64)\*.dll"/>
-		<Files Include="!(bindpath.x64)\*.json"/>
+		<Files Include="!(bindpath.x64)\*.runtimeconfig.json"/>
 		<Files Include="!(bindpath.x64)\*.pri"/>
 		<Files Include="!(bindpath.x64)\**.png">
 			<Exclude Files="!(bindpath.x64)\WindowsAppRuntime.png"/>
 		</Files>
 		<Files Include="!(bindpath.x64)\**.ico"/>
 		<Files Include="!(bindpath.x64)\en-us\*.mui" Directory="EN_US"/>
+		<Component Id="Registry_HKLM" Guid="1F167EEE-4394-4FBB-87A1-3AEA39137E64">
+			<RegistryKey Id="Settings" Root="HKLM" Key="SOFTWARE\Processes Priority Manager\" ForceDeleteOnUninstall="yes"></RegistryKey>
+		</Component>
     </ComponentGroup>
   </Fragment>
 </Wix>
