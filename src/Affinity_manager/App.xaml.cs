@@ -23,16 +23,12 @@ namespace Affinity_manager
         public App()
         {
             this.InitializeComponent();
-            System.AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
-        }
-
-        private void CurrentDomain_FirstChanceException(object? sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
-        {
-            Trace.WriteLine(e.Exception);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
 
         private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
         {
+            // Add some pre-crash window here.
             Trace.WriteLine(e.ExceptionObject);
         }
 
