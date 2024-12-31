@@ -18,6 +18,8 @@ Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "Affinity_Manager_Installer"
 EndProject
 Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "PPM.InstallerBundle", "PPM.InstallerBundle\PPM.InstallerBundle.wixproj", "{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPM.Unsafe", "PPM.Unsafe\PPM.Unsafe.csproj", "{7E54B42D-B9F3-49DB-AF0E-CC4B9342F3BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -40,6 +42,10 @@ Global
 		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Debug|x64.Build.0 = Debug|x64
 		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Release|x64.ActiveCfg = Release|x64
 		{D7A3C0A3-5742-41E6-B1DB-75DD6F0576EA}.Release|x64.Build.0 = Release|x64
+		{7E54B42D-B9F3-49DB-AF0E-CC4B9342F3BA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7E54B42D-B9F3-49DB-AF0E-CC4B9342F3BA}.Debug|x64.Build.0 = Debug|Any CPU
+		{7E54B42D-B9F3-49DB-AF0E-CC4B9342F3BA}.Release|x64.ActiveCfg = Release|Any CPU
+		{7E54B42D-B9F3-49DB-AF0E-CC4B9342F3BA}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -322,6 +322,9 @@
   <Target Name="Rust Build" BeforeTargets="Compile">
 	 <Exec Command="cargo b --release" WorkingDirectory="..\pm_affinityservice" />
   </Target>
+  <ItemGroup>
+    <ProjectReference Include="..\PPM.Unsafe\PPM.Unsafe.csproj" />
+  </ItemGroup>
 	<ItemGroup>
 		<UpToDateCheckInput Include="..\pm_affinityservice" />
 	</ItemGroup>

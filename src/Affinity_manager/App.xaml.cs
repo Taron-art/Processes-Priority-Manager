@@ -5,6 +5,7 @@ using Affinity_manager.Model.CRUD;
 using Affinity_manager.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Vanara.PInvoke;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -45,10 +46,12 @@ namespace Affinity_manager
                 Environment.Exit(0);
             }
 
-            m_window = new MainWindow();
-            m_window.AppWindow.Resize(new Windows.Graphics.SizeInt32(630, 600));
-            m_window.AppWindow.SetIcon("Assets\\tune.ico");
 
+
+            m_window = new MainWindow();
+            m_window.AppWindow.SetIcon("Assets\\tune.ico");
+            double scale = User32.GetDpiForWindow(WinRT.Interop.WindowNative.GetWindowHandle(m_window)) / 96.0;
+            m_window.AppWindow.Resize(new Windows.Graphics.SizeInt32((int)(630 * scale), (int)(500 * scale)));
             Frame rootFrame = new();
             rootFrame.Navigate(typeof(MainPage), args.Arguments);
             m_window.Content = rootFrame;
