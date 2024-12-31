@@ -7,10 +7,10 @@ namespace PPM.Unsafe
     {
         public static unsafe uint GetLogicalProcessorsCount()
         {
-            var result = GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup, out SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List info);
+            Vanara.PInvoke.Win32Error result = GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup, out SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List info);
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException("Failed to get logical processor information.");
+                throw new InvalidOperationException("Failed to get logical processor information.", result.GetException());
             }
 
             uint cpuCount = 0;
@@ -23,7 +23,7 @@ namespace PPM.Unsafe
                     cpuCount += cpuInfo.Group.GroupInfo[j].ActiveProcessorCount;
                 }
             }
-
+            info.Dispose();
             return cpuCount;
         }
     }
