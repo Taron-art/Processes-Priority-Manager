@@ -15,7 +15,7 @@ namespace Affinity_manager.ViewWrappers
         {
             ProcessConfiguration = configuration;
             OptionsProvider = optionsProvider;
-            AffinityView = new AffinityView(configuration.CpuAffinityMask, 16);
+            AffinityView = new AffinityView(configuration.CpuAffinityMask, optionsProvider.NumberOfLogicalCpus);
 
             ProcessConfiguration.PropertyChanged += OnProcessConfigurationPropertyChanged;
             AffinityView.PropertyChanged += OnAffinityViewPropertyChanged;
