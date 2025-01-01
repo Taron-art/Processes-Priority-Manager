@@ -7,7 +7,7 @@
     </BootstrapperApplication>
 	<Variable Name="InstallFolder" Type="formatted" Value="[ProgramFiles6432Folder][WixBundleName]"/>
     <Chain>
-		<MsiPackage SourceFile="Affinity_Manager_Installer.msi" Compressed="true" Id="MainInstaller">
+		<MsiPackage SourceFile="PPM.Installer.msi" Compressed="true" Id="MainInstaller" Cache="remove">
 			<MsiProperty Name="INSTALLFOLDER" Value="[InstallFolder]"/>	
 		</MsiPackage>
     </Chain>

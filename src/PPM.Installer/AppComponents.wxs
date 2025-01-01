@@ -2,7 +2,7 @@
   <Fragment>
     <ComponentGroup Id="AppComponents" Directory="INSTALLFOLDER">
 		<Component>
-			<File Source="!(bindpath.x64)\Affinity_manager.exe" Id="MainExecutable"/>
+			<File Source="!(bindpath.x64)\PPM.exe" Id="MainExecutable"/>
 			<Shortcut Name="!(bind.Property.ProductName)" Directory="ProgramMenuFolder" IconIndex="0" Advertise="yes"/>
 		</Component>
 		<Component>

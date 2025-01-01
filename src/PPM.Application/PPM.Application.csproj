@@ -16,6 +16,7 @@
 	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>PPM</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Pages\AffinitySelectorDialog.xaml" />
