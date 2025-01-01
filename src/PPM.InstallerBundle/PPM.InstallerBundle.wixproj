@@ -7,14 +7,14 @@
     <PackageReference Include="WixToolset.Bal.wixext" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Affinity_Manager_Installer\Affinity_Manager_Installer.wixproj" />
-  </ItemGroup>
-  <ItemGroup>
     <BindPath Include="obj\x64\$(Configuration)\publish\Affinity_manager">
       <BindName>x64</BindName>
     </BindPath>
   </ItemGroup>
   <ItemGroup>
     <None Include="license.rtf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PPM.Installer\PPM.Installer.wixproj" />
   </ItemGroup>
 </Project>
