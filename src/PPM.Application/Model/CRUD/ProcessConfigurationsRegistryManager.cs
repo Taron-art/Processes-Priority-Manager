@@ -62,7 +62,7 @@ namespace Affinity_manager.Model.CRUD
                 RegistryKey? subKey = ifeoSubKey.OpenSubKey(item.Name, true);
                 if (subKey == null)
                 {
-                    if (item.IsEmpty)
+                    if (IfeoOptionsAreEmpty(item))
                     {
                         continue;
                     }
@@ -74,7 +74,7 @@ namespace Affinity_manager.Model.CRUD
                 {
                     FillSubKey(item, subKey);
 
-                    if (item.IsEmpty && subKey.ValueCount == 0 && subKey.SubKeyCount == 0)
+                    if (IfeoOptionsAreEmpty(item) && subKey.ValueCount == 0 && subKey.SubKeyCount == 0)
                     {
                         subKey.DeleteSubKey(string.Empty);
                     }
@@ -136,6 +136,11 @@ namespace Affinity_manager.Model.CRUD
             }
 
             return defaultValue;
+        }
+
+        private static bool IfeoOptionsAreEmpty(ProcessConfiguration config)
+        {
+            return config.CpuPriority == ProcessConfiguration.CpuPriorityDefaultValue && config.IoPriority == ProcessConfiguration.IoPriorityDefaultValue;
         }
     }
 }

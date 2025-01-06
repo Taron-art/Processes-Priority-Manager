@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPM.Unsafe", "PPM.Unsafe\PP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPM.Application.Tests", "PPM.Application.Tests\PPM.Application.Tests.csproj", "{F522FFDA-B24C-46BE-8DE3-8EA38355BA0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPM.Application.IntegrationTests", "PPM.Application.IntegrationTests\PPM.Application.IntegrationTests.csproj", "{A3A8DC94-FFA2-4B6E-9AA0-FF5FDB5EE9BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -52,6 +54,10 @@ Global
 		{F522FFDA-B24C-46BE-8DE3-8EA38355BA0A}.Debug|x64.Build.0 = Debug|x64
 		{F522FFDA-B24C-46BE-8DE3-8EA38355BA0A}.Release|x64.ActiveCfg = Release|x64
 		{F522FFDA-B24C-46BE-8DE3-8EA38355BA0A}.Release|x64.Build.0 = Release|x64
+		{A3A8DC94-FFA2-4B6E-9AA0-FF5FDB5EE9BA}.Debug|x64.ActiveCfg = Debug|x64
+		{A3A8DC94-FFA2-4B6E-9AA0-FF5FDB5EE9BA}.Debug|x64.Build.0 = Debug|x64
+		{A3A8DC94-FFA2-4B6E-9AA0-FF5FDB5EE9BA}.Release|x64.ActiveCfg = Release|x64
+		{A3A8DC94-FFA2-4B6E-9AA0-FF5FDB5EE9BA}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
