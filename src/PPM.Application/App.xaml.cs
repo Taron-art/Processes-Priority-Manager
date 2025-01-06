@@ -44,7 +44,7 @@ namespace Affinity_manager
             if (Environment.GetCommandLineArgs().Contains("--clear"))
             {
                 ProcessConfigurationsRepository cleaner = new();
-                cleaner.Clean();
+                cleaner.CleanWithoutServiceRestart();
                 Environment.Exit(0);
             }
 

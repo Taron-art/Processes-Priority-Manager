@@ -34,8 +34,15 @@ namespace Affinity_manager.Model.CRUD
                     object? cpuPriorityClass = perfOptions.GetValue(CpuPriorityClassName);
                     object? ioPriority = perfOptions.GetValue(IoPriorityName);
 
-                    processAffinity.CpuPriority = GetEnumValue(cpuPriorityClass, CpuPriorityClass.Normal);
-                    processAffinity.IoPriority = GetEnumValue(ioPriority, IoPriority.Normal);
+                    bool read = false;
+
+                    processAffinity.CpuPriority = GetEnumValue(cpuPriorityClass, CpuPriorityClass.Normal, ref read);
+                    processAffinity.IoPriority = GetEnumValue(ioPriority, IoPriority.Normal, ref read);
+
+                    if (!read)
+                    {
+                        continue;
+                    }
 
                     imageOptionsFiller.ReadAffinityFromRegistry(processAffinity);
 
@@ -127,11 +134,12 @@ namespace Affinity_manager.Model.CRUD
             }
         }
 
-        private static T GetEnumValue<T>(object? value, T defaultValue)
+        private static T GetEnumValue<T>(object? value, T defaultValue, ref bool read)
             where T : struct, Enum
         {
             if (value is int enumValueInt && Enum.IsDefined(typeof(T), (uint)enumValueInt))
             {
+                read = true;
                 return (T)Enum.ToObject(typeof(T), (uint)enumValueInt);
             }
 

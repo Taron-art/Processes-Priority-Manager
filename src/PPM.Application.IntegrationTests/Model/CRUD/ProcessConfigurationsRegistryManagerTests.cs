@@ -25,22 +25,22 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
         {
             using (Registry.LocalMachine.OpenSubKey(IfeoRegistryKeyPath, true)) { };
             _ifeoRegistryBackupPath = Path.Combine(Path.GetTempPath(), "backupIfeo.hiv");
-            BackupRegistryKey(IfeoRegistryKeyPath, _ifeoRegistryBackupPath);
+            RegistryTestsHelpers.BackupRegistryKey(IfeoRegistryKeyPath, _ifeoRegistryBackupPath);
             if (Registry.LocalMachine.OpenSubKey(AppOptionsRegistryKeyPath, false) != null)
             {
                 _appRegistryBackupPath = Path.Combine(Path.GetTempPath(), "backupApp.hiv");
-                BackupRegistryKey(AppOptionsRegistryKeyPath, _appRegistryBackupPath);
+                RegistryTestsHelpers.BackupRegistryKey(AppOptionsRegistryKeyPath, _appRegistryBackupPath);
             }
         }
 
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            RestoreRegistryKey(IfeoRegistryKeyPath, _ifeoRegistryBackupPath);
+            RegistryTestsHelpers.RestoreRegistryKey(IfeoRegistryKeyPath, _ifeoRegistryBackupPath);
             File.Delete(_ifeoRegistryBackupPath);
             if (_appRegistryBackupPath != null)
             {
-                RestoreRegistryKey(AppOptionsRegistryKeyPath, _appRegistryBackupPath);
+                RegistryTestsHelpers.RestoreRegistryKey(AppOptionsRegistryKeyPath, _appRegistryBackupPath);
                 File.Delete(_appRegistryBackupPath);
             }
             else
@@ -173,6 +173,31 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
         }
 
         [Test]
+        public void LoadFromRegistry_DoesNotReturnWhenAdditionalPerfOptionsArePresent()
+        {
+            ProcessConfigurationsRegistryManager manager = new();
+            string imageName = TestContext.CurrentContext.Test.Name;
+            string testKeyPath = Path.Combine(IfeoRegistryKeyPath, imageName);
+            string testPerfOptionsPath = Path.Combine(testKeyPath, PerfOptionsSubKey);
+
+            using (RegistryKey testKey = Registry.LocalMachine.CreateSubKey(testKeyPath))
+            {
+                using RegistryKey perfOptionsKey = testKey.CreateSubKey(PerfOptionsSubKey);
+                perfOptionsKey.SetValue("SomeKey", 1, RegistryValueKind.DWord);
+            }
+
+            try
+            {
+                List<ProcessConfiguration> configurations = manager.LoadFromRegistry();
+                Assert.That(configurations.SingleOrDefault(item => item.Name == imageName), Is.Null);
+            }
+            finally
+            {
+                Registry.LocalMachine.DeleteSubKeyTree(testKeyPath);
+            }
+        }
+
+        [Test]
         public void SaveToRegistry_SavesPerformanceOptionsToIFEO()
         {
             // Arrange
@@ -285,51 +310,6 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
             Assert.That(testConfig, Is.Not.Null);
             Assert.That(testConfig.CpuPriority, Is.EqualTo(expectedValues.Item1));
             Assert.That(testConfig.IoPriority, Is.EqualTo(expectedValues.Item2));
-        }
-
-        private static void BackupRegistryKey(string keyPath, string backupFilePath)
-        {
-            System.Diagnostics.Process process = new()
-            {
-                StartInfo = new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = "reg.exe",
-                    Arguments = $"save \"HKLM\\{keyPath}\" \"{backupFilePath}\" /y",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                }
-            };
-            process.Start();
-            process.WaitForExit();
-            if (process.ExitCode != 0)
-            {
-                Assert.Fail($"Backup creation failed with {process.ExitCode}. Note that these test must run with admin rights.");
-            }
-        }
-
-        private static void RestoreRegistryKey(string keyPath, string backupFilePath)
-        {
-            if (File.Exists(backupFilePath))
-            {
-                System.Diagnostics.Process process = new()
-                {
-                    StartInfo = new System.Diagnostics.ProcessStartInfo
-                    {
-                        FileName = "reg.exe",
-                        Arguments = $"restore \"HKLM\\{keyPath}\" \"{backupFilePath}\"",
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    }
-                };
-                process.Start();
-                process.WaitForExit();
-                if (process.ExitCode != 0)
-                {
-                    ClassicAssert.Fail($"Backup restoration failed with {process.ExitCode}. Note that these test must run with admin rights.");
-                }
-            }
         }
     }
 }
