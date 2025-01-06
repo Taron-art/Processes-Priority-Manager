@@ -17,7 +17,17 @@
 	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyName>PPM</AssemblyName>
+	<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+	<StartupObject>Affinity_manager.Program</StartupObject>
+	<BaseOutputPath>..\bin\</BaseOutputPath>
+	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+    <Page Remove="bin\**" />
+  </ItemGroup>
   <ItemGroup>
     <None Remove="Pages\AffinitySelectorDialog.xaml" />
     <None Remove="Pages\MainPage.xaml" />
@@ -45,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
     <PackageReference Include="ReswPlus" Version="0.2.6" Publish="false">
@@ -116,11 +127,6 @@
     <Page Update="Pages\AffinitySelector.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Update="Strings\en-us\Resources.resw">
-      <Generator>ReswPlusGenerator</Generator>
-    </PRIResource>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\MainPage.xaml">
@@ -328,5 +334,13 @@
   </ItemGroup>
 	<ItemGroup>
 		<UpToDateCheckInput Include="..\pm_affinityservice" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PRIResource Update="Strings\en-us\PPM.resw">
+	    <Generator>ReswPlusGenerator</Generator>
+	  </PRIResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <PRIResource Remove="bin\**" />
 	</ItemGroup>
 </Project>

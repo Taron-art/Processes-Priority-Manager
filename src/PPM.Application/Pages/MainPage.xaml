@@ -11,7 +11,7 @@
     xmlns:viewWrappers ="using:Affinity_manager.ViewWrappers"
     xmlns:xamlHelpers ="using:Affinity_manager.XamlHelpers" Loaded="Page_Loaded" Loading="Page_Loading">
 
-    <Grid x:Name="rootPanel" Padding="20" RowDefinitions="Auto, Auto, *, Auto" ColumnDefinitions="*" DataContext="{x:Bind ViewModel}">
+    <Grid x:Name="rootPanel" Padding="20" RowDefinitions="Auto, Auto, *, Auto" ColumnDefinitions="*" DataContext="{x:Bind ViewModel, Mode=OneWay}">
         <Grid RowDefinitions="Auto" ColumnDefinitions="Auto, *, Auto, Auto" ColumnSpacing="5" Grid.Column="0" Grid.Row="0">
             <TextBlock Text="Add new: " Grid.Column="0" VerticalAlignment="Center"></TextBlock>
             <TextBox Grid.Column="1" Text="{x:Bind ViewModel.NewProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Enter Application Name (e.g. AlanWake2.exe)">
@@ -42,7 +42,7 @@
                            Text="IO Priority" FontWeight="SemiBold" />
         </Grid>
         <ListView x:Name="processesGrid" DataContext="{x:Bind ViewModel}"
-                  ItemsSource="{x:Bind ViewModel.ProcessAffinities, Mode=OneWay}"  
+                  ItemsSource="{x:Bind ViewModel.ProcessesConfigurations, Mode=OneWay}"  
                   Grid.Column="0" Grid.Row="2" 
                   SingleSelectionFollowsFocus="True" SelectionMode="Single" SelectionChanged="processesGrid_SelectionChanged" SelectedItem="{x:Bind ViewModel.SelectedView, Mode=TwoWay}">
             <ListView.ItemTemplate>

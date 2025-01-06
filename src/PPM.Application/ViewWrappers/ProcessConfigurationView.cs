@@ -11,7 +11,7 @@ namespace Affinity_manager.ViewWrappers
     {
         private bool _isDirty = false;
 
-        public ProcessConfigurationView(ProcessConfiguration configuration, OptionsProvider optionsProvider)
+        public ProcessConfigurationView(ProcessConfiguration configuration, IOptionsProvider optionsProvider)
         {
             ProcessConfiguration = configuration;
             OptionsProvider = optionsProvider;
@@ -22,7 +22,8 @@ namespace Affinity_manager.ViewWrappers
         }
 
         public ProcessConfiguration ProcessConfiguration { get; }
-        public OptionsProvider OptionsProvider { get; }
+
+        public IOptionsProvider OptionsProvider { get; }
 
         public string Name => ProcessConfiguration.Name;
 

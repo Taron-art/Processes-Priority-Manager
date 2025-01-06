@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,20 +6,20 @@ using System.Linq;
 
 namespace Affinity_manager.Model
 {
-    public class BindingCollectionWithUniqunessCheck<T> : ObservableCollection<T> where T : INotifyPropertyChanged, IComparable<T>
+    public sealed class BindingCollectionWithUniqunessCheck<T> : ObservableCollection<T>, IReadOnlyObservableCollection<T>
+        where T : INotifyPropertyChanged, IComparable<T>
     {
-        private IEqualityComparer<T> _equalityComparer;
 
         public BindingCollectionWithUniqunessCheck(IEqualityComparer<T>? equalityComparer = null)
         {
-            _equalityComparer = equalityComparer ?? EqualityComparer<T>.Default;
+            EqualityComparer = equalityComparer ?? EqualityComparer<T>.Default;
         }
 
         public BindingCollectionWithUniqunessCheck(IEnumerable<T> items, IEqualityComparer<T>? equalityComparer = null) : base(items.Order())
         {
-            _equalityComparer = equalityComparer ?? EqualityComparer<T>.Default;
+            EqualityComparer = equalityComparer ?? EqualityComparer<T>.Default;
 
-            if (items.Distinct(_equalityComparer).Count() != Count)
+            if (items.Distinct(EqualityComparer).Count() != Count)
             {
                 throw new ArgumentException("Collection contains non-unique elements", nameof(items));
             }
@@ -30,9 +30,11 @@ namespace Affinity_manager.Model
             }
         }
 
+        public IEqualityComparer<T> EqualityComparer { get; }
+
         public bool TryAddItem(T item)
         {
-            if (this.Contains(item, _equalityComparer))
+            if (this.Contains(item, EqualityComparer))
             {
                 return false;
             }
@@ -51,7 +53,7 @@ namespace Affinity_manager.Model
 
         protected override void InsertItem(int index, T item)
         {
-            if (this.Contains(item, _equalityComparer))
+            if (this.Contains(item, EqualityComparer))
             {
                 throw new ArgumentException("The collection already contains this element", nameof(item));
             }

@@ -8,7 +8,7 @@ using PPM.Unsafe;
 
 namespace Affinity_manager.ViewWrappers
 {
-    public class OptionsProvider
+    public class OptionsProvider : IOptionsProvider
     {
         private IReadOnlyList<EnumViewWrapper<IoPriority>>? _ioPriorities;
         private IReadOnlyList<EnumViewWrapper<CpuPriorityClass>>? _cpuPriorities;
@@ -58,7 +58,6 @@ namespace Affinity_manager.ViewWrappers
 
         private static uint? GetOrder<T>(T enumValue) where T : struct, Enum
         {
-
             return (uint?)(enumValue.GetType()
                 .GetMember(enumValue.ToString())
                 .First()

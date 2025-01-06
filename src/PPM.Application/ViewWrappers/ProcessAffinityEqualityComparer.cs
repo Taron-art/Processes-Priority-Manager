@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Affinity_manager.ViewWrappers
 {
-    internal class ProcessConfigurationEqualityComparer : IEqualityComparer<ProcessConfigurationView>
+    internal class ProcessConfigurationViewEqualityComparer : IEqualityComparer<ProcessConfigurationView>
     {
         public bool Equals(ProcessConfigurationView? x, ProcessConfigurationView? y)
         {

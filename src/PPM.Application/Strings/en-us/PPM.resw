@@ -117,7 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApplicationNameColumn.Text" xml:space="preserve">
-    <value>Application Name</value>
+  <data name="CpuPriorityClass.AboveNormal" xml:space="preserve">
+    <value>Above Normal</value>
+  </data>
+  <data name="CpuPriorityClass.BelowNormal" xml:space="preserve">
+    <value>Below Normal</value>
+  </data>
+  <data name="CpuPriorityClass.High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="IoPriority.High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="CpuPriorityClass.Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="IoPriority.Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="IoPriority.VeryLow" xml:space="preserve">
+    <value>Very Low</value>
+  </data>
+  <data name="IoPriority.Critical" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="CpuPriorityClass.Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="IoPriority.Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="CpuFormat" xml:space="preserve">
+    <value>CPU {0}</value>
+  </data>
+  <data name="CpuRangeFormat" xml:space="preserve">
+    <value>CPU {0}-CPU {1}</value>
+  </data>
+  <data name="AllCpus" xml:space="preserve">
+    <value>All CPUs</value>
+  </data>
+  <data name="ServiceNotFountErrorMessage" xml:space="preserve">
+    <value>Service that supports the application is not found in the system. Some of the features won't work. Please reinstall the application.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
   </data>
 </root>

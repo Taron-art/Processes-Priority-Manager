@@ -99,13 +99,11 @@ namespace Affinity_manager.Model.CRUD
                 perfOptionsKey = subKey.CreateSubKey(PerfOptionsSubKeyName, true)!;
             }
 
-            bool deletePerfSubkey = false;
-
             try
             {
                 AddOrRemoveValue(perfOptionsKey, CpuPriorityClassName, item.CpuPriority, ProcessConfiguration.CpuPriorityDefaultValue);
                 AddOrRemoveValue(perfOptionsKey, IoPriorityName, item.IoPriority, ProcessConfiguration.IoPriorityDefaultValue);
-                deletePerfSubkey = perfOptionsKey.SubKeyCount == 0 && perfOptionsKey.ValueCount == 0;
+                bool deletePerfSubkey = perfOptionsKey.SubKeyCount == 0 && perfOptionsKey.ValueCount == 0;
                 if (deletePerfSubkey)
                 {
                     perfOptionsKey.DeleteSubKey(string.Empty);
