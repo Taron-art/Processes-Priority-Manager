@@ -2,9 +2,7 @@ using System;
 using Affinity_manager.ViewModels;
 using Affinity_manager.ViewWrappers;
 using Microsoft.UI.Xaml.Controls;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Microsoft.UI.Xaml.Navigation;
 
 namespace Affinity_manager.Pages
 {
@@ -16,14 +14,29 @@ namespace Affinity_manager.Pages
         public MainPage()
         {
             this.InitializeComponent();
-            ViewModel.ShowMessage += ViewModelShowMessage;
         }
 
-        public MainPageViewModel ViewModel { get; } = new MainPageViewModel();
+        public IMainPageViewModel? ViewModel { get; private set; }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is IMainPageViewModel model)
+            {
+                if (ViewModel != null)
+                {
+                    ViewModel.ShowMessage -= ViewModelShowMessage;
+                }
+
+                ViewModel = model;
+                ViewModel.ShowMessage += ViewModelShowMessage;
+            }
+
+            base.OnNavigatedTo(e);
+        }
 
         private void KeyboardAccelerator_Invoked(Microsoft.UI.Xaml.Input.KeyboardAccelerator sender, Microsoft.UI.Xaml.Input.KeyboardAcceleratorInvokedEventArgs args)
         {
-            ViewModel.AddCommand.Execute(null);
+            ViewModel!.AddCommand.Execute(null);
         }
 
         private void processesGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -43,7 +56,7 @@ namespace Affinity_manager.Pages
 
         private async void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            if (!ViewModel.IsInterfaceVisible)
+            if (!ViewModel!.IsInterfaceVisible)
             {
                 ContentDialog messageDialog = new()
                 {
@@ -59,16 +72,24 @@ namespace Affinity_manager.Pages
 
         private async void Page_Loading(Microsoft.UI.Xaml.FrameworkElement sender, object args)
         {
-            await ViewModel.ReloadAsync();
+            if (ViewModel == null)
+            {
+                throw new InvalidOperationException("ViewModel is not set");
+            }
+
+            if (ViewModel.ReloadCommand.CanExecute(null))
+            {
+                await ViewModel.ReloadCommand.ExecuteAsync(null);
+            }
         }
 
         private async void ViewModelShowMessage(object? sender, string message)
         {
             ContentDialog messageDialog = new()
             {
-                Title = Strings.Resources.Error,
+                Title = Strings.PPM.Error,
                 Content = message,
-                CloseButtonText = Strings.Resources.OK,
+                CloseButtonText = Strings.PPM.OK,
                 XamlRoot = XamlRoot
             };
             await messageDialog.ShowAsync();

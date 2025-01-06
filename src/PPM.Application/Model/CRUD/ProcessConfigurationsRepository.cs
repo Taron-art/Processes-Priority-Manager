@@ -6,7 +6,7 @@ using Affinity_manager.Exceptions;
 
 namespace Affinity_manager.Model.CRUD
 {
-    internal class ProcessConfigurationsRepository
+    internal class ProcessConfigurationsRepository : IProcessConfigurationsRepository
     {
         private const string ServiceName = "PPM_Service";
         private readonly ProcessConfigurationsRegistryManager _processAffinitiesManager = new();

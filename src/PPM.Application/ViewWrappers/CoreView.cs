@@ -8,14 +8,13 @@ namespace Affinity_manager.ViewWrappers
         [ObservableProperty]
         private bool _value;
 
-        [ObservableProperty]
-        private string _label;
-
         public CoreView(bool value, string label)
         {
             _value = value;
-            _label = label;
+            Label = label;
         }
+
+        public string Label { get; }
 
         public int CompareTo(CoreView? other)
         {

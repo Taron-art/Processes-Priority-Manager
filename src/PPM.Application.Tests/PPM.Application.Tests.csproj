@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup Label="Globals">
+	  <WebView2EnableCsWinRTProjection>False</WebView2EnableCsWinRTProjection>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+		<RootNamespace>PPM.Application.Tests</RootNamespace>
+		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<UseWinUI>true</UseWinUI>
+		<IsTestProject>true</IsTestProject>
+		<EnableMsixTooling>true</EnableMsixTooling>
+		<IsPackable>false</IsPackable>
+		<Platforms>x64</Platforms>
+		<SelfContained>true</SelfContained>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="bin\**" />
+	  <Compile Remove="TestResults\**" />
+	  <EmbeddedResource Remove="bin\**" />
+	  <EmbeddedResource Remove="TestResults\**" />
+	  <None Remove="bin\**" />
+	  <None Remove="TestResults\**" />
+	  <Page Remove="bin\**" />
+	  <Page Remove="TestResults\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FakeItEasy" Version="8.3.0" />
+		<PackageReference Include="FakeItEasy.Analyzer.CSharp" Version="6.1.1">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="FluentAssertions" Version="7.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
+		<PackageReference Include="NUnit" Version="4.3.2" />
+		<PackageReference Include="NUnit.Analyzers" Version="4.5.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\PPM.Application\PPM.Application.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="TestUtils\" />
+	  <Folder Include="ViewModels\" />
+	</ItemGroup>
+	<PropertyGroup>
+		<AllowedReferenceRelatedFileExtensions>.pri</AllowedReferenceRelatedFileExtensions>
+		<BaseOutputPath>..\bin\</BaseOutputPath>
+	</PropertyGroup>
+	<Target Name="AddReferenceRelatedPathsToCopyLocal" AfterTargets="ResolveAssemblyReferences">
+		<ItemGroup>
+			<ReferenceCopyLocalPaths Include="@(_ReferenceRelatedPaths)" />
+		</ItemGroup>
+	</Target>
+	<ItemGroup>
+	  <PRIResource Remove="bin\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PRIResource Remove="TestResults\**" />
+	</ItemGroup>
+</Project>

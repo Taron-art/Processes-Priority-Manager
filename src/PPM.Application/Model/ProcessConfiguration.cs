@@ -8,7 +8,6 @@ namespace Affinity_manager.Model
         public const CpuPriorityClass CpuPriorityDefaultValue = CpuPriorityClass.Normal;
         public const IoPriority IoPriorityDefaultValue = IoPriority.Normal;
 
-
         [ObservableProperty]
         private ulong _cpuAffinityMask = AffinityDefaultValue;
 
@@ -40,6 +39,11 @@ namespace Affinity_manager.Model
             CpuAffinityMask = AffinityDefaultValue;
             IoPriority = IoPriorityDefaultValue;
             CpuPriority = CpuPriorityDefaultValue;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

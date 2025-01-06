@@ -1,9 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources;
+using System.Runtime.InteropServices;
+using Microsoft.Windows.ApplicationModel.Resources;
 
 namespace Affinity_manager.ViewWrappers
 {
@@ -12,10 +10,10 @@ namespace Affinity_manager.ViewWrappers
         private readonly ResourceLoader _resource;
         private readonly string _resourceIdentifier;
 
-        public EnumViewWrapper(T value) 
+        public EnumViewWrapper(T value)
         {
             Value = value;
-            _resource = ResourceLoader.GetForViewIndependentUse();
+            _resource = new ResourceLoader(ResourceLoader.GetDefaultResourceFilePath(), "PPM");
             _resourceIdentifier = $"{typeof(T).Name}/{Enum.GetName(Value)}";
         }
 
@@ -25,7 +23,16 @@ namespace Affinity_manager.ViewWrappers
         {
             get
             {
-                var displayName = _resource.GetString(_resourceIdentifier);
+                string displayName = string.Empty;
+                try
+                {
+                    displayName = _resource.GetString(_resourceIdentifier);
+                }
+                catch (COMException)
+                {
+                    displayName = string.Empty;
+                }
+
                 if (string.IsNullOrEmpty(displayName))
                 {
                     throw new KeyNotFoundException($"Value for {_resourceIdentifier} was not found.");

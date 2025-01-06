@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Affinity_manager.Strings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -114,7 +113,7 @@ namespace Affinity_manager.ViewWrappers
                 var value = (AffinityMask & (1u << i)) != 0;
                 if (logicalCpus[i] == null)
                 {
-                    logicalCpus[i] = new CoreView(value, string.Format(Resources.CpuFormat, i));
+                    logicalCpus[i] = new CoreView(value, string.Format(Strings.PPM.CpuFormat, i));
                     logicalCpus[i].PropertyChanged += CoreView_PropertyChanged;
                 }
                 else
@@ -142,7 +141,7 @@ namespace Affinity_manager.ViewWrappers
 
             if (allCpus)
             {
-                return Resources.AllCpus;
+                return Strings.PPM.AllCpus;
             }
 
             List<string> result = [];
@@ -163,14 +162,14 @@ namespace Affinity_manager.ViewWrappers
                 {
                     if (end - start > 1)
                     {
-                        result.Add(string.Format(Resources.CpuRangeFormat, start, end));
+                        result.Add(string.Format(Strings.PPM.CpuRangeFormat, start, end));
                     }
                     else
                     {
-                        result.Add(string.Format(Resources.CpuFormat, start));
+                        result.Add(string.Format(Strings.PPM.CpuFormat, start));
                         if (start != end)
                         {
-                            result.Add(string.Format(Resources.CpuFormat, end));
+                            result.Add(string.Format(Strings.PPM.CpuFormat, end));
                         }
                     }
                     start = indexes[i];
@@ -182,14 +181,14 @@ namespace Affinity_manager.ViewWrappers
             {
                 if (end - start > 1)
                 {
-                    result.Add(string.Format(Resources.CpuRangeFormat, start, end));
+                    result.Add(string.Format(Strings.PPM.CpuRangeFormat, start, end));
                 }
                 else
                 {
-                    result.Add(string.Format(Resources.CpuFormat, start));
+                    result.Add(string.Format(Strings.PPM.CpuFormat, start));
                     if (start != end)
                     {
-                        result.Add(string.Format(Resources.CpuFormat, end));
+                        result.Add(string.Format(Strings.PPM.CpuFormat, end));
                     }
                 }
             }
