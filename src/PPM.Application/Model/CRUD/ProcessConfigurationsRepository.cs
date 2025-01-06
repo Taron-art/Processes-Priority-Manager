@@ -18,11 +18,10 @@ namespace Affinity_manager.Model.CRUD
 
         public void Save(IEnumerable<ProcessConfiguration> items)
         {
-            _processAffinitiesManager.SaveToRegistry(items);
-            RestartService();
+            Save(items, false);
         }
 
-        public async Task SaveAsync(IEnumerable<ProcessConfiguration> items, Func<Task>? readyToGetCallback = null)
+        public async Task SaveAndRestartServiceAsync(IEnumerable<ProcessConfiguration> items, Func<Task>? readyToGetCallback = null)
         {
             await Task.Run(() => _processAffinitiesManager.SaveToRegistry(items));
 
@@ -36,7 +35,7 @@ namespace Affinity_manager.Model.CRUD
             }
         }
 
-        public void Clean()
+        public void CleanWithoutServiceRestart()
         {
             List<ProcessConfiguration> processAffinities = Get();
             foreach (ProcessConfiguration processAffinity in processAffinities)
@@ -44,7 +43,16 @@ namespace Affinity_manager.Model.CRUD
                 processAffinity.Reset();
             }
 
-            Save(processAffinities);
+            Save(processAffinities, false);
+        }
+
+        private void Save(IEnumerable<ProcessConfiguration> items, bool restartService)
+        {
+            _processAffinitiesManager.SaveToRegistry(items);
+            if (restartService)
+            {
+                RestartService();
+            }
         }
 
         private void RestartService()

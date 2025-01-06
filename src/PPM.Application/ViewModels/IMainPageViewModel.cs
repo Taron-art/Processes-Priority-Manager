@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Affinity_manager.Model;
 using Affinity_manager.ViewWrappers;
 using CommunityToolkit.Mvvm.Input;

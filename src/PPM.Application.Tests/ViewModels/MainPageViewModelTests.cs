@@ -84,7 +84,7 @@ namespace PPM.Application.Tests.ViewModels
             await _viewModel.SaveChangesAsync();
 
             // Assert
-            A.CallTo(() => _repository.SaveAsync(A<IEnumerable<ProcessConfiguration>>.That.IsSameSequenceAs(new[] { processConfiguration }), A<Func<Task>>.That.IsNotNull())).MustHaveHappened()
+            A.CallTo(() => _repository.SaveAndRestartServiceAsync(A<IEnumerable<ProcessConfiguration>>.That.IsSameSequenceAs(new[] { processConfiguration }), A<Func<Task>>.That.IsNotNull())).MustHaveHappened()
                 .Then(A.CallTo(() => _repository.Get()).MustHaveHappened());
             monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.ProcessesConfigurations);
             monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.SaveCancelAvailable);
@@ -120,7 +120,7 @@ namespace PPM.Application.Tests.ViewModels
             await _viewModel.SaveChangesAsync();
 
             // Assert
-            A.CallTo(() => _repository.SaveAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored)).MustHaveHappened()
+            A.CallTo(() => _repository.SaveAndRestartServiceAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored)).MustHaveHappened()
                 .Then(A.CallTo(() => _repository.Get()).MustHaveHappened());
             monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.ProcessesConfigurations);
             monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.SaveCancelAvailable);
@@ -149,13 +149,13 @@ namespace PPM.Application.Tests.ViewModels
         public void SaveChangesAsync_ShouldShowMessage_WhenServiceNotInstalledExceptionIsThrown()
         {
             // Arrange
-            A.CallTo(() => _repository.SaveAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored))
+            A.CallTo(() => _repository.SaveAndRestartServiceAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored))
                 .Throws(new ServiceNotInstalledException("Name"));
             using FluentAssertions.Events.IMonitor<MainPageViewModel> monitor = _viewModel.Monitor();
 
             // Act & Assert
             Assert.DoesNotThrowAsync(() => _viewModel.SaveChangesAsync());
-            A.CallTo(() => _repository.SaveAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _repository.SaveAndRestartServiceAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored)).MustHaveHappened();
 
             monitor.Should().Raise(nameof(_viewModel.ShowMessage)).WithArgs<string>((message) => message.Contains("Service"));
         }

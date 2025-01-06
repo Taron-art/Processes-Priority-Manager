@@ -10,3 +10,4 @@ using System.Runtime.CompilerServices;
 [assembly: System.Runtime.Versioning.SupportedOSPlatform("windows")]
 
 [assembly: InternalsVisibleTo("PPM.Application.Tests")]
+[assembly: InternalsVisibleTo("PPM.Application.IntegrationTests")]

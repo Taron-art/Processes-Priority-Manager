@@ -80,7 +80,7 @@ namespace Affinity_manager.ViewModels
             try
             {
 
-                await Repository.SaveAsync(ProcessesConfigurations.Where(item => item.IsDirty).Select(
+                await Repository.SaveAndRestartServiceAsync(ProcessesConfigurations.Where(item => item.IsDirty).Select(
                     item => item.ProcessConfiguration),
                     () =>
                     {
