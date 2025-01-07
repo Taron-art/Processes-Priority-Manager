@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Affinity_manager.Exceptions;
 using Affinity_manager.Model;
@@ -33,7 +32,7 @@ namespace PPM.Application.Tests.ViewModels
         public void Add_ShouldAddNewProcessConfigurationView_WhenProcessNameIsValid()
         {
             // Arrange
-            _viewModel.NewProcessName = "TestProcess";
+            _viewModel.NewProcessName = "TestProcess.exe";
             ProcessConfiguration processConfiguration = new("TestProcess");
             ProcessConfigurationView processConfigurationView = new(processConfiguration, A.Fake<IOptionsProvider>());
             A.CallTo(() => _viewFactory.Create(A<ProcessConfiguration>.Ignored)).Returns(processConfigurationView);
@@ -48,7 +47,7 @@ namespace PPM.Application.Tests.ViewModels
         }
 
         [Test]
-        public void Add_ShouldNotAddNewProcessConfigurationView_WhenProcessNameIsInvalid()
+        public void Add_ShouldNotAddNewProcessConfigurationView_WhenProcessNameIsEmpty()
         {
             // Arrange
             _viewModel.NewProcessName = " ";
@@ -58,6 +57,23 @@ namespace PPM.Application.Tests.ViewModels
 
             // Assert
             Assert.That(_viewModel.ProcessesConfigurations, Is.Empty);
+        }
+
+        [Test]
+        public void Add_ShouldNotAddNewProcessConfigurationView_WhenProcessNameIsInvalud()
+        {
+            // Arrange
+            _viewModel.NewProcessName = "testexe";
+
+            using var monitor = _viewModel.Monitor();
+
+            // Act
+            _viewModel.Add();
+
+            // Assert
+            Assert.That(_viewModel.ProcessesConfigurations, Is.Empty);
+
+            monitor.Should().Raise(nameof(_viewModel.ShowMessage));
         }
 
         [Test]
@@ -157,7 +173,26 @@ namespace PPM.Application.Tests.ViewModels
             Assert.DoesNotThrowAsync(() => _viewModel.SaveChangesAsync());
             A.CallTo(() => _repository.SaveAndRestartServiceAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored)).MustHaveHappened();
 
-            monitor.Should().Raise(nameof(_viewModel.ShowMessage)).WithArgs<string>((message) => message.Contains("Service"));
+            monitor.Should().Raise(nameof(_viewModel.ShowMessage))
+                .WithArgs<string>((message) => message.Equals(Affinity_manager.Strings.PPM.ServiceNotFountErrorMessage));
+        }
+
+        [Test]
+        [SetUICulture("en-US")]
+        public void SaveChangesAsync_ShouldShowMessage_WhenValidationExceptionIsThrown()
+        {
+            // Arrange
+            string message = TestContext.CurrentContext.Random.GetString();
+            A.CallTo(() => _repository.SaveAndRestartServiceAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored))
+                .Throws(new ValidationException(message));
+            using FluentAssertions.Events.IMonitor<MainPageViewModel> monitor = _viewModel.Monitor();
+
+            // Act & Assert
+            Assert.DoesNotThrowAsync(() => _viewModel.SaveChangesAsync());
+            A.CallTo(() => _repository.SaveAndRestartServiceAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored)).MustHaveHappened();
+
+            monitor.Should().Raise(nameof(_viewModel.ShowMessage))
+                .WithArgs<string>((message) => message.Equals(message));
         }
     }
 }
