@@ -4,7 +4,8 @@
       "commandName": "MsixPackage"
     },
     "Affinity_manager (Unpackaged)": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "--language en-us"
     }
   }
 }

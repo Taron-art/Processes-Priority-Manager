@@ -11,35 +11,39 @@
     xmlns:viewWrappers ="using:Affinity_manager.ViewWrappers"
     xmlns:xamlHelpers ="using:Affinity_manager.XamlHelpers" Loaded="Page_Loaded" Loading="Page_Loading">
 
-    <Grid x:Name="rootPanel" Padding="20" RowDefinitions="Auto, Auto, *, Auto" ColumnDefinitions="*" DataContext="{x:Bind ViewModel, Mode=OneWay}">
-        <Grid RowDefinitions="Auto" ColumnDefinitions="Auto, *, Auto, Auto" ColumnSpacing="5" Grid.Column="0" Grid.Row="0">
-            <TextBlock Text="Add new: " Grid.Column="0" VerticalAlignment="Center"></TextBlock>
-            <TextBox Grid.Column="1" Text="{x:Bind ViewModel.NewProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Enter Application Name (e.g. AlanWake2.exe)">
+    <Grid x:Name="rootPanel" RowDefinitions="Auto, Auto, *, Auto" ColumnDefinitions="*" 
+          Padding="0, 10" 
+          DataContext="{x:Bind ViewModel, Mode=OneWay}">
+        <Grid RowDefinitions="Auto" ColumnDefinitions="*, Auto" ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" 
+              Padding="15,0"
+              Grid.Column="0" Grid.Row="0">
+            <TextBox x:Uid="AddNewTextBox" Grid.Column="0" Text="{x:Bind ViewModel.NewProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSpellCheckEnabled="False">
                 <TextBox.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Enter" Invoked="KeyboardAccelerator_Invoked"></KeyboardAccelerator>
                 </TextBox.KeyboardAccelerators>
             </TextBox>
-            <Button Grid.Column="2" Command="{x:Bind ViewModel.AddCommand}" x:Name="addButton">Add</Button>
+            <Button x:Uid="AddNewButton" Grid.Column="1" Command="{x:Bind ViewModel.AddCommand}" x:Name="addButton"/>
         </Grid>
-        <Grid x:Name="gridHeader" Padding="16,12" ColumnSpacing="16" Grid.Column="0" Grid.Row="1">
+        <Grid x:Name="gridHeader" Padding="16,12" ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" 
+              Grid.Column="0" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.4*" />
-                <ColumnDefinition Width="0.3*" MaxWidth="200" />
-                <ColumnDefinition Width="150"  />
-                <ColumnDefinition Width="125" />
+                <ColumnDefinition x:Name="applicationNameColumnDefinition" Width="0.4*" />
+                <ColumnDefinition x:Name="cpuAffinityNameColumnDefinition" Width="0.3*" MaxWidth="200" />
+                <ColumnDefinition x:Uid="CpuPriorityNameColumnDefinition" x:Name="cpuPriorityNameColumnDefinition" Width="150"  />
+                <ColumnDefinition x:Uid="IoPriorityNameColumnDefinition" x:Name="ioPriorityNameColumnDefinition" Width="125" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                            x:Uid="ApplicationNameColumn" TextTrimming="CharacterEllipsis" FontWeight="SemiBold" />
             <TextBlock Grid.Column="1"
                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                           Text="CPU Affinity" FontWeight="SemiBold" />
+                           x:Uid="CpuAffinityColumn" FontWeight="SemiBold" />
             <TextBlock Grid.Column="2"
                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                           Text="CPU Priority" FontWeight="SemiBold" />
+                           x:Uid="CpuPriorityColumn" FontWeight="SemiBold" />
             <TextBlock Grid.Column="3"
                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                           Text="IO Priority" FontWeight="SemiBold" />
+                           x:Uid="IoPriorityColumn" FontWeight="SemiBold" />
         </Grid>
         <ListView x:Name="processesGrid" DataContext="{x:Bind ViewModel}"
                   ItemsSource="{x:Bind ViewModel.ProcessesConfigurations, Mode=OneWay}"  
@@ -47,17 +51,17 @@
                   SingleSelectionFollowsFocus="True" SelectionMode="Single" SelectionChanged="processesGrid_SelectionChanged" SelectedItem="{x:Bind ViewModel.SelectedView, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="viewWrappers:ProcessConfigurationView">
-                    <Grid ColumnSpacing="16" 
+                    <Grid ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" 
                           Background ="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
                           BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                           CornerRadius="{ThemeResource ControlCornerRadius}"
                           BorderThickness="1"
                           Padding="5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.4*" />
-                            <ColumnDefinition Width="0.3*" MaxWidth="200" />
-                            <ColumnDefinition Width="150" MaxWidth="200" />
-                            <ColumnDefinition Width="125" MaxWidth="200" />
+                            <ColumnDefinition Width="{Binding ElementName=applicationNameColumnDefinition, Path=Width, Mode=OneTime}" />
+                            <ColumnDefinition Width="{Binding ElementName=cpuAffinityNameColumnDefinition, Path=Width, Mode=OneTime}" MaxWidth="{Binding ElementName=cpuAffinityNameColumnDefinition, Path=MaxWidth}" />
+                            <ColumnDefinition Width="{Binding ElementName=cpuPriorityNameColumnDefinition, Path=Width, Mode=OneTime}" />
+                            <ColumnDefinition Width="{Binding ElementName=ioPriorityNameColumnDefinition, Path=Width, Mode=OneTime}" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" TextDecorations="{x:Bind IsDirty, Mode=OneWay, Converter={StaticResource BoolToFontStyleConverterKey}}">
                         </TextBlock>
@@ -88,9 +92,12 @@
                 </TransitionCollection>
             </ListView.ItemContainerTransitions>
         </ListView>
-        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="0" Grid.Row="3" Spacing="5">
-            <Button IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Width="100" AccessKey="C" Command="{x:Bind ViewModel.ReloadCommand}">Cancel</Button>
-            <Button x:Name="saveButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" Command="{x:Bind ViewModel.SaveChangesCommand}" Width="100" Content="Apply" AccessKey="A"/>
+        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" 
+                    Grid.Column="0" Grid.Row="3" 
+                    Spacing="8"
+                    Padding="12,0">
+            <Button x:Uid="CancelButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Width="100" AccessKey="C" Command="{x:Bind ViewModel.ReloadCommand}"/>
+            <Button x:Uid="ApplyButton" x:Name="saveButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" Command="{x:Bind ViewModel.SaveChangesCommand}" Width="100" Content="Apply" AccessKey="A"/>
         </StackPanel>
     </Grid>
 

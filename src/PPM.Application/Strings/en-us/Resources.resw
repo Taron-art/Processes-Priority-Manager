@@ -117,7 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddNewButton.Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddNewTextBox.PlaceholderText" xml:space="preserve">
+    <value>Enter Application Name (e.g. AlanWake2.exe)</value>
+  </data>
+  <data name="AffinitySelectorDialog.Title" xml:space="preserve">
+    <value>On which CPUs you want to run this application?</value>
+  </data>
+  <data name="AllCpusCheckBox.Content" xml:space="preserve">
+    <value>All CPUs (default)</value>
+  </data>
   <data name="ApplicationNameColumn.Text" xml:space="preserve">
     <value>Application Name</value>
+  </data>
+  <data name="ApplyButton.Content" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="CancelButton.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CpuAffinityColumn.Text" xml:space="preserve">
+    <value>CPU Affinity</value>
+  </data>
+  <data name="CpuPriorityColumn.Text" xml:space="preserve">
+    <value>CPU Priority</value>
+  </data>
+  <data name="CpuPriorityNameColumnDefinition.Width" xml:space="preserve">
+    <value>150</value>
+  </data>
+  <data name="IoPriorityColumn.Text" xml:space="preserve">
+    <value>IO Priority</value>
+  </data>
+  <data name="IoPriorityNameColumnDefinition.Width" xml:space="preserve">
+    <value>125</value>
   </data>
 </root>

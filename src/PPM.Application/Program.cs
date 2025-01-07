@@ -19,7 +19,7 @@ namespace Affinity_manager
         {
             XamlCheckProcessRequirements();
 
-            HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+            HostApplicationBuilder builder = Host.CreateEmptyApplicationBuilder(new HostApplicationBuilderSettings { Args = args });
 
             AddDIServices(builder.Services);
             builder.Build().Run();

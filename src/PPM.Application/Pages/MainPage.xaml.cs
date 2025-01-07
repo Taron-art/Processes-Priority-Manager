@@ -11,6 +11,8 @@ namespace Affinity_manager.Pages
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public const int ColumnSpacing = 16;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -58,6 +60,7 @@ namespace Affinity_manager.Pages
         {
             if (!ViewModel!.IsInterfaceVisible)
             {
+                // Intentionally not localized.
                 ContentDialog messageDialog = new()
                 {
                     Content = "Probable running from restricted area detected. Application will exit",

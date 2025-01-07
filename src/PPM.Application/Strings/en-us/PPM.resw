@@ -165,4 +165,7 @@
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>

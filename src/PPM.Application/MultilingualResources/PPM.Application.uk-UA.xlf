@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="uk-UA" original="PPM.APPLICATION/STRINGS/EN-US/RESOURCES.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="1.0.0.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="PPM.APPLICATION/STRINGS/EN-US/RESOURCES.RESW" datatype="resx">
+        <trans-unit id="ApplicationNameColumn.Text" translate="yes" xml:space="preserve">
+          <source>Application Name</source>
+          <target state="final">Назва Застосунку</target>
+        </trans-unit>
+        <trans-unit id="AddNewTextBox.PlaceholderText" translate="yes" xml:space="preserve">
+          <source>Enter Application Name (e.g. AlanWake2.exe)</source>
+          <target state="final">Введіт ім'я застосунку (наприклад, AlanWake2.exe)</target>
+        </trans-unit>
+        <trans-unit id="AddNewButton.Content" translate="yes" xml:space="preserve">
+          <source>Add</source>
+          <target state="final">Додати</target>
+        </trans-unit>
+        <trans-unit id="CpuAffinityColumn.Text" translate="yes" xml:space="preserve">
+          <source>CPU Affinity</source>
+          <target state="final">Відповідність ЦП</target>
+        </trans-unit>
+        <trans-unit id="CpuPriorityColumn.Text" translate="yes" xml:space="preserve">
+          <source>CPU Priority</source>
+          <target state="final">Пріорітет повідомлень</target>
+        </trans-unit>
+        <trans-unit id="IoPriorityColumn.Text" translate="yes" xml:space="preserve">
+          <source>IO Priority</source>
+          <target state="final">Пріорітет В/В</target>
+        </trans-unit>
+        <trans-unit id="ApplyButton.Content" translate="yes" xml:space="preserve">
+          <source>Apply</source>
+          <target state="final">Застосувати</target>
+        </trans-unit>
+        <trans-unit id="CancelButton.Content" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="final">Відмінити</target>
+        </trans-unit>
+        <trans-unit id="AffinitySelectorDialog.Title" translate="yes" xml:space="preserve">
+          <source>On which CPUs you want to run this application?</source>
+          <target state="final">На яких процесорах ви бажаєте запускати цей застосунок?</target>
+        </trans-unit>
+        <trans-unit id="AllCpusCheckBox.Content" translate="yes" xml:space="preserve">
+          <source>All CPUs (default)</source>
+          <target state="final">Усі ЦП (за замовчуванням)</target>
+        </trans-unit>
+        <trans-unit id="CpuPriorityNameColumnDefinition.Width" translate="yes" xml:space="preserve">
+          <source>150</source>
+          <target state="final">171</target>
+        </trans-unit>
+        <trans-unit id="IoPriorityNameColumnDefinition.Width" translate="yes" xml:space="preserve">
+          <source>125</source>
+          <target state="final">140</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+  <file datatype="xml" source-language="en-US" target-language="uk-UA" original="PPM.APPLICATION/STRINGS/EN-US/PPM.RESW" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="1.0.0.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="PPM.APPLICATION/STRINGS/EN-US/PPM.RESW" datatype="resx">
+        <trans-unit id="CpuPriorityClass.AboveNormal" translate="yes" xml:space="preserve">
+          <source>Above Normal</source>
+          <target state="final">Вище середнього</target>
+        </trans-unit>
+        <trans-unit id="CpuPriorityClass.BelowNormal" translate="yes" xml:space="preserve">
+          <source>Below Normal</source>
+          <target state="final">Нижче середнього</target>
+        </trans-unit>
+        <trans-unit id="CpuPriorityClass.High" translate="yes" xml:space="preserve">
+          <source>High</source>
+          <target state="final">Високий</target>
+        </trans-unit>
+        <trans-unit id="IoPriority.High" translate="yes" xml:space="preserve">
+          <source>High</source>
+          <target state="final">Високий</target>
+        </trans-unit>
+        <trans-unit id="CpuPriorityClass.Low" translate="yes" xml:space="preserve">
+          <source>Low</source>
+          <target state="final">Низький</target>
+        </trans-unit>
+        <trans-unit id="IoPriority.Low" translate="yes" xml:space="preserve">
+          <source>Low</source>
+          <target state="final">Низький</target>
+        </trans-unit>
+        <trans-unit id="IoPriority.VeryLow" translate="yes" xml:space="preserve">
+          <source>Very Low</source>
+          <target state="final">Дуже низький</target>
+        </trans-unit>
+        <trans-unit id="IoPriority.Critical" translate="yes" xml:space="preserve">
+          <source>Critical</source>
+          <target state="final">Найвищий</target>
+        </trans-unit>
+        <trans-unit id="CpuPriorityClass.Normal" translate="yes" xml:space="preserve">
+          <source>Normal</source>
+          <target state="final">Середній</target>
+        </trans-unit>
+        <trans-unit id="IoPriority.Normal" translate="yes" xml:space="preserve">
+          <source>Normal</source>
+          <target state="final">Середній</target>
+        </trans-unit>
+        <trans-unit id="CpuFormat" translate="yes" xml:space="preserve">
+          <source>CPU {0}</source>
+          <target state="final">ЦП {0}</target>
+        </trans-unit>
+        <trans-unit id="CpuRangeFormat" translate="yes" xml:space="preserve">
+          <source>CPU {0}-CPU {1}</source>
+          <target state="final">ЦП {0}-ЦП {1}</target>
+        </trans-unit>
+        <trans-unit id="AllCpus" translate="yes" xml:space="preserve">
+          <source>All CPUs</source>
+          <target state="final">Усі ЦП</target>
+        </trans-unit>
+        <trans-unit id="ServiceNotFountErrorMessage" translate="yes" xml:space="preserve">
+          <source>Service that supports the application is not found in the system. Some of the features won't work. Please reinstall the application.</source>
+          <target state="final">Сервіс що підтримує работу цієї програми у фоні не знайдено. Частина функціональності не буде працювати. Будь ласка, перевстановіть застосунок.</target>
+        </trans-unit>
+        <trans-unit id="Error" translate="yes" xml:space="preserve">
+          <source>Error</source>
+          <target state="final">Помилка</target>
+        </trans-unit>
+        <trans-unit id="OK" translate="yes" xml:space="preserve">
+          <source>OK</source>
+          <target state="final">OK</target>
+        </trans-unit>
+        <trans-unit id="Cancel" translate="yes" xml:space="preserve">
+          <source>Cancel</source>
+          <target state="final">Відмінити</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

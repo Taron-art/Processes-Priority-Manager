@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
@@ -11,16 +12,22 @@
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
-	<TrimMode>partial</TrimMode>
-	<SelfContained>true</SelfContained>
-	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
-	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <TrimMode>partial</TrimMode>
+    <SelfContained>true</SelfContained>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyName>PPM</AssemblyName>
-	<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
-	<StartupObject>Affinity_manager.Program</StartupObject>
-	<BaseOutputPath>..\bin\</BaseOutputPath>
-	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <StartupObject>Affinity_manager.Program</StartupObject>
+    <BaseOutputPath>..\bin\</BaseOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Label="MultilingualAppToolkit">
+    <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
+    <MultilingualFallbackLanguage>en-US</MultilingualFallbackLanguage>
+    <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
+    <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="bin\**" />
@@ -29,6 +36,7 @@
     <Page Remove="bin\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="MultilingualResources\PPM.Application.uk-UA.xlf" />
     <None Remove="Pages\AffinitySelectorDialog.xaml" />
     <None Remove="Pages\MainPage.xaml" />
   </ItemGroup>
@@ -40,11 +48,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
-
   <!--
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
     Tools extension to be activated for this project even if the Windows App SDK Nuget
@@ -84,7 +90,6 @@
     <WindowsPackageType>None</WindowsPackageType>
     <ApplicationIcon>tune.ico</ApplicationIcon>
   </PropertyGroup>
-
   <!--
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
     Explorer "Package and Publish" context menu entry to be enabled for this project even if
@@ -117,7 +122,10 @@
     <IsPublishable>True</IsPublishable>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
-
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.PriResources.targets')" />
+  <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.PriResources.targets')" Label="MultilingualAppToolkit">
+    <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
+  </Target>
   <ItemGroup>
     <Page Update="Pages\AffinitySelectorDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -141,206 +149,208 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-	<Target Name="WindowsAppSdk_Issue_3843_Workaround_MsixContent" AfterTargets="AddMicrosoftWindowsAppSDKPayloadFiles">
-		<ItemGroup>
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\DeploymentAgent.exe" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\Microsoft.Web.WebView2.Core.dll" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\Microsoft.Web.WebView2.Core.winmd" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\Microsoft.Web.WebView2.Core.xml" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\Microsoft.Web.WebView2.WinForms.xml" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\Microsoft.Web.WebView2.Wpf.xml" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\PushNotificationsLongRunningTask.ProxyStub.dll" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\RestartAgent.exe" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\createdump.exe" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\WindowsAppRuntime.png" />
-
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\af-ZA\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\af-ZA\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\am-ET\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\as-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bn-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ca-Es-VALENCIA\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fil-PH\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ga-IE\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gd-gb\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gu-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hy-AM\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\km-KH\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kn-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kok-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lb-LU\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lo-LA\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mi-NZ\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mk-MK\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ml-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mr-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mt-MT\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ne-NP\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\or-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pa-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\quz-PE\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Cyrl-BA\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ta-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\te-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\tt-RU\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ug-CN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ur-PK\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\uz-Latn-UZ\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\am-ET\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\as-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bn-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ca-Es-VALENCIA\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fil-PH\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ga-IE\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gd-gb\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gu-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hy-AM\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\km-KH\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kn-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kok-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lb-LU\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lo-LA\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mi-NZ\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mk-MK\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ml-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mr-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mt-MT\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ne-NP\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\or-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pa-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\quz-PE\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Cyrl-BA\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ta-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\te-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\tt-RU\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ug-CN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ur-PK\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\uz-Latn-UZ\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ar-SA\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ar-SA\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\az-Latn-AZ\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\az-Latn-AZ\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bg-BG\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bg-BG\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bs-Latn-BA\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bs-Latn-BA\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ca-ES\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ca-ES\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\cs-CZ\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\cs-CZ\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\cy-GB\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\cy-GB\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\da-DK\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\da-DK\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\de-DE\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\de-DE\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\el-GR\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\el-GR\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\en-GB\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\en-GB\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\es-ES\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\es-ES\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\es-MX\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\es-MX\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\et-EE\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\et-EE\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\eu-ES\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\eu-ES\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fa-IR\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fa-IR\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fi-FI\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fi-FI\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fr-CA\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fr-CA\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fr-FR\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fr-FR\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gl-ES\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gl-ES\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\he-IL\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\he-IL\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hi-IN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hi-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hr-HR\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hr-HR\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hu-HU\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hu-HU\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\id-ID\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\id-ID\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\is-IS\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\is-IS\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\it-IT\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\it-IT\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ja-JP\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ja-JP\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ka-GE\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ka-GE\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kk-KZ\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kk-KZ\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ko-KR\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ko-KR\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lt-LT\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lt-LT\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lv-LV\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lv-LV\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ms-MY\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ms-MY\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nb-NO\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nb-NO\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nl-NL\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nl-NL\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nn-NO\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nn-NO\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pl-PL\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pl-PL\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pt-BR\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pt-BR\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pt-PT\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pt-PT\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ro-RO\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ro-RO\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ru-RU\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ru-RU\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sk-SK\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sk-SK\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sl-SI\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sl-SI\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sq-AL\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sq-AL\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Cyrl-RS\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Cyrl-RS\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Latn-RS\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Latn-RS\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sv-SE\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sv-SE\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\th-TH\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\th-TH\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\tr-TR\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\tr-TR\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\uk-UA\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\uk-UA\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\vi-VN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\vi-VN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\zh-CN\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\zh-CN\Microsoft.UI.Xaml.Phone.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\zh-TW\Microsoft.ui.xaml.dll.mui" />
-			<None Remove="$(MicrosoftWindowsAppSDKMsixContent)\zh-TW\Microsoft.UI.Xaml.Phone.dll.mui" />
-		</ItemGroup>
-	</Target>
+  <Target Name="WindowsAppSdk_Issue_3843_Workaround_MsixContent" AfterTargets="AddMicrosoftWindowsAppSDKPayloadFiles">
+    <ItemGroup>
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\DeploymentAgent.exe" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\Microsoft.Web.WebView2.Core.dll" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\Microsoft.Web.WebView2.Core.winmd" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\Microsoft.Web.WebView2.Core.xml" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\Microsoft.Web.WebView2.WinForms.xml" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\Microsoft.Web.WebView2.Wpf.xml" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\PushNotificationsLongRunningTask.ProxyStub.dll" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\RestartAgent.exe" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\createdump.exe" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\WindowsAppRuntime.png" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\af-ZA\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\af-ZA\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\am-ET\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\as-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bn-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ca-Es-VALENCIA\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fil-PH\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ga-IE\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gd-gb\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gu-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hy-AM\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\km-KH\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kn-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kok-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lb-LU\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lo-LA\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mi-NZ\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mk-MK\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ml-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mr-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mt-MT\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ne-NP\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\or-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pa-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\quz-PE\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Cyrl-BA\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ta-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\te-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\tt-RU\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ug-CN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ur-PK\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\uz-Latn-UZ\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\am-ET\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\as-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bn-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ca-Es-VALENCIA\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fil-PH\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ga-IE\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gd-gb\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gu-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hy-AM\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\km-KH\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kn-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kok-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lb-LU\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lo-LA\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mi-NZ\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mk-MK\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ml-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mr-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\mt-MT\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ne-NP\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\or-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pa-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\quz-PE\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Cyrl-BA\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ta-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\te-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\tt-RU\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ug-CN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ur-PK\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\uz-Latn-UZ\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ar-SA\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ar-SA\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\az-Latn-AZ\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\az-Latn-AZ\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bg-BG\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bg-BG\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bs-Latn-BA\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\bs-Latn-BA\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ca-ES\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ca-ES\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\cs-CZ\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\cs-CZ\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\cy-GB\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\cy-GB\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\da-DK\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\da-DK\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\de-DE\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\de-DE\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\el-GR\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\el-GR\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\en-GB\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\en-GB\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\es-ES\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\es-ES\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\es-MX\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\es-MX\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\et-EE\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\et-EE\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\eu-ES\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\eu-ES\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fa-IR\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fa-IR\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fi-FI\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fi-FI\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fr-CA\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fr-CA\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fr-FR\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\fr-FR\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gl-ES\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\gl-ES\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\he-IL\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\he-IL\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hi-IN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hi-IN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hr-HR\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hr-HR\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hu-HU\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\hu-HU\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\id-ID\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\id-ID\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\is-IS\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\is-IS\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\it-IT\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\it-IT\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ja-JP\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ja-JP\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ka-GE\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ka-GE\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kk-KZ\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\kk-KZ\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ko-KR\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ko-KR\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lt-LT\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lt-LT\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lv-LV\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\lv-LV\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ms-MY\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ms-MY\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nb-NO\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nb-NO\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nl-NL\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nl-NL\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nn-NO\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\nn-NO\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pl-PL\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pl-PL\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pt-BR\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pt-BR\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pt-PT\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\pt-PT\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ro-RO\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ro-RO\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ru-RU\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\ru-RU\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sk-SK\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sk-SK\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sl-SI\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sl-SI\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sq-AL\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sq-AL\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Cyrl-RS\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Cyrl-RS\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Latn-RS\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sr-Latn-RS\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sv-SE\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\sv-SE\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\th-TH\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\th-TH\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\tr-TR\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\tr-TR\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\uk-UA\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\uk-UA\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\vi-VN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\vi-VN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\zh-CN\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\zh-CN\Microsoft.UI.Xaml.Phone.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\zh-TW\Microsoft.ui.xaml.dll.mui" />
+      <None Remove="$(MicrosoftWindowsAppSDKMsixContent)\zh-TW\Microsoft.UI.Xaml.Phone.dll.mui" />
+    </ItemGroup>
+  </Target>
   <Target Name="Rust Build" BeforeTargets="Compile">
-	 <Exec Command="cargo b --release" WorkingDirectory="..\pm_affinityservice" />
+    <Exec Command="cargo b --release" WorkingDirectory="..\pm_affinityservice" />
   </Target>
   <ItemGroup>
     <ProjectReference Include="..\PPM.Unsafe\PPM.Unsafe.csproj" />
   </ItemGroup>
-	<ItemGroup>
-		<UpToDateCheckInput Include="..\pm_affinityservice" />
-	</ItemGroup>
-	<ItemGroup>
-	  <PRIResource Update="Strings\en-us\PPM.resw">
-	    <Generator>ReswPlusGenerator</Generator>
-	  </PRIResource>
-	</ItemGroup>
-	<ItemGroup>
-	  <PRIResource Remove="bin\**" />
-	</ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Include="..\pm_affinityservice" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Update="Strings\en-us\PPM.resw">
+      <Generator>ReswPlusGenerator</Generator>
+    </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Remove="bin\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <XliffResource Include="MultilingualResources\PPM.Application.uk-UA.xlf" />
+  </ItemGroup>
 </Project>
