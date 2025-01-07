@@ -17,5 +17,8 @@ namespace Affinity_manager.Pages
         {
             get;
         }
+
+        public static string OKLabel => Strings.PPM.OK;
+        public static string CancelLabel => Strings.PPM.Cancel;
     }
 }

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ApplicationNameColumn.Text" xml:space="preserve">
+    <value>Назва Застосунку</value>
+  </data>
+  <data name="AddNewTextBox.PlaceholderText" xml:space="preserve">
+    <value>Введіт ім'я застосунку (наприклад, AlanWake2.exe)</value>
+  </data>
+  <data name="AddNewButton.Content" xml:space="preserve">
+    <value>Додати</value>
+  </data>
+  <data name="CpuAffinityColumn.Text" xml:space="preserve">
+    <value>Відповідність ЦП</value>
+  </data>
+  <data name="CpuPriorityColumn.Text" xml:space="preserve">
+    <value>Пріорітет повідомлень</value>
+  </data>
+  <data name="IoPriorityColumn.Text" xml:space="preserve">
+    <value>Пріорітет В/В</value>
+  </data>
+  <data name="ApplyButton.Content" xml:space="preserve">
+    <value>Застосувати</value>
+  </data>
+  <data name="CancelButton.Content" xml:space="preserve">
+    <value>Відмінити</value>
+  </data>
+  <data name="AffinitySelectorDialog.Title" xml:space="preserve">
+    <value>На яких процесорах ви бажаєте запускати цей застосунок?</value>
+  </data>
+  <data name="AllCpusCheckBox.Content" xml:space="preserve">
+    <value>Усі ЦП (за замовчуванням)</value>
+  </data>
+  <data name="CpuPriorityNameColumnDefinition.Width" xml:space="preserve">
+    <value>171</value>
+  </data>
+  <data name="IoPriorityNameColumnDefinition.Width" xml:space="preserve">
+    <value>140</value>
+  </data>
+</root>

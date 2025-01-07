@@ -13,7 +13,7 @@
         <UniformGridLayout x:Name="UniformGridLayout" MinRowSpacing="8" MinColumnSpacing="8"/>
     </UserControl.Resources>
     <Grid Name="mainGrid" RowDefinitions="Auto, *" ColumnDefinitions="*" RowSpacing="16">
-        <CheckBox Grid.Row="0" IsChecked="{x:Bind ProcessAffinity.AllCpus, Mode=TwoWay}">All CPUs (default)</CheckBox>
+        <CheckBox x:Uid="AllCpusCheckBox" Grid.Row="0" IsChecked="{x:Bind ProcessAffinity.AllCpus, Mode=TwoWay}"/>
         <ScrollViewer x:Name="scrollViewer" Grid.Row="1">
             <ItemsRepeater Layout="{StaticResource UniformGridLayout}" ItemsSource="{x:Bind ProcessAffinity.LogicalCpus, Mode=OneWay}" >
                 <ItemsRepeater.ItemTemplate>
