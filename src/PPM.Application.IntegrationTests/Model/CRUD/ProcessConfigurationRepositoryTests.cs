@@ -1,4 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Threading.Tasks;
 using Affinity_manager.Model;
 using Affinity_manager.Model.CRUD;
 using Microsoft.Win32;
@@ -48,18 +50,18 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
         [Test]
         public void CleanWithoutServiceRestart_ThenAllRelatedItemsFromRegistryAreRemoved()
         {
-            ProcessConfiguration configuration = new(TestContext.CurrentContext.Random.GetString())
+            ProcessConfiguration configuration = new(TestContext.CurrentContext.Random.GetString() + ".exe")
             {
                 IoPriority = IoPriority.High
             };
 
-            ProcessConfiguration configuration1 = new(TestContext.CurrentContext.Random.GetString())
+            ProcessConfiguration configuration1 = new(TestContext.CurrentContext.Random.GetString() + ".exe")
             {
                 CpuPriority = CpuPriorityClass.High,
                 CpuAffinityMask = 1234
             };
 
-            ProcessConfiguration configuration2 = new(TestContext.CurrentContext.Random.GetString())
+            ProcessConfiguration configuration2 = new(TestContext.CurrentContext.Random.GetString() + ".exe")
             {
                 CpuAffinityMask = 1U
             };
@@ -70,6 +72,18 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
             repository.CleanWithoutServiceRestart();
 
             Assert.That(repository.Get(), Is.Empty);
+        }
+
+        [Test]
+        public void SaveAndRestartServiceAsync_ThrowsIfInvalid()
+        {
+            ProcessConfiguration configuration = new(TestContext.CurrentContext.Random.GetString())
+            {
+                CpuAffinityMask = 1U
+            };
+
+            ProcessConfigurationsRepository repository = new();
+            Assert.ThrowsAsync<ValidationException>(() => repository.SaveAndRestartServiceAsync([configuration]));
         }
     }
 }

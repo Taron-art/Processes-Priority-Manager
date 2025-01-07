@@ -63,4 +63,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>Відмінити</value>
   </data>
+  <data name="UnknownErrorMessage" xml:space="preserve">
+    <value>Невідома помилка.</value>
+  </data>
 </root>

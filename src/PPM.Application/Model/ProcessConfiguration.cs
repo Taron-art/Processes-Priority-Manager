@@ -1,8 +1,9 @@
+using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Affinity_manager.Model
 {
-    public sealed partial class ProcessConfiguration : ObservableObject
+    public sealed partial class ProcessConfiguration : ObservableValidator
     {
         public const ulong AffinityDefaultValue = ulong.MaxValue;
         public const CpuPriorityClass CpuPriorityDefaultValue = CpuPriorityClass.Normal;
@@ -21,8 +22,10 @@ namespace Affinity_manager.Model
         {
             Name = name;
             IoPriority = IoPriority.Normal;
+            ValidateAllProperties();
         }
 
+        [FileExtensions(Extensions = ".exe", ErrorMessageResourceType = typeof(Strings.Validation), ErrorMessageResourceName = nameof(Strings.Validation.ProcessNameMustHaveExeExtension))]
         public string Name { get; }
 
 

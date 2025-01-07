@@ -29,7 +29,7 @@ namespace PPM.Application.Tests.ViewWrappers
 
             string displayName = wrapper.DisplayName;
 
-            Assert.That(displayName, Is.EqualTo("Normal"));
+            Assert.That(displayName, Is.EqualTo(Affinity_manager.Strings.PPM.GetString("IoPriority/Normal")));
         }
 
         [Test]

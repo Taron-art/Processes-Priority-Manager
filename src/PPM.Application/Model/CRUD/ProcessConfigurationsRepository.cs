@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 using Affinity_manager.Exceptions;
@@ -23,6 +25,9 @@ namespace Affinity_manager.Model.CRUD
 
         public async Task SaveAndRestartServiceAsync(IEnumerable<ProcessConfiguration> items, Func<Task>? readyToGetCallback = null)
         {
+            ProcessConfiguration[] itemsArray = items.ToArray();
+            ThrowIfHaveInvalidNonEmptyItems(itemsArray);
+
             await Task.Run(() => _processAffinitiesManager.SaveToRegistry(items));
 
             // We want UI to be responsive, so we restart the service in the background while UI performing a callback.
@@ -48,6 +53,9 @@ namespace Affinity_manager.Model.CRUD
 
         private void Save(IEnumerable<ProcessConfiguration> items, bool restartService)
         {
+            ProcessConfiguration[] itemsArray = items.ToArray();
+            ThrowIfHaveInvalidNonEmptyItems(itemsArray);
+
             _processAffinitiesManager.SaveToRegistry(items);
             if (restartService)
             {
@@ -72,6 +80,14 @@ namespace Affinity_manager.Model.CRUD
             catch (InvalidOperationException e)
             {
                 ServiceNotInstalledException.ThrowFromInvalidOperationException(e, ServiceName);
+            }
+        }
+
+        private static void ThrowIfHaveInvalidNonEmptyItems(ProcessConfiguration[] itemsArray)
+        {
+            if (itemsArray.Any((item) => item.HasErrors && !item.IsEmpty)) // We are passing empty values since they won't introduce invalid items.
+            {
+                throw new ValidationException("At least one of the items is invalid.");
             }
         }
     }

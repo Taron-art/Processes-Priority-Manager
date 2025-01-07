@@ -353,4 +353,9 @@
   <ItemGroup>
     <XliffResource Include="MultilingualResources\PPM.Application.uk-UA.xlf" />
   </ItemGroup>
+  <ItemGroup>
+    <PRIResource Update="Strings\en-us\Validation.resw">
+      <Generator>ReswPlusAdvancedGenerator</Generator>
+    </PRIResource>
+  </ItemGroup>
 </Project>
