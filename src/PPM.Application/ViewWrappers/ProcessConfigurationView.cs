@@ -35,6 +35,8 @@ namespace Affinity_manager.ViewWrappers
 
         public IReadOnlyList<EnumViewWrapper<IoPriority>> IoPriorities => OptionsProvider.IoPriorities;
 
+        public IReadOnlyList<EnumViewWrapper<PagePriority>> MemoryPriorities => OptionsProvider.MemoryPriorities;
+
         public EnumViewWrapper<IoPriority> IoPriority
         {
             get
@@ -59,6 +61,52 @@ namespace Affinity_manager.ViewWrappers
             }
         }
 
+        public EnumViewWrapper<PagePriority> MemoryPriority
+        {
+            get
+            {
+                return OptionsProvider.MemoryPriorities.First(wrapper => wrapper.Value == ProcessConfiguration.MemoryPriority);
+            }
+            set
+            {
+                ProcessConfiguration.MemoryPriority = value.Value;
+            }
+        }
+
+        public bool? MemoryAndIoPrioritiesAreLowest
+        {
+            get
+            {
+                if (ProcessConfiguration.MemoryPriority == PagePriority.VeryLow && ProcessConfiguration.IoPriority == Model.IoPriority.VeryLow)
+                {
+                    return true;
+                }
+                else if (ProcessConfiguration.MemoryPriority == PagePriority.VeryLow || ProcessConfiguration.IoPriority == Model.IoPriority.VeryLow)
+                {
+                    return null; // This is treated by UI as "in the middle
+                }
+
+                return false;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+
+                if (value.Value)
+                {
+                    ProcessConfiguration.MemoryPriority = PagePriority.VeryLow;
+                    ProcessConfiguration.IoPriority = Model.IoPriority.VeryLow;
+                }
+                else
+                {
+                    ProcessConfiguration.MemoryPriority = ProcessConfiguration.MemoryPriorityDefaultValue;
+                    ProcessConfiguration.IoPriority = ProcessConfiguration.IoPriorityDefaultValue;
+                }
+            }
+        }
         public bool IsDirty
         {
             get
@@ -95,9 +143,14 @@ namespace Affinity_manager.ViewWrappers
                     break;
                 case nameof(ProcessConfiguration.IoPriority):
                     OnPropertyChanged(nameof(IoPriority));
+                    OnPropertyChanged(nameof(MemoryAndIoPrioritiesAreLowest));
                     break;
                 case nameof(ProcessConfiguration.CpuAffinityMask):
                     OnPropertyChanged(nameof(CpuAffinityMask));
+                    break;
+                case nameof(ProcessConfiguration.MemoryPriority):
+                    OnPropertyChanged(nameof(MemoryPriority));
+                    OnPropertyChanged(nameof(MemoryAndIoPrioritiesAreLowest));
                     break;
             }
         }

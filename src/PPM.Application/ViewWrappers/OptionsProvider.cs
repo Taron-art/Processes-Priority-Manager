@@ -12,6 +12,8 @@ namespace Affinity_manager.ViewWrappers
     {
         private IReadOnlyList<EnumViewWrapper<IoPriority>>? _ioPriorities;
         private IReadOnlyList<EnumViewWrapper<CpuPriorityClass>>? _cpuPriorities;
+        private List<EnumViewWrapper<PagePriority>>? _memoryPriorities;
+
         private uint? _nuberOfLogicalCpus;
 
         public IReadOnlyList<EnumViewWrapper<CpuPriorityClass>> CpuPriorities
@@ -27,6 +29,14 @@ namespace Affinity_manager.ViewWrappers
             get
             {
                 return _ioPriorities ??= CreateViews<IoPriority>();
+            }
+        }
+
+        public IReadOnlyList<EnumViewWrapper<PagePriority>> MemoryPriorities
+        {
+            get
+            {
+                return _memoryPriorities ??= CreateViews<PagePriority>();
             }
         }
 
@@ -50,7 +60,7 @@ namespace Affinity_manager.ViewWrappers
             }
         }
 
-        private List<EnumViewWrapper<T>> CreateViews<T>()
+        private static List<EnumViewWrapper<T>> CreateViews<T>()
             where T : struct, Enum
         {
             return Enum.GetValues<T>().OrderBy(GetOrder<T>).Select((enumValue) => new EnumViewWrapper<T>(enumValue)).ToList();

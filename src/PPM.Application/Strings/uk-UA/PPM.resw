@@ -21,9 +21,6 @@
   <data name="CpuPriorityClass.High" xml:space="preserve">
     <value>Високий</value>
   </data>
-  <data name="IoPriority.High" xml:space="preserve">
-    <value>Високий</value>
-  </data>
   <data name="CpuPriorityClass.Low" xml:space="preserve">
     <value>Низький</value>
   </data>
@@ -31,10 +28,7 @@
     <value>Низький</value>
   </data>
   <data name="IoPriority.VeryLow" xml:space="preserve">
-    <value>Дуже низький</value>
-  </data>
-  <data name="IoPriority.Critical" xml:space="preserve">
-    <value>Найвищий</value>
+    <value>Найнижчий</value>
   </data>
   <data name="CpuPriorityClass.Normal" xml:space="preserve">
     <value>Середній</value>
@@ -65,5 +59,20 @@
   </data>
   <data name="UnknownErrorMessage" xml:space="preserve">
     <value>Невідома помилка.</value>
+  </data>
+  <data name="PagePriority.VeryLow" xml:space="preserve">
+    <value>Найнижчий</value>
+  </data>
+  <data name="PagePriority.Low" xml:space="preserve">
+    <value>Низький</value>
+  </data>
+  <data name="PagePriority.Medium" xml:space="preserve">
+    <value>Середній</value>
+  </data>
+  <data name="PagePriority.BelowNormal" xml:space="preserve">
+    <value>Нище нормального</value>
+  </data>
+  <data name="PagePriority.Normal" xml:space="preserve">
+    <value>Нормальний</value>
   </data>
 </root>

@@ -19,7 +19,7 @@ namespace Affinity_manager.Model
         {
             EqualityComparer = equalityComparer ?? EqualityComparer<T>.Default;
 
-            if (items.Distinct(EqualityComparer).Count() != Count)
+            if (this.Distinct(EqualityComparer).Count() != Count)
             {
                 throw new ArgumentException("Collection contains non-unique elements", nameof(items));
             }

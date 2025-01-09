@@ -29,8 +29,16 @@ namespace PPM.Application.Tests.ViewWrappers
         [SetUICulture("en-US")]
         public void IOPriorities_CorrectList()
         {
-            Assert.That(_optionsProvider.IoPriorities, Has.Count.EqualTo(5));
-            Assert.That(_optionsProvider.IoPriorities.Select(wrapper => wrapper.Value), Is.EqualTo(new IoPriority[] { IoPriority.VeryLow, IoPriority.Low, IoPriority.Normal, IoPriority.High, IoPriority.Critical }).AsCollection);
+            Assert.That(_optionsProvider.IoPriorities, Has.Count.EqualTo(3));
+            Assert.That(_optionsProvider.IoPriorities.Select(wrapper => wrapper.Value), Is.EqualTo(new IoPriority[] { IoPriority.VeryLow, IoPriority.Low, IoPriority.Normal }).AsCollection);
+        }
+
+        [Test]
+        [SetUICulture("en-US")]
+        public void MemoryPriorities_CorrectList()
+        {
+            Assert.That(_optionsProvider.MemoryPriorities, Has.Count.EqualTo(5));
+            Assert.That(_optionsProvider.MemoryPriorities.Select(wrapper => wrapper.Value), Is.EqualTo(new PagePriority[] { PagePriority.VeryLow, PagePriority.Low, PagePriority.Medium, PagePriority.BelowNormal, PagePriority.Normal }).AsCollection);
         }
 
         [Test]

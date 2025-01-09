@@ -11,15 +11,12 @@ namespace Affinity_manager.Model.CRUD
         private const string PerfOptionsSubKeyName = "PerfOptions";
         private const string CpuPriorityClassName = "CpuPriorityClass";
         private const string IoPriorityName = "IoPriority";
+        private const string PagePriorityName = "PagePriority";
 
         public List<ProcessConfiguration> LoadFromRegistry()
         {
-            using RegistryKey? ifeoSubKey = Registry.LocalMachine.OpenSubKey(ImageFileExecutionOptionsRegistryPath);
-            if (ifeoSubKey == null)
-            {
-                throw new InvalidOperationException("Image File Execution Options not found!");
-            }
-
+            using RegistryKey? ifeoSubKey = Registry.LocalMachine.OpenSubKey(ImageFileExecutionOptionsRegistryPath)
+                ?? throw new InvalidOperationException("Image File Execution Options not found!");
             string[] subKeys = ifeoSubKey.GetSubKeyNames();
             List<ProcessConfiguration> list = new(subKeys.Length);
             using ImageOptionsFiller imageOptionsFiller = new();
@@ -33,11 +30,13 @@ namespace Affinity_manager.Model.CRUD
                     ProcessConfiguration processAffinity = new(subKeyName);
                     object? cpuPriorityClass = perfOptions.GetValue(CpuPriorityClassName);
                     object? ioPriority = perfOptions.GetValue(IoPriorityName);
+                    object? pagePriorty = perfOptions.GetValue(PagePriorityName);
 
                     bool read = false;
 
-                    processAffinity.CpuPriority = GetEnumValue(cpuPriorityClass, CpuPriorityClass.Normal, ref read);
-                    processAffinity.IoPriority = GetEnumValue(ioPriority, IoPriority.Normal, ref read);
+                    processAffinity.CpuPriority = GetEnumValue(cpuPriorityClass, ProcessConfiguration.CpuPriorityDefaultValue, ref read);
+                    processAffinity.IoPriority = GetEnumValue(ioPriority, ProcessConfiguration.IoPriorityDefaultValue, ref read);
+                    processAffinity.MemoryPriority = GetEnumValue(pagePriorty, ProcessConfiguration.MemoryPriorityDefaultValue, ref read);
 
                     if (!read)
                     {
@@ -57,11 +56,8 @@ namespace Affinity_manager.Model.CRUD
 
         public void SaveToRegistry(IEnumerable<ProcessConfiguration> items)
         {
-            using RegistryKey? ifeoSubKey = Registry.LocalMachine.OpenSubKey(ImageFileExecutionOptionsRegistryPath, true);
-            if (ifeoSubKey == null)
-            {
-                throw new InvalidOperationException("Image File Execution Options not found!");
-            }
+            using RegistryKey? ifeoSubKey = Registry.LocalMachine.OpenSubKey(ImageFileExecutionOptionsRegistryPath, true)
+                ?? throw new InvalidOperationException("Image File Execution Options not found!");
             using ImageOptionsFiller imageOptionsFiller = new();
             foreach (ProcessConfiguration item in items)
             {
@@ -110,6 +106,7 @@ namespace Affinity_manager.Model.CRUD
             {
                 AddOrRemoveValue(perfOptionsKey, CpuPriorityClassName, item.CpuPriority, ProcessConfiguration.CpuPriorityDefaultValue);
                 AddOrRemoveValue(perfOptionsKey, IoPriorityName, item.IoPriority, ProcessConfiguration.IoPriorityDefaultValue);
+                AddOrRemoveValue(perfOptionsKey, PagePriorityName, item.MemoryPriority, ProcessConfiguration.MemoryPriorityDefaultValue);
                 bool deletePerfSubkey = perfOptionsKey.SubKeyCount == 0 && perfOptionsKey.ValueCount == 0;
                 if (deletePerfSubkey)
                 {
@@ -148,7 +145,9 @@ namespace Affinity_manager.Model.CRUD
 
         private static bool IfeoOptionsAreEmpty(ProcessConfiguration config)
         {
-            return config.CpuPriority == ProcessConfiguration.CpuPriorityDefaultValue && config.IoPriority == ProcessConfiguration.IoPriorityDefaultValue;
+            return config.CpuPriority == ProcessConfiguration.CpuPriorityDefaultValue
+                && config.IoPriority == ProcessConfiguration.IoPriorityDefaultValue
+                && config.MemoryPriority == ProcessConfiguration.MemoryPriorityDefaultValue;
         }
     }
 }
