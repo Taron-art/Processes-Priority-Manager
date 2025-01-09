@@ -24,6 +24,7 @@ namespace PPM.Application.Tests.Model
             Assert.That(config.CpuAffinityMask, Is.EqualTo(ProcessConfiguration.AffinityDefaultValue));
             Assert.That(config.CpuPriority, Is.EqualTo(ProcessConfiguration.CpuPriorityDefaultValue));
             Assert.That(config.IoPriority, Is.EqualTo(ProcessConfiguration.IoPriorityDefaultValue));
+            Assert.That(config.MemoryPriority, Is.EqualTo(ProcessConfiguration.MemoryPriorityDefaultValue));
         }
 
         [Test]
@@ -36,14 +37,15 @@ namespace PPM.Application.Tests.Model
             bool isEmpty = config.IsEmpty;
 
             // Assert
-            ClassicAssert.IsTrue(isEmpty);
+            Assert.That(isEmpty, Is.True);
         }
 
-        public static IEnumerable<TestCaseData> SetActions()
+        private static IEnumerable<TestCaseData> SetActions()
         {
             yield return new TestCaseData<Action<ProcessConfiguration>>((config) => config.CpuAffinityMask = 0).SetArgDisplayNames(nameof(ProcessConfiguration.CpuAffinityMask));
             yield return new TestCaseData<Action<ProcessConfiguration>>((config) => config.CpuPriority = CpuPriorityClass.High).SetArgDisplayNames(nameof(ProcessConfiguration.CpuPriority));
-            yield return new TestCaseData<Action<ProcessConfiguration>>((config) => config.IoPriority = IoPriority.Critical).SetArgDisplayNames(nameof(ProcessConfiguration.IoPriority));
+            yield return new TestCaseData<Action<ProcessConfiguration>>((config) => config.IoPriority = IoPriority.VeryLow).SetArgDisplayNames(nameof(ProcessConfiguration.IoPriority));
+            yield return new TestCaseData<Action<ProcessConfiguration>>((config) => config.MemoryPriority = PagePriority.Low).SetArgDisplayNames(nameof(ProcessConfiguration.MemoryPriority));
         }
 
         [TestCaseSource(nameof(SetActions))]
@@ -68,7 +70,7 @@ namespace PPM.Application.Tests.Model
             {
                 CpuAffinityMask = 0,
                 CpuPriority = CpuPriorityClass.High,
-                IoPriority = IoPriority.Critical
+                IoPriority = IoPriority.Low
             };
 
             // Act
@@ -78,6 +80,7 @@ namespace PPM.Application.Tests.Model
             Assert.That(config.CpuAffinityMask, Is.EqualTo(ProcessConfiguration.AffinityDefaultValue));
             Assert.That(config.CpuPriority, Is.EqualTo(ProcessConfiguration.CpuPriorityDefaultValue));
             Assert.That(config.IoPriority, Is.EqualTo(ProcessConfiguration.IoPriorityDefaultValue));
+            Assert.That(config.MemoryPriority, Is.EqualTo(ProcessConfiguration.MemoryPriorityDefaultValue));
             Assert.That(config.IsEmpty, Is.True);
         }
 
@@ -117,10 +120,24 @@ namespace PPM.Application.Tests.Model
             using FluentAssertions.Events.IMonitor<ProcessConfiguration> monitoredConfig = config.Monitor();
 
             // Act
-            config.IoPriority = IoPriority.Critical;
+            config.IoPriority = IoPriority.Low;
 
             // Assert
             monitoredConfig.Should().RaisePropertyChangeFor(c => c.IoPriority);
+        }
+
+        [Test]
+        public void PropertyChanged_ShouldBeRaised_WhenMemoryPriorityChanges()
+        {
+            // Arrange
+            ProcessConfiguration config = new("TestProcess");
+            using FluentAssertions.Events.IMonitor<ProcessConfiguration> monitoredConfig = config.Monitor();
+
+            // Act
+            config.MemoryPriority = PagePriority.VeryLow;
+
+            // Assert
+            monitoredConfig.Should().RaisePropertyChangeFor(c => c.MemoryPriority);
         }
     }
 }

@@ -25,10 +25,10 @@
     <value>Відповідність ЦП</value>
   </data>
   <data name="CpuPriorityColumn.Text" xml:space="preserve">
-    <value>Пріорітет повідомлень</value>
+    <value>Пріоритет повідомлень</value>
   </data>
   <data name="IoPriorityColumn.Text" xml:space="preserve">
-    <value>Пріорітет В/В</value>
+    <value>Пріоритет Вх/Вих та ОЗП</value>
   </data>
   <data name="ApplyButton.Content" xml:space="preserve">
     <value>Застосувати</value>
@@ -46,6 +46,23 @@
     <value>171</value>
   </data>
   <data name="IoPriorityNameColumnDefinition.Width" xml:space="preserve">
-    <value>140</value>
+    <value>120</value>
+  </data>
+  <data name="IoPriorityHeader.Header" xml:space="preserve">
+    <value>Пріоритет Вх/Вих</value>
+  </data>
+  <data name="MemoryPriorityHeader.Header" xml:space="preserve">
+    <value>Пріоритет ОЗП</value>
+  </data>
+  <data name="IoPriorityCombobox.Width" xml:space="preserve">
+    <value>145</value>
+    <comment>Ideally the same as MemoryPriorityCombobox</comment>
+  </data>
+  <data name="MemoryPriorityCombobox.Width" xml:space="preserve">
+    <value>176</value>
+    <comment>Ideally the same as IoPriorityCombobox</comment>
+  </data>
+  <data name="VeryLowCheckBox.Content" xml:space="preserve">
+    <value>Найнижчий</value>
   </data>
 </root>

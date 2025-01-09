@@ -148,9 +148,26 @@
     <value>150</value>
   </data>
   <data name="IoPriorityColumn.Text" xml:space="preserve">
+    <value>IO and Memory Priority</value>
+  </data>
+  <data name="IoPriorityCombobox.Width" xml:space="preserve">
+    <value>140</value>
+    <comment>Ideally the same as MemoryPriorityCombobox</comment>
+  </data>
+  <data name="MemoryPriorityCombobox.Width" xml:space="preserve">
+    <value>140</value>
+    <comment>Ideally the same as IoPriorityCombobox</comment>
+  </data>
+  <data name="IoPriorityHeader.Header" xml:space="preserve">
     <value>IO Priority</value>
   </data>
   <data name="IoPriorityNameColumnDefinition.Width" xml:space="preserve">
-    <value>125</value>
+    <value>110</value>
+  </data>
+  <data name="MemoryPriorityHeader.Header" xml:space="preserve">
+    <value>Memory Priority</value>
+  </data>
+  <data name="VeryLowCheckBox.Content" xml:space="preserve">
+    <value>Very Low</value>
   </data>
 </root>

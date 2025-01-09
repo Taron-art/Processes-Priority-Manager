@@ -12,22 +12,16 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Affinity_manager.ViewModels
 {
-    public partial class MainPageViewModel : ObservableObject, IMainPageViewModel
+    public partial class MainPageViewModel(IProcessConfigurationsRepository repository, IProcessConfigurationViewFactory viewFactory)
+        : ObservableObject, IMainPageViewModel
     {
         [ObservableProperty]
         private string? _newProcessName;
 
-        private BindingCollectionWithUniqunessCheck<ProcessConfigurationView> _processesConfigurations;
+        private BindingCollectionWithUniqunessCheck<ProcessConfigurationView> _processesConfigurations = viewFactory.CreateCollection([]);
 
         [ObservableProperty]
         private ProcessConfigurationView? _selectedView;
-
-        public MainPageViewModel(IProcessConfigurationsRepository repository, IProcessConfigurationViewFactory viewFactory)
-        {
-            Repository = repository;
-            ViewFactory = viewFactory;
-            _processesConfigurations = viewFactory.CreateCollection(Array.Empty<ProcessConfiguration>());
-        }
 
         public IReadOnlyObservableCollection<ProcessConfigurationView> ProcessesConfigurations
         {
@@ -47,9 +41,9 @@ namespace Affinity_manager.ViewModels
             }
         }
 
-        private IProcessConfigurationsRepository Repository { get; }
+        private IProcessConfigurationsRepository Repository { get; } = repository;
 
-        public IProcessConfigurationViewFactory ViewFactory { get; }
+        public IProcessConfigurationViewFactory ViewFactory { get; } = viewFactory;
 
         [RelayCommand]
         public void Add()

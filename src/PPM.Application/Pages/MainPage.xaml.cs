@@ -1,6 +1,7 @@
 using System;
 using Affinity_manager.ViewModels;
 using Affinity_manager.ViewWrappers;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
@@ -49,14 +50,14 @@ namespace Affinity_manager.Pages
             }
         }
 
-        private async void affinityButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private async void AffinityButton_Click(object sender, RoutedEventArgs e)
         {
             AffinitySelectorDialog dialog = new AffinitySelectorDialog((AffinityView)((Button)sender).DataContext);
             dialog.XamlRoot = XamlRoot;
             await dialog.ShowAsync();
         }
 
-        private async void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (!ViewModel!.IsInterfaceVisible)
             {
@@ -73,7 +74,7 @@ namespace Affinity_manager.Pages
             }
         }
 
-        private async void Page_Loading(Microsoft.UI.Xaml.FrameworkElement sender, object args)
+        private async void Page_Loading(FrameworkElement sender, object args)
         {
             if (ViewModel == null)
             {
@@ -96,6 +97,37 @@ namespace Affinity_manager.Pages
                 XamlRoot = XamlRoot
             };
             await messageDialog.ShowAsync();
+        }
+
+        /// <summary>
+        /// This event handler is used to prevent Expander to expand on click everywhere + selects the element on ListView.
+        /// </summary>
+        private void Control_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            ProcessConfigurationView? selectedItem = FindConfigurationView(sender);
+            if (selectedItem != null)
+            {
+                ViewModel!.SelectedView = selectedItem;
+            }
+
+            e.Handled = true;
+        }
+
+
+        private ProcessConfigurationView? FindConfigurationView(object control)
+        {
+            if (control is FrameworkElement element)
+            {
+                ProcessConfigurationView? selectedItem = element.DataContext as ProcessConfigurationView;
+                if (selectedItem != null)
+                {
+                    return selectedItem;
+                }
+
+                return FindConfigurationView(element.Parent);
+            }
+
+            return null;
         }
     }
 }

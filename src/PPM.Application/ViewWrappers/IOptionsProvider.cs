@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Affinity_manager.Model;
 
 namespace Affinity_manager.ViewWrappers
@@ -7,6 +7,8 @@ namespace Affinity_manager.ViewWrappers
     {
         IReadOnlyList<EnumViewWrapper<CpuPriorityClass>> CpuPriorities { get; }
         IReadOnlyList<EnumViewWrapper<IoPriority>> IoPriorities { get; }
+        IReadOnlyList<EnumViewWrapper<PagePriority>> MemoryPriorities { get; }
+
         uint NumberOfLogicalCpus { get; }
     }
 }

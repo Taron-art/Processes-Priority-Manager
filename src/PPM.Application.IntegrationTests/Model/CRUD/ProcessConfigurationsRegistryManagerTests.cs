@@ -17,6 +17,7 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
         private const string PerfOptionsSubKey = "PerfOptions";
         private const string CpuPriorityClassValueName = "CpuPriorityClass";
         private const string IoPriorityValueName = "IoPriority";
+        private const string PagePriorityValueName = "PagePriority";
         private string _ifeoRegistryBackupPath;
         private string? _appRegistryBackupPath;
 
@@ -56,19 +57,19 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
             ProcessConfigurationsRegistryManager manager = new();
             string imageName = TestContext.CurrentContext.Test.Name;
             string testKeyPath = Path.Combine(IfeoRegistryKeyPath, imageName);
-            string testPerfOptionsPath = Path.Combine(testKeyPath, PerfOptionsSubKey);
 
             using (RegistryKey testKey = Registry.LocalMachine.CreateSubKey(testKeyPath))
             {
                 using RegistryKey perfOptionsKey = testKey.CreateSubKey(PerfOptionsSubKey);
                 perfOptionsKey.SetValue(CpuPriorityClassValueName, (int)CpuPriorityClass.High, RegistryValueKind.DWord);
-                perfOptionsKey.SetValue(IoPriorityValueName, (int)IoPriority.Critical, RegistryValueKind.DWord);
+                perfOptionsKey.SetValue(IoPriorityValueName, (int)IoPriority.Low, RegistryValueKind.DWord);
+                perfOptionsKey.SetValue(PagePriorityValueName, (int)PagePriority.BelowNormal, RegistryValueKind.DWord);
             }
 
             try
             {
                 List<ProcessConfiguration> configurations = manager.LoadFromRegistry();
-                AssertProcessConfigurationPerformance(imageName, configurations, (CpuPriorityClass.High, IoPriority.Critical));
+                AssertProcessConfigurationPerformance(imageName, configurations, (CpuPriorityClass.High, IoPriority.Low, PagePriority.BelowNormal));
             }
             finally
             {
@@ -83,19 +84,18 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
             ProcessConfigurationsRegistryManager manager = new();
             string imageName = TestContext.CurrentContext.Test.Name;
             string testKeyPath = Path.Combine(IfeoRegistryKeyPath, imageName);
-            string testPerfOptionsPath = Path.Combine(testKeyPath, PerfOptionsSubKey);
 
             using (RegistryKey testKey = Registry.LocalMachine.CreateSubKey(testKeyPath))
             {
                 using RegistryKey perfOptionsKey = testKey.CreateSubKey(PerfOptionsSubKey);
                 perfOptionsKey.SetValue(CpuPriorityClassValueName, "InvalidType", RegistryValueKind.String);
-                perfOptionsKey.SetValue(IoPriorityValueName, (int)IoPriority.Critical, RegistryValueKind.DWord);
+                perfOptionsKey.SetValue(IoPriorityValueName, (int)IoPriority.Low, RegistryValueKind.DWord);
             }
 
             try
             {
                 List<ProcessConfiguration> configurations = manager.LoadFromRegistry();
-                AssertProcessConfigurationPerformance(imageName, configurations, (CpuPriorityClass.Normal, IoPriority.Critical));
+                AssertProcessConfigurationPerformance(imageName, configurations, (CpuPriorityClass.Normal, IoPriority.Low, PagePriority.Normal));
             }
             finally
             {
@@ -110,7 +110,6 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
             ProcessConfigurationsRegistryManager manager = new();
             string imageName = TestContext.CurrentContext.Test.Name;
             string testKeyPath = Path.Combine(IfeoRegistryKeyPath, imageName);
-            string testPerfOptionsPath = Path.Combine(testKeyPath, PerfOptionsSubKey);
 
             using (RegistryKey testKey = Registry.LocalMachine.CreateSubKey(testKeyPath))
             {
@@ -119,11 +118,36 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
                 perfOptionsKey.SetValue(IoPriorityValueName, "1", RegistryValueKind.String);
             }
 
+            try
+            {
+                List<ProcessConfiguration> configurations = manager.LoadFromRegistry();
+                AssertProcessConfigurationPerformance(imageName, configurations, (CpuPriorityClass.Low, IoPriority.Normal, PagePriority.Normal));
+            }
+            finally
+            {
+                Registry.LocalMachine.DeleteSubKeyTree(testKeyPath);
+            }
+        }
+
+        [Test]
+        public void LoadFromRegistry_ReturnsWhenPagePriorityHasWrongType()
+        {
+            // Arrange
+            ProcessConfigurationsRegistryManager manager = new();
+            string imageName = TestContext.CurrentContext.Test.Name;
+            string testKeyPath = Path.Combine(IfeoRegistryKeyPath, imageName);
+
+            using (RegistryKey testKey = Registry.LocalMachine.CreateSubKey(testKeyPath))
+            {
+                using RegistryKey perfOptionsKey = testKey.CreateSubKey(PerfOptionsSubKey);
+                perfOptionsKey.SetValue(CpuPriorityClassValueName, (int)CpuPriorityClass.Low, RegistryValueKind.DWord);
+                perfOptionsKey.SetValue(PagePriorityValueName, "1", RegistryValueKind.String);
+            }
 
             try
             {
                 List<ProcessConfiguration> configurations = manager.LoadFromRegistry();
-                AssertProcessConfigurationPerformance(imageName, configurations, (CpuPriorityClass.Low, IoPriority.Normal));
+                AssertProcessConfigurationPerformance(imageName, configurations, (CpuPriorityClass.Low, IoPriority.Normal, PagePriority.Normal));
             }
             finally
             {
@@ -150,6 +174,7 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
                 using RegistryKey perfOptionsKey = testKey.CreateSubKey(PerfOptionsSubKey);
                 perfOptionsKey.SetValue(CpuPriorityClassValueName, (int)CpuPriorityClass.Low, RegistryValueKind.DWord);
                 perfOptionsKey.SetValue(IoPriorityValueName, (int)IoPriority.VeryLow, RegistryValueKind.DWord);
+                perfOptionsKey.SetValue(PagePriorityValueName, (int)PagePriority.Medium, RegistryValueKind.DWord);
             }
 
             try
@@ -163,6 +188,7 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
                 Assert.That(config.CpuAffinityMask, Is.EqualTo(123U));
                 Assert.That(config.CpuPriority, Is.EqualTo(CpuPriorityClass.Low));
                 Assert.That(config.IoPriority, Is.EqualTo(IoPriority.VeryLow));
+                Assert.That(config.MemoryPriority, Is.EqualTo(PagePriority.Medium));
             }
             finally
             {
@@ -207,7 +233,8 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
             ProcessConfiguration config = new(imageName)
             {
                 CpuPriority = CpuPriorityClass.AboveNormal,
-                IoPriority = IoPriority.High
+                IoPriority = IoPriority.Low,
+                MemoryPriority = PagePriority.BelowNormal
             };
 
             try
@@ -222,7 +249,8 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
                     using RegistryKey? perfOptionsKey = testKey.OpenSubKey(PerfOptionsSubKey);
                     Assert.That(perfOptionsKey, Is.Not.Null);
                     Assert.That(perfOptionsKey.GetValue(CpuPriorityClassValueName), Is.EqualTo((int)CpuPriorityClass.AboveNormal));
-                    Assert.That(perfOptionsKey.GetValue(IoPriorityValueName), Is.EqualTo((int)IoPriority.High));
+                    Assert.That(perfOptionsKey.GetValue(IoPriorityValueName), Is.EqualTo((int)IoPriority.Low));
+                    Assert.That(perfOptionsKey.GetValue(PagePriorityValueName), Is.EqualTo((int)PagePriority.BelowNormal));
                 }
 
                 // Now lets try to reset and save it again
@@ -249,17 +277,17 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
             ProcessConfigurationsRegistryManager manager = new();
             string imageName = TestContext.CurrentContext.Test.Name;
             string testKeyPath = Path.Combine(IfeoRegistryKeyPath, imageName);
-            ProcessConfiguration config = new(imageName);
-            config.CpuAffinityMask = 123U; // This should not create any IFEO options
+            ProcessConfiguration config = new(imageName)
+            {
+                CpuAffinityMask = 123U // This should not create any IFEO options
+            };
 
             // Act
-            manager.SaveToRegistry(new List<ProcessConfiguration> { config });
+            manager.SaveToRegistry([config]);
 
             // Assert
-            using (RegistryKey? testKey = Registry.LocalMachine.OpenSubKey(testKeyPath))
-            {
-                Assert.That(testKey, Is.Null);
-            }
+            using RegistryKey? testKey = Registry.LocalMachine.OpenSubKey(testKeyPath);
+            Assert.That(testKey, Is.Null);
         }
 
         [Test]
@@ -277,7 +305,7 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
             try
             {
                 // Act
-                manager.SaveToRegistry(new List<ProcessConfiguration> { config });
+                manager.SaveToRegistry([config]);
 
                 // Assert
                 using (RegistryKey? testKey = Registry.LocalMachine.OpenSubKey(testKeyPath))
@@ -288,7 +316,7 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
 
                 // Now lets try to reset and save it again
                 config.Reset();
-                manager.SaveToRegistry(new List<ProcessConfiguration> { config });
+                manager.SaveToRegistry([config]);
 
                 using (RegistryKey? testKey = Registry.LocalMachine.OpenSubKey(testKeyPath))
                 {
@@ -302,7 +330,7 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
             }
         }
 
-        private static void AssertProcessConfigurationPerformance(string imageName, List<ProcessConfiguration> configurations, (CpuPriorityClass, IoPriority) expectedValues)
+        private static void AssertProcessConfigurationPerformance(string imageName, List<ProcessConfiguration> configurations, (CpuPriorityClass, IoPriority, PagePriority) expectedValues)
         {
             Assert.That(configurations, Is.Not.Null);
             Assert.That(configurations, Is.Not.Empty);
@@ -310,6 +338,7 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
             Assert.That(testConfig, Is.Not.Null);
             Assert.That(testConfig.CpuPriority, Is.EqualTo(expectedValues.Item1));
             Assert.That(testConfig.IoPriority, Is.EqualTo(expectedValues.Item2));
+            Assert.That(testConfig.MemoryPriority, Is.EqualTo(expectedValues.Item3));
         }
     }
 }

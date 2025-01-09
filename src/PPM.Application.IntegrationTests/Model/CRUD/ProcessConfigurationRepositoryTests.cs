@@ -13,7 +13,6 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
     {
         private const string IfeoRegistryKeyPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options";
         private const string AppOptionsRegistryKeyPath = @"SOFTWARE\Processes Priority Manager";
-        private const string PerfOptionsSubKey = "PerfOptions";
 
         private string _ifeoRegistryBackupPath;
         private string? _appRegistryBackupPath;
@@ -52,7 +51,7 @@ namespace PPM.Application.IntegrationTests.Model.CRUD
         {
             ProcessConfiguration configuration = new(TestContext.CurrentContext.Random.GetString() + ".exe")
             {
-                IoPriority = IoPriority.High
+                IoPriority = IoPriority.Low
             };
 
             ProcessConfiguration configuration1 = new(TestContext.CurrentContext.Random.GetString() + ".exe")

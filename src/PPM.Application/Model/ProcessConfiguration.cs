@@ -8,6 +8,7 @@ namespace Affinity_manager.Model
         public const ulong AffinityDefaultValue = ulong.MaxValue;
         public const CpuPriorityClass CpuPriorityDefaultValue = CpuPriorityClass.Normal;
         public const IoPriority IoPriorityDefaultValue = IoPriority.Normal;
+        public const PagePriority MemoryPriorityDefaultValue = PagePriority.Normal;
 
         [ObservableProperty]
         private ulong _cpuAffinityMask = AffinityDefaultValue;
@@ -18,10 +19,12 @@ namespace Affinity_manager.Model
         [ObservableProperty]
         public IoPriority _ioPriority = IoPriorityDefaultValue;
 
+        [ObservableProperty]
+        public PagePriority _memoryPriority = MemoryPriorityDefaultValue;
+
         public ProcessConfiguration(string name)
         {
             Name = name;
-            IoPriority = IoPriority.Normal;
             ValidateAllProperties();
         }
 
@@ -33,7 +36,10 @@ namespace Affinity_manager.Model
         {
             get
             {
-                return CpuAffinityMask == AffinityDefaultValue && IoPriority == IoPriorityDefaultValue && CpuPriority == CpuPriorityDefaultValue;
+                return CpuAffinityMask == AffinityDefaultValue
+                    && IoPriority == IoPriorityDefaultValue
+                    && CpuPriority == CpuPriorityDefaultValue
+                    && MemoryPriority == MemoryPriorityDefaultValue;
             }
         }
 
@@ -42,6 +48,7 @@ namespace Affinity_manager.Model
             CpuAffinityMask = AffinityDefaultValue;
             IoPriority = IoPriorityDefaultValue;
             CpuPriority = CpuPriorityDefaultValue;
+            MemoryPriority = MemoryPriorityDefaultValue;
         }
 
         public override string ToString()

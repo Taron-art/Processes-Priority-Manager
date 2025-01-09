@@ -9,7 +9,9 @@
     mc:Ignorable="d"
     xmlns:model="using:Affinity_manager.Model" 
     xmlns:viewWrappers ="using:Affinity_manager.ViewWrappers"
-    xmlns:xamlHelpers ="using:Affinity_manager.XamlHelpers" Loaded="Page_Loaded" Loading="Page_Loading">
+    xmlns:xamlHelpers ="using:Affinity_manager.XamlHelpers" 
+    xmlns:userControls="using:Affinity_manager.UserControls"
+    Loaded="Page_Loaded" Loading="Page_Loading">
 
     <Grid x:Name="rootPanel" RowDefinitions="Auto, Auto, *, Auto" ColumnDefinitions="*" 
           Padding="0, 10" 
@@ -31,17 +33,18 @@
                 <ColumnDefinition x:Name="cpuAffinityNameColumnDefinition" Width="0.3*" MaxWidth="200" />
                 <ColumnDefinition x:Uid="CpuPriorityNameColumnDefinition" x:Name="cpuPriorityNameColumnDefinition" Width="150"  />
                 <ColumnDefinition x:Uid="IoPriorityNameColumnDefinition" x:Name="ioPriorityNameColumnDefinition" Width="125" />
+                <ColumnDefinition Width="30"/> <!--Compensation for the expand button-->
             </Grid.ColumnDefinitions>
 
             <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                           x:Uid="ApplicationNameColumn" TextTrimming="CharacterEllipsis" FontWeight="SemiBold" />
+                           x:Uid="ApplicationNameColumn" TextTrimming="CharacterEllipsis" FontWeight="SemiBold"/>
             <TextBlock Grid.Column="1"
                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                            x:Uid="CpuAffinityColumn" FontWeight="SemiBold" />
             <TextBlock Grid.Column="2"
                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                            x:Uid="CpuPriorityColumn" FontWeight="SemiBold" />
-            <TextBlock Grid.Column="3"
+            <TextBlock Grid.Column="3" Grid.ColumnSpan="2"
                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                            x:Uid="IoPriorityColumn" FontWeight="SemiBold" />
         </Grid>
@@ -51,31 +54,48 @@
                   SingleSelectionFollowsFocus="True" SelectionMode="Single" SelectionChanged="processesGrid_SelectionChanged" SelectedItem="{x:Bind ViewModel.SelectedView, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="viewWrappers:ProcessConfigurationView">
-                    <Grid ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" 
-                          Background ="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
-                          BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                          CornerRadius="{ThemeResource ControlCornerRadius}"
-                          BorderThickness="1"
-                          Padding="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding ElementName=applicationNameColumnDefinition, Path=Width, Mode=OneTime}" />
-                            <ColumnDefinition Width="{Binding ElementName=cpuAffinityNameColumnDefinition, Path=Width, Mode=OneTime}" MaxWidth="{Binding ElementName=cpuAffinityNameColumnDefinition, Path=MaxWidth}" />
-                            <ColumnDefinition Width="{Binding ElementName=cpuPriorityNameColumnDefinition, Path=Width, Mode=OneTime}" />
-                            <ColumnDefinition Width="{Binding ElementName=ioPriorityNameColumnDefinition, Path=Width, Mode=OneTime}" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" TextDecorations="{x:Bind IsDirty, Mode=OneWay, Converter={StaticResource BoolToFontStyleConverterKey}}">
-                        </TextBlock>
+                    <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" BackgroundSizing="InnerBorderEdge" Padding="0">
+                        <Expander.Header>
+                            <Grid ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" 
+                                      BorderThickness="1"
+                                      Padding="5" Margin="-15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{Binding ElementName=applicationNameColumnDefinition, Path=Width, Mode=OneTime}" />
+                                    <ColumnDefinition Width="{Binding ElementName=cpuAffinityNameColumnDefinition, Path=Width, Mode=OneTime}" MaxWidth="{Binding ElementName=cpuAffinityNameColumnDefinition, Path=MaxWidth}" />
+                                    <ColumnDefinition Width="{Binding ElementName=cpuPriorityNameColumnDefinition, Path=Width, Mode=OneTime}" />
+                                    <ColumnDefinition Width="{Binding ElementName=ioPriorityNameColumnDefinition, Path=Width, Mode=OneTime}" />
+                                </Grid.ColumnDefinitions>
 
-                        <Grid Grid.Column="1" VerticalAlignment="Center" RowDefinitions="Auto" ColumnDefinitions="*, Auto" DataContext="{x:Bind AffinityView, Mode=OneWay}">
-                            <TextBlock Grid.Column="0" Text="{x:Bind AffinityView.FriendlyView, Mode=OneWay}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"></TextBlock>
-                            <Button x:Name="affinityButton" Grid.Column="1" Padding="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="affinityButton_Click">
-                                <SymbolIcon Symbol="Edit">
-                                </SymbolIcon>
-                            </Button>
-                        </Grid>
-                        <ComboBox HorizontalAlignment="Stretch" Grid.Column="2" ItemsSource="{x:Bind CpuPriorities}" SelectedItem="{x:Bind CpuPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName"/>
-                        <ComboBox HorizontalAlignment="Stretch" Grid.Column="3" ItemsSource="{x:Bind IoPriorities}" SelectedItem="{x:Bind IoPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName" />
-                    </Grid>
+                                <TextBlock Canvas.ZIndex="2" Grid.Column="0" Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" TextDecorations="{x:Bind IsDirty, Mode=OneWay, Converter={StaticResource BoolToFontStyleConverterKey}}"
+                                           PointerPressed="Control_PointerPressed"/>
+
+                                <Grid Canvas.ZIndex="2" Grid.Column="1" VerticalAlignment="Center" RowDefinitions="Auto" ColumnDefinitions="*, Auto" DataContext="{x:Bind AffinityView, Mode=OneWay}">
+                                    <TextBlock Grid.Column="0" Text="{x:Bind AffinityView.FriendlyView, Mode=OneWay}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                                               PointerPressed="Control_PointerPressed"/>
+                                    <Button x:Name="affinityButton" Grid.Column="1" Padding="5,5,5,5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="AffinityButton_Click">
+                                        <SymbolIcon Symbol="Edit"/>
+                                    </Button>
+                                </Grid>
+                                <ComboBox Canvas.ZIndex="2" HorizontalAlignment="Stretch" Grid.Column="2" ItemsSource="{x:Bind CpuPriorities}" SelectedItem="{x:Bind CpuPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName"/>
+                                <CheckBox Canvas.ZIndex="2" x:Uid="VeryLowCheckBox" Grid.Column="3" IsChecked="{x:Bind MemoryAndIoPrioritiesAreLowest, Mode=TwoWay}"/>
+                                <Rectangle x:Name="ClickBlocker" Margin="-15" Canvas.ZIndex="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="Transparent" Grid.Column="0" Grid.ColumnSpan="4" 
+                                           PointerPressed="Control_PointerPressed" />
+                            </Grid>
+
+                        </Expander.Header>
+                        <Expander.Content>
+                            <StackPanel Orientation="Horizontal" Margin="10,0">
+                                <userControls:ControlWithHeader x:Uid="IoPriorityHeader">
+                                    <ComboBox ItemsSource="{x:Bind IoPriorities}" SelectedItem="{x:Bind IoPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName" 
+                                              x:Uid="IoPriorityCombobox"/>
+                                </userControls:ControlWithHeader>
+                                <userControls:ControlWithHeader x:Uid="MemoryPriorityHeader">
+                                    <ComboBox ItemsSource="{x:Bind MemoryPriorities}" SelectedItem="{x:Bind MemoryPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName" 
+                                              x:Uid="MemoryPriorityCombobox"/>
+                                </userControls:ControlWithHeader>
+                            </StackPanel>
+                        </Expander.Content>
+                    </Expander>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemContainerStyle>
