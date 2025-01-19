@@ -10,30 +10,43 @@
     xmlns:model="using:Affinity_manager.Model" 
     xmlns:viewWrappers ="using:Affinity_manager.ViewWrappers"
     xmlns:xamlHelpers ="using:Affinity_manager.XamlHelpers" 
-    xmlns:userControls="using:Affinity_manager.UserControls"
+    xmlns:userControls="using:Affinity_manager.UserControls" xmlns:datagathering="using:Affinity_manager.Model.DataGathering"
     Loaded="Page_Loaded" Loading="Page_Loading">
 
     <Grid x:Name="rootPanel" RowDefinitions="Auto, Auto, *, Auto" ColumnDefinitions="*" 
-          Padding="0, 10" 
+          Padding="0,12,0,0" 
           DataContext="{x:Bind ViewModel, Mode=OneWay}">
-        <Grid RowDefinitions="Auto" ColumnDefinitions="*, Auto" ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" 
-              Padding="15,0"
+        <Grid RowDefinitions="Auto" ColumnDefinitions="0.25*, *, 0.25*" ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" 
+              Padding="16,0"
               Grid.Column="0" Grid.Row="0">
-            <TextBox x:Uid="AddNewTextBox" Grid.Column="0" Text="{x:Bind ViewModel.NewProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSpellCheckEnabled="False">
-                <TextBox.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="Enter" Invoked="KeyboardAccelerator_Invoked"></KeyboardAccelerator>
-                </TextBox.KeyboardAccelerators>
-            </TextBox>
-            <Button x:Uid="AddNewButton" Grid.Column="1" Command="{x:Bind ViewModel.AddCommand}" x:Name="addButton"/>
+            <AutoSuggestBox x:Uid="AddNewTextBox" Grid.Column="1" Text="{x:Bind ViewModel.NewProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextChanged="AutoSuggestBox_TextChanged" QueryIcon="Add" QuerySubmitted="AutoSuggestBox_QuerySubmitted" MaxWidth="500">
+                <AutoSuggestBox.TextBoxStyle>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource AutoSuggestBoxTextBoxStyle}">
+                        <Setter Property="IsSpellCheckEnabled" Value="False"/>
+                        <Setter Property="MaxLength" Value="100"/>
+                    </Style>
+                </AutoSuggestBox.TextBoxStyle>
+                <AutoSuggestBox.ItemTemplate>
+                    <DataTemplate x:DataType="viewWrappers:ProcessInfoView">
+                        <Grid Margin="0, 4" RowDefinitions="*,*" ColumnDefinitions="32,*" ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" RowSpacing="4">
+                            <Image Grid.RowSpan="2" Source="{x:Bind ApplicationIcon, Mode=OneWay}"></Image>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind MainModuleName}" Style="{ThemeResource BodyTextBlockStyle}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind FriendlyName, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                        </Grid>
+                    </DataTemplate>
+                </AutoSuggestBox.ItemTemplate>
+            </AutoSuggestBox>
         </Grid>
-        <Grid x:Name="gridHeader" Padding="16,12" ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" 
+        <Grid x:Name="gridHeader" Padding="20,12" ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" 
               Grid.Column="0" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="applicationNameColumnDefinition" Width="0.4*" />
                 <ColumnDefinition x:Name="cpuAffinityNameColumnDefinition" Width="0.3*" MaxWidth="200" />
                 <ColumnDefinition x:Uid="CpuPriorityNameColumnDefinition" x:Name="cpuPriorityNameColumnDefinition" Width="150"  />
                 <ColumnDefinition x:Uid="IoPriorityNameColumnDefinition" x:Name="ioPriorityNameColumnDefinition" Width="125" />
-                <ColumnDefinition Width="30"/> <!--Compensation for the expand button-->
+                <ColumnDefinition Width="30"/>
+                <!--Compensation for the expand button-->
             </Grid.ColumnDefinitions>
 
             <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -50,15 +63,15 @@
         </Grid>
         <ListView x:Name="processesGrid" DataContext="{x:Bind ViewModel}"
                   ItemsSource="{x:Bind ViewModel.ProcessesConfigurations, Mode=OneWay}"  
-                  Grid.Column="0" Grid.Row="2" 
+                  Grid.Column="0" Grid.Row="2"
                   SingleSelectionFollowsFocus="True" SelectionMode="Single" SelectionChanged="processesGrid_SelectionChanged" SelectedItem="{x:Bind ViewModel.SelectedView, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="viewWrappers:ProcessConfigurationView">
                     <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" BackgroundSizing="InnerBorderEdge" Padding="0">
                         <Expander.Header>
-                            <Grid ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}" 
+                            <Grid ColumnSpacing="{x:Bind local:MainPage.ColumnSpacing}"
                                       BorderThickness="1"
-                                      Padding="5" Margin="-15">
+                                      Padding="4" Margin="-15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="{Binding ElementName=applicationNameColumnDefinition, Path=Width, Mode=OneTime}" />
                                     <ColumnDefinition Width="{Binding ElementName=cpuAffinityNameColumnDefinition, Path=Width, Mode=OneTime}" MaxWidth="{Binding ElementName=cpuAffinityNameColumnDefinition, Path=MaxWidth}" />
@@ -84,7 +97,7 @@
 
                         </Expander.Header>
                         <Expander.Content>
-                            <StackPanel Orientation="Horizontal" Margin="10,0">
+                            <StackPanel Orientation="Horizontal" Margin="12,0" Spacing="8">
                                 <userControls:ControlWithHeader x:Uid="IoPriorityHeader">
                                     <ComboBox ItemsSource="{x:Bind IoPriorities}" SelectedItem="{x:Bind IoPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName" 
                                               x:Uid="IoPriorityCombobox"/>
@@ -102,6 +115,7 @@
                 <Style BasedOn="{StaticResource DefaultListViewItemStyle}"
                    TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Padding" Value="16,0,16,4"/>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.ItemContainerTransitions>
@@ -112,12 +126,14 @@
                 </TransitionCollection>
             </ListView.ItemContainerTransitions>
         </ListView>
-        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" 
+        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft"
                     Grid.Column="0" Grid.Row="3" 
                     Spacing="8"
-                    Padding="12,0">
-            <Button x:Uid="CancelButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Width="100" AccessKey="C" Command="{x:Bind ViewModel.ReloadCommand}"/>
-            <Button x:Uid="ApplyButton" x:Name="saveButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" Command="{x:Bind ViewModel.SaveChangesCommand}" Width="100" Content="Apply" AccessKey="A"/>
+                    Padding="16,16" Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}">
+            <Button x:Uid="CancelButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Command="{x:Bind ViewModel.ReloadCommand}"
+                    Width="100" AccessKey="C"  TabIndex="1"/>
+            <Button x:Uid="ApplyButton" x:Name="saveButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" Command="{x:Bind ViewModel.SaveChangesCommand}"
+                    Width="100" Content="Apply" AccessKey="A" TabIndex="0"/>
         </StackPanel>
     </Grid>
 

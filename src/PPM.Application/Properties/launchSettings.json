@@ -5,7 +5,8 @@
     },
     "Affinity_manager (Unpackaged)": {
       "commandName": "Project",
-      "commandLineArgs": "--language en-us"
+      "commandLineArgs": "--language en-us",
+      "nativeDebugging": true
     }
   }
 }

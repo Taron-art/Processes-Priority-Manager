@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Linq;
 using Affinity_manager.ViewModels;
 using Affinity_manager.ViewWrappers;
 using Microsoft.UI.Xaml;
@@ -37,11 +39,6 @@ namespace Affinity_manager.Pages
             base.OnNavigatedTo(e);
         }
 
-        private void KeyboardAccelerator_Invoked(Microsoft.UI.Xaml.Input.KeyboardAccelerator sender, Microsoft.UI.Xaml.Input.KeyboardAcceleratorInvokedEventArgs args)
-        {
-            ViewModel!.AddCommand.Execute(null);
-        }
-
         private void processesGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (processesGrid.SelectedItem != null)
@@ -52,7 +49,7 @@ namespace Affinity_manager.Pages
 
         private async void AffinityButton_Click(object sender, RoutedEventArgs e)
         {
-            AffinitySelectorDialog dialog = new AffinitySelectorDialog((AffinityView)((Button)sender).DataContext);
+            AffinitySelectorDialog dialog = new((AffinityView)((Button)sender).DataContext);
             dialog.XamlRoot = XamlRoot;
             await dialog.ShowAsync();
         }
@@ -128,6 +125,33 @@ namespace Affinity_manager.Pages
             }
 
             return null;
+        }
+
+        private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                ProcessInfoView[] newList = ViewModel!.GetAutoCompleteList();
+
+                if (sender.ItemsSource is ProcessInfoView[] oldList && newList.SequenceEqual(oldList))
+                {
+                    // Prevent flickering of the same list.
+                    return;
+                }
+
+                sender.ItemsSource = newList;
+            }
+        }
+
+        private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            ViewModel!.NewProcessName = args.QueryText;
+            sender.ItemsSource = Array.Empty<ProcessInfoView>();
+            CommunityToolkit.Mvvm.Input.IRelayCommand command = ViewModel!.AddCommand;
+            if (command.CanExecute(null))
+            {
+                command.Execute(null);
+            }
         }
     }
 }

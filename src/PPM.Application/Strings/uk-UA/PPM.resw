@@ -75,4 +75,10 @@
   <data name="PagePriority.Normal" xml:space="preserve">
     <value>Нормальний</value>
   </data>
+  <data name="BackgroundProcess" xml:space="preserve">
+    <value>Фоновий процес</value>
+  </data>
+  <data name="FromSavedProfile" xml:space="preserve">
+    <value>Зі збереженного профілю</value>
+  </data>
 </root>

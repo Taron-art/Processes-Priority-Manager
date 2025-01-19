@@ -180,4 +180,10 @@
   <data name="PagePriority.Normal" xml:space="preserve">
     <value>Normal</value>
   </data>
+  <data name="BackgroundProcess" xml:space="preserve">
+    <value>Background process</value>
+  </data>
+  <data name="FromSavedProfile" xml:space="preserve">
+    <value>From saved profile</value>
+  </data>
 </root>

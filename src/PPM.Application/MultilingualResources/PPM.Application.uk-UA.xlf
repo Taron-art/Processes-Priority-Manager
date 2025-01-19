@@ -24,11 +24,11 @@
         </trans-unit>
         <trans-unit id="CpuPriorityColumn.Text" translate="yes" xml:space="preserve">
           <source>CPU Priority</source>
-          <target state="translated">Пріоритет повідомлень</target>
+          <target state="final">Пріоритет повідомлень</target>
         </trans-unit>
         <trans-unit id="IoPriorityColumn.Text" translate="yes" xml:space="preserve">
           <source>IO and Memory Priority</source>
-          <target state="translated">Пріоритет Вх/Вих та ОЗП</target>
+          <target state="final">Пріоритет Вх/Вих та ОЗП</target>
         </trans-unit>
         <trans-unit id="ApplyButton.Content" translate="yes" xml:space="preserve">
           <source>Apply</source>
@@ -52,29 +52,29 @@
         </trans-unit>
         <trans-unit id="IoPriorityNameColumnDefinition.Width" translate="yes" xml:space="preserve">
           <source>110</source>
-          <target state="translated">120</target>
+          <target state="final">120</target>
         </trans-unit>
         <trans-unit id="IoPriorityHeader.Header" translate="yes" xml:space="preserve">
           <source>IO Priority</source>
-          <target state="translated">Пріоритет Вх/Вих</target>
+          <target state="final">Пріоритет Вх/Вих</target>
         </trans-unit>
         <trans-unit id="MemoryPriorityHeader.Header" translate="yes" xml:space="preserve">
           <source>Memory Priority</source>
-          <target state="translated">Пріоритет ОЗП</target>
+          <target state="final">Пріоритет ОЗП</target>
         </trans-unit>
         <trans-unit id="IoPriorityCombobox.Width" translate="yes" xml:space="preserve">
           <source>140</source>
-          <target state="translated">145</target>
+          <target state="final">145</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Ideally the same as MemoryPriorityCombobox</note>
         </trans-unit>
         <trans-unit id="MemoryPriorityCombobox.Width" translate="yes" xml:space="preserve">
           <source>140</source>
-          <target state="translated">176</target>
+          <target state="final">176</target>
           <note from="MultilingualBuild" annotates="source" priority="2">Ideally the same as IoPriorityCombobox</note>
         </trans-unit>
         <trans-unit id="VeryLowCheckBox.Content" translate="yes" xml:space="preserve">
           <source>Very Low</source>
-          <target state="translated">Найнижчий</target>
+          <target state="final">Найнижчий</target>
         </trans-unit>
       </group>
     </body>
@@ -107,7 +107,7 @@
         </trans-unit>
         <trans-unit id="IoPriority.VeryLow" translate="yes" xml:space="preserve">
           <source>Very Low</source>
-          <target state="translated">Найнижчий</target>
+          <target state="final">Найнижчий</target>
         </trans-unit>
         <trans-unit id="CpuPriorityClass.Normal" translate="yes" xml:space="preserve">
           <source>Normal</source>
@@ -151,23 +151,31 @@
         </trans-unit>
         <trans-unit id="PagePriority.VeryLow" translate="yes" xml:space="preserve">
           <source>Very Low</source>
-          <target state="translated">Найнижчий</target>
+          <target state="final">Найнижчий</target>
         </trans-unit>
         <trans-unit id="PagePriority.Low" translate="yes" xml:space="preserve">
           <source>Low</source>
-          <target state="translated">Низький</target>
+          <target state="final">Низький</target>
         </trans-unit>
         <trans-unit id="PagePriority.Medium" translate="yes" xml:space="preserve">
           <source>Medium</source>
-          <target state="translated">Середній</target>
+          <target state="final">Середній</target>
         </trans-unit>
         <trans-unit id="PagePriority.BelowNormal" translate="yes" xml:space="preserve">
           <source>Below Normal</source>
-          <target state="translated">Нище нормального</target>
+          <target state="final">Нище нормального</target>
         </trans-unit>
         <trans-unit id="PagePriority.Normal" translate="yes" xml:space="preserve">
           <source>Normal</source>
-          <target state="translated">Нормальний</target>
+          <target state="final">Нормальний</target>
+        </trans-unit>
+        <trans-unit id="BackgroundProcess" translate="yes" xml:space="preserve">
+          <source>Background process</source>
+          <target state="final">Фоновий процес</target>
+        </trans-unit>
+        <trans-unit id="FromSavedProfile" translate="yes" xml:space="preserve">
+          <source>From saved profile</source>
+          <target state="final">Зі збереженного профілю</target>
         </trans-unit>
       </group>
     </body>

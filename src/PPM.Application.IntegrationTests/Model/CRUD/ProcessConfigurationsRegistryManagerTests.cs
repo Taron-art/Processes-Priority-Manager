@@ -5,7 +5,6 @@ using Affinity_manager.Model;
 using Affinity_manager.Model.CRUD;
 using Microsoft.Win32;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace PPM.Application.IntegrationTests.Model.CRUD
 {

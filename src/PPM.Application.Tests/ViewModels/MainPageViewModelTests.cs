@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Affinity_manager.Exceptions;
 using Affinity_manager.Model;
 using Affinity_manager.Model.CRUD;
+using Affinity_manager.Model.DataGathering;
 using Affinity_manager.ViewModels;
 using Affinity_manager.ViewWrappers;
 using FakeItEasy;
@@ -18,6 +19,7 @@ namespace PPM.Application.Tests.ViewModels
     {
         private IProcessConfigurationsRepository _repository;
         private IProcessConfigurationViewFactory _viewFactory;
+        private IAutocompleteProvider _autocompleteProvider;
         private MainPageViewModel _viewModel;
 
         [SetUp]
@@ -25,7 +27,8 @@ namespace PPM.Application.Tests.ViewModels
         {
             _repository = A.Fake<IProcessConfigurationsRepository>();
             _viewFactory = A.Fake<IProcessConfigurationViewFactory>();
-            _viewModel = new MainPageViewModel(_repository, _viewFactory);
+            _autocompleteProvider = A.Fake<IAutocompleteProvider>();
+            _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider);
         }
 
         [Test]
@@ -44,6 +47,8 @@ namespace PPM.Application.Tests.ViewModels
             Assert.That(_viewModel.ProcessesConfigurations, Has.Exactly(1).EqualTo(processConfigurationView));
             Assert.That(_viewModel.SelectedView, Is.EqualTo(processConfigurationView));
             Assert.That(_viewModel.NewProcessName, Is.Empty);
+            A.CallTo(() => _autocompleteProvider.AddProcesses(A<IEnumerable<string>>.That.Contains("TestProcess.exe"))).MustHaveHappened();
+            A.CallTo(() => _autocompleteProvider.ClearCache()).MustHaveHappened();
         }
 
         [Test]
@@ -57,10 +62,12 @@ namespace PPM.Application.Tests.ViewModels
 
             // Assert
             Assert.That(_viewModel.ProcessesConfigurations, Is.Empty);
+            A.CallTo(() => _autocompleteProvider.AddProcesses(A<IEnumerable<string>>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => _autocompleteProvider.ClearCache()).MustNotHaveHappened();
         }
 
         [Test]
-        public void Add_ShouldNotAddNewProcessConfigurationView_WhenProcessNameIsInvalud()
+        public void Add_ShouldNotAddNewProcessConfigurationView_WhenProcessNameIsInvalid()
         {
             // Arrange
             _viewModel.NewProcessName = "testexe";
@@ -72,8 +79,9 @@ namespace PPM.Application.Tests.ViewModels
 
             // Assert
             Assert.That(_viewModel.ProcessesConfigurations, Is.Empty);
-
             monitor.Should().Raise(nameof(_viewModel.ShowMessage));
+            A.CallTo(() => _autocompleteProvider.AddProcesses(A<IEnumerable<string>>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => _autocompleteProvider.ClearCache()).MustNotHaveHappened();
         }
 
         [Test]
@@ -91,7 +99,7 @@ namespace PPM.Application.Tests.ViewModels
             processConfigurationView.AffinityView.AffinityMask = 1U;
             BindingCollectionWithUniqunessCheck<ProcessConfigurationView> processAffinities = new() { processConfigurationView, processConfigurationView1 };
             A.CallTo(() => _viewFactory.CreateCollection(A<IEnumerable<ProcessConfiguration>>.Ignored)).Returns(processAffinities);
-            _viewModel = new MainPageViewModel(_repository, _viewFactory);
+            _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider);
             await _viewModel.ReloadAsync();
 
             using FluentAssertions.Events.IMonitor<MainPageViewModel> monitor = _viewModel.Monitor();
@@ -127,7 +135,7 @@ namespace PPM.Application.Tests.ViewModels
             A.CallTo(() => _repository.Get()).Returns(repositoryListAfterSave);
             A.CallTo(() => _viewFactory.CreateCollection(repositoryListAfterSave)).Returns(processViewsAfterSave);
 
-            _viewModel = new MainPageViewModel(_repository, _viewFactory);
+            _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider);
             await _viewModel.ReloadAsync();
 
             using FluentAssertions.Events.IMonitor<MainPageViewModel> monitor = _viewModel.Monitor();
@@ -193,6 +201,27 @@ namespace PPM.Application.Tests.ViewModels
 
             monitor.Should().Raise(nameof(_viewModel.ShowMessage))
                 .WithArgs<string>((message) => message.Equals(message));
+        }
+
+        [Test]
+        public void GetAutoCompleteList_ShouldReturnAutocompleteListBasedOnNewProcessName()
+        {
+            // Arrange
+            string processName = "TestProcess";
+            _viewModel.NewProcessName = processName;
+            ProcessInfoView[] expectedList =
+            [
+                new ProcessInfoView(A.Fake<ProcessInfo>(x => x.WithArgumentsForConstructor([processName, Source.None])), A.Fake<IApplicationIconsLoader>()),
+                new ProcessInfoView(A.Fake<ProcessInfo>(x => x.WithArgumentsForConstructor([processName, Source.None])), A.Fake<IApplicationIconsLoader>())
+            ];
+            A.CallTo(() => _autocompleteProvider.GetAutocompleteList(processName)).Returns(expectedList);
+
+            // Act
+            ProcessInfoView[] result = _viewModel.GetAutoCompleteList();
+
+            // Assert
+            Assert.That(result, Is.SameAs(expectedList));
+            A.CallTo(() => _autocompleteProvider.GetAutocompleteList(processName)).MustHaveHappened();
         }
     }
 }
