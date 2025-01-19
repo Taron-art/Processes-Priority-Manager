@@ -68,6 +68,7 @@
     <PackageReference Include="ReswPlus" Version="0.2.6" Publish="false">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
+    <PackageReference Include="securifybv.ShellLink" Version="0.1.0" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.0" />
     <PackageReference Include="Vanara.PInvoke.User32" Version="4.0.4" />
   </ItemGroup>

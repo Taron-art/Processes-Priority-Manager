@@ -12,7 +12,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Affinity_manager.ViewModels
 {
-    public partial class MainPageViewModel(IProcessConfigurationsRepository repository, IProcessConfigurationViewFactory viewFactory)
+    public partial class MainPageViewModel(IProcessConfigurationsRepository repository, IProcessConfigurationViewFactory viewFactory, IAutocompleteProvider autocompleteView)
         : ObservableObject, IMainPageViewModel
     {
         [ObservableProperty]
@@ -22,6 +22,11 @@ namespace Affinity_manager.ViewModels
 
         [ObservableProperty]
         private ProcessConfigurationView? _selectedView;
+
+        private IProcessConfigurationsRepository Repository { get; } = repository;
+
+        public IProcessConfigurationViewFactory ViewFactory { get; } = viewFactory;
+        public IAutocompleteProvider AutocompleteProvider { get; } = autocompleteView;
 
         public IReadOnlyObservableCollection<ProcessConfigurationView> ProcessesConfigurations
         {
@@ -41,9 +46,10 @@ namespace Affinity_manager.ViewModels
             }
         }
 
-        private IProcessConfigurationsRepository Repository { get; } = repository;
-
-        public IProcessConfigurationViewFactory ViewFactory { get; } = viewFactory;
+        public ProcessInfoView[] GetAutoCompleteList()
+        {
+            return AutocompleteProvider.GetAutocompleteList(NewProcessName);
+        }
 
         [RelayCommand]
         public void Add()
@@ -74,6 +80,8 @@ namespace Affinity_manager.ViewModels
                 SelectedView = viewItem;
             }
             NewProcessName = string.Empty;
+            AutocompleteProvider.AddProcesses([processName]);
+            AutocompleteProvider.ClearCache();
         }
 
         [RelayCommand]
@@ -114,6 +122,7 @@ namespace Affinity_manager.ViewModels
 
         private async Task FillProcesses()
         {
+            AutocompleteProvider.ClearCache();
             string? selectedProcessName = null;
             if (SelectedView != null)
             {
@@ -145,6 +154,7 @@ namespace Affinity_manager.ViewModels
             {
                 _processesConfigurations.CollectionChanged += OnProcessAffinitiesItemsChanged;
                 _processesConfigurations.ItemChanged += OnProcessAffinitiesItemsChanged;
+                AutocompleteProvider.AddProcesses(_processesConfigurations.Select(item => item.Name));
             }
 
             OnPropertyChanged(nameof(ProcessesConfigurations));

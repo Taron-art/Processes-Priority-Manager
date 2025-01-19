@@ -18,5 +18,7 @@ namespace Affinity_manager.ViewModels
         public IAsyncRelayCommand SaveChangesCommand { get; }
 
         public IAsyncRelayCommand ReloadCommand { get; }
+
+        ProcessInfoView[] GetAutoCompleteList();
     }
 }

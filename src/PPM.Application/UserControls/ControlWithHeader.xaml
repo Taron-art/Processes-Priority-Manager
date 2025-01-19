@@ -9,7 +9,7 @@
     mc:Ignorable="d">
 
     <StackPanel Orientation="Horizontal">
-        <TextBlock x:Name="HeaderTextBlock" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Text="{x:Bind Header, Mode=OneWay}"/>
-        <ContentPresenter x:Name="ContentPresenter" Grid.Column="1" VerticalAlignment="Center" Margin="5" Content="{x:Bind Decorated, Mode=OneWay}"/>
+        <TextBlock x:Name="HeaderTextBlock" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0" Text="{x:Bind Header, Mode=OneWay}"/>
+        <ContentPresenter x:Name="ContentPresenter" Grid.Column="1" VerticalAlignment="Center" Margin="4" Content="{x:Bind Decorated, Mode=OneWay}"/>
     </StackPanel>
 </UserControl>
