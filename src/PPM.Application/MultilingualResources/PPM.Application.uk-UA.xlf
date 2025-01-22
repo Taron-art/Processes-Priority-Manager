@@ -76,6 +76,10 @@
           <source>Very Low</source>
           <target state="final">Найнижчий</target>
         </trans-unit>
+        <trans-unit id="ResetButton.Content" translate="yes" xml:space="preserve">
+          <source>Default</source>
+          <target state="final">За замовчуванням</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -176,6 +180,18 @@
         <trans-unit id="FromSavedProfile" translate="yes" xml:space="preserve">
           <source>From saved profile</source>
           <target state="final">Зі збереженного профілю</target>
+        </trans-unit>
+        <trans-unit id="ProcessorConfigurationModifiedToolTipStart" translate="yes" xml:space="preserve">
+          <source>This application configuration has been modified.</source>
+          <target state="final">Налаштування для цього застосунку змінилися.</target>
+        </trans-unit>
+        <trans-unit id="ProcessorConfigurationModifiedToolTipEndDefaultState" translate="yes" xml:space="preserve">
+          <source>It is in the default state and will be removed on Apply.</source>
+          <target state="final">Він в стані за замовчуванням та буде прибранний при застосуванні змін.</target>
+        </trans-unit>
+        <trans-unit id="ProcessorConfigurationModifiedToolTipEnd" translate="yes" xml:space="preserve">
+          <source>Click Apply to save the changes.</source>
+          <target state="translated">Натисніть "Застосувати", щоб зберегти зміни.</target>
         </trans-unit>
       </group>
     </body>

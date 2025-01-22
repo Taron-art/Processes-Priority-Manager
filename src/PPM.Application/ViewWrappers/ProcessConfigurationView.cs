@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
 using Affinity_manager.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Affinity_manager.ViewWrappers
 {
@@ -107,6 +109,7 @@ namespace Affinity_manager.ViewWrappers
                 }
             }
         }
+
         public bool IsDirty
         {
             get
@@ -119,12 +122,43 @@ namespace Affinity_manager.ViewWrappers
             }
         }
 
+        public string? ToolTip
+        {
+            get
+            {
+                if (IsDirty)
+                {
+                    StringBuilder stringBuilder = new(Strings.PPM.ProcessorConfigurationModifiedToolTipStart);
+                    stringBuilder.Append(' ');
+                    if (ProcessConfiguration.IsEmpty)
+                    {
+                        stringBuilder.Append(Strings.PPM.ProcessorConfigurationModifiedToolTipEndDefaultState);
+                    }
+                    else
+                    {
+                        stringBuilder.Append(Strings.PPM.ProcessorConfigurationModifiedToolTipEnd);
+                    }
+
+                    return stringBuilder.ToString();
+                }
+
+                // We return null to hide the tooltip, with Empty it will be an empty tooltip.
+                return null;
+            }
+        }
+
         public int CompareTo(ProcessConfigurationView? other)
         {
             if (ReferenceEquals(this, other)) return 0;
             if (other is null) return 1;
 
             return Name.CompareTo(other.Name);
+        }
+
+        [RelayCommand]
+        public void Reset()
+        {
+            ProcessConfiguration.Reset();
         }
 
         public void MarkDirty()
@@ -146,6 +180,7 @@ namespace Affinity_manager.ViewWrappers
                     OnPropertyChanged(nameof(MemoryAndIoPrioritiesAreLowest));
                     break;
                 case nameof(ProcessConfiguration.CpuAffinityMask):
+                    AffinityView.UpdateAffinityMask(CpuAffinityMask);
                     OnPropertyChanged(nameof(CpuAffinityMask));
                     break;
                 case nameof(ProcessConfiguration.MemoryPriority):
@@ -153,6 +188,8 @@ namespace Affinity_manager.ViewWrappers
                     OnPropertyChanged(nameof(MemoryAndIoPrioritiesAreLowest));
                     break;
             }
+
+            OnPropertyChanged(nameof(ToolTip));
         }
 
 

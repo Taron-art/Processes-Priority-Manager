@@ -81,4 +81,13 @@
   <data name="FromSavedProfile" xml:space="preserve">
     <value>Зі збереженного профілю</value>
   </data>
+  <data name="ProcessorConfigurationModifiedToolTipStart" xml:space="preserve">
+    <value>Налаштування для цього застосунку змінилися.</value>
+  </data>
+  <data name="ProcessorConfigurationModifiedToolTipEndDefaultState" xml:space="preserve">
+    <value>Він в стані за замовчуванням та буде прибранний при застосуванні змін.</value>
+  </data>
+  <data name="ProcessorConfigurationModifiedToolTipEnd" xml:space="preserve">
+    <value>Натисніть "Застосувати", щоб зберегти зміни.</value>
+  </data>
 </root>

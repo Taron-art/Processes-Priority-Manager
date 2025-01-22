@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Affinity_manager.ViewWrappers
 {
+    [DebuggerDisplay("{Label} - {Value}")]
     public partial class CoreView : ObservableObject, IComparable<CoreView>
     {
         [ObservableProperty]

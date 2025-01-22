@@ -80,7 +80,8 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Canvas.ZIndex="2" Grid.Column="0" Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" TextDecorations="{x:Bind IsDirty, Mode=OneWay, Converter={StaticResource BoolToFontStyleConverterKey}}"
-                                           PointerPressed="Control_PointerPressed"/>
+                                           PointerPressed="Control_PointerPressed"
+                                           ToolTipService.ToolTip="{x:Bind ToolTip, Mode=OneWay}"/>
 
                                 <Grid Canvas.ZIndex="2" Grid.Column="1" VerticalAlignment="Center" RowDefinitions="Auto" ColumnDefinitions="*, Auto" DataContext="{x:Bind AffinityView, Mode=OneWay}">
                                     <TextBlock Grid.Column="0" Text="{x:Bind AffinityView.FriendlyView, Mode=OneWay}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
@@ -97,16 +98,23 @@
 
                         </Expander.Header>
                         <Expander.Content>
-                            <StackPanel Orientation="Horizontal" Margin="12,0" Spacing="8">
-                                <userControls:ControlWithHeader x:Uid="IoPriorityHeader">
-                                    <ComboBox ItemsSource="{x:Bind IoPriorities}" SelectedItem="{x:Bind IoPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName" 
-                                              x:Uid="IoPriorityCombobox"/>
-                                </userControls:ControlWithHeader>
-                                <userControls:ControlWithHeader x:Uid="MemoryPriorityHeader">
-                                    <ComboBox ItemsSource="{x:Bind MemoryPriorities}" SelectedItem="{x:Bind MemoryPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName" 
-                                              x:Uid="MemoryPriorityCombobox"/>
-                                </userControls:ControlWithHeader>
-                            </StackPanel>
+                            <Grid RowDefinitions="Auto,Auto">
+                                <StackPanel Orientation="Horizontal" Margin="12,0" Spacing="8">
+                                    <userControls:ControlWithHeader x:Uid="IoPriorityHeader">
+                                        <ComboBox ItemsSource="{x:Bind IoPriorities}" SelectedItem="{x:Bind IoPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName" 
+                                                  x:Uid="IoPriorityCombobox"/>
+                                    </userControls:ControlWithHeader>
+                                    <userControls:ControlWithHeader x:Uid="MemoryPriorityHeader">
+                                        <ComboBox ItemsSource="{x:Bind MemoryPriorities}" SelectedItem="{x:Bind MemoryPriority, Mode=TwoWay}" DisplayMemberPath="DisplayName" 
+                                                  x:Uid="MemoryPriorityCombobox"/>
+                                    </userControls:ControlWithHeader>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft"
+                                            Spacing="8" Padding="8"
+                                            Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}">
+                                    <Button x:Uid="ResetButton" Command="{x:Bind ResetCommand}" MinWidth="100"></Button>    
+                                </StackPanel>
+                            </Grid>
                         </Expander.Content>
                     </Expander>
                 </DataTemplate>

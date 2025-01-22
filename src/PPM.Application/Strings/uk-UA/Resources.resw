@@ -65,4 +65,7 @@
   <data name="VeryLowCheckBox.Content" xml:space="preserve">
     <value>Найнижчий</value>
   </data>
+  <data name="ResetButton.Content" xml:space="preserve">
+    <value>За замовчуванням</value>
+  </data>
 </root>
