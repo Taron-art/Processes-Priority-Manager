@@ -175,5 +175,30 @@ namespace PPM.Application.Tests.ViewWrappers
             Assert.That(_configuration.MemoryPriority, Is.EqualTo(PagePriority.Normal));
             Assert.That(_configuration.IoPriority, Is.EqualTo(IoPriority.Normal));
         }
+
+        [Test]
+        public void ToolTip_ShouldReturnNullIfConfigurationIsNotDirty()
+        {
+            Assert.That(_view.ToolTip, Is.Null);
+        }
+
+        [Test]
+        public void ToolTip_ShouldReturnDescriptionIfConfigurationIsDirtyButNotEmpty()
+        {
+            _configuration.IoPriority = IoPriority.Low;
+
+            string expectedToolTip = $"{Affinity_manager.Strings.PPM.ProcessorConfigurationModifiedToolTipStart} {Affinity_manager.Strings.PPM.ProcessorConfigurationModifiedToolTipEnd}";
+            Assert.That(_view.ToolTip, Is.EqualTo(expectedToolTip));
+        }
+
+        [Test]
+        public void ToolTip_ShouldReturnDifferentDescriptionIfConfigurationIsDirtyAndEmpty()
+        {
+            _configuration.Reset();
+            _view.MarkDirty();
+
+            string expectedToolTip = $"{Affinity_manager.Strings.PPM.ProcessorConfigurationModifiedToolTipStart} {Affinity_manager.Strings.PPM.ProcessorConfigurationModifiedToolTipEndDefaultState}";
+            Assert.That(_view.ToolTip, Is.EqualTo(expectedToolTip));
+        }
     }
 }

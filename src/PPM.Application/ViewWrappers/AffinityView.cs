@@ -69,6 +69,11 @@ namespace Affinity_manager.ViewWrappers
             }
         }
 
+        public void UpdateAffinityMask(ulong affinityMask)
+        {
+            AffinityMask = affinityMask;
+        }
+
         [RelayCommand]
         public void ApplyChanges()
         {
@@ -85,6 +90,7 @@ namespace Affinity_manager.ViewWrappers
         partial void OnAffinityMaskChanged(ulong value)
         {
             _friendlyView = null;
+            FillBoolArray(_coreViews, _numberOfLogicalCpus);
         }
 
         private void UpdateAffinityMask(IReadOnlyList<CoreView> logicalCpus)

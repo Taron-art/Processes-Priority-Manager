@@ -186,4 +186,13 @@
   <data name="FromSavedProfile" xml:space="preserve">
     <value>From saved profile</value>
   </data>
+  <data name="ProcessorConfigurationModifiedToolTipStart" xml:space="preserve">
+    <value>This application configuration has been modified.</value>
+  </data>
+  <data name="ProcessorConfigurationModifiedToolTipEndDefaultState" xml:space="preserve">
+    <value>It is in the default state and will be removed on Apply.</value>
+  </data>
+  <data name="ProcessorConfigurationModifiedToolTipEnd" xml:space="preserve">
+    <value>Click Apply to save the changes.</value>
+  </data>
 </root>
