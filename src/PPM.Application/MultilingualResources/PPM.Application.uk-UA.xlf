@@ -30,10 +30,6 @@
           <source>IO and Memory Priority</source>
           <target state="final">Пріоритет Вх/Вих та ОЗП</target>
         </trans-unit>
-        <trans-unit id="ApplyButton.Content" translate="yes" xml:space="preserve">
-          <source>Apply</source>
-          <target state="final">Застосувати</target>
-        </trans-unit>
         <trans-unit id="CancelButton.Content" translate="yes" xml:space="preserve">
           <source>Cancel</source>
           <target state="final">Відмінити</target>
@@ -79,6 +75,34 @@
         <trans-unit id="ResetButton.Content" translate="yes" xml:space="preserve">
           <source>Default</source>
           <target state="final">За замовчуванням</target>
+        </trans-unit>
+        <trans-unit id="SaveButton.Content" translate="yes" xml:space="preserve">
+          <source>Save</source>
+          <target state="final">Зберегти</target>
+        </trans-unit>
+        <trans-unit id="ApplyOnRunningCheckBox.Content" translate="yes" xml:space="preserve">
+          <source>Also apply on running processes</source>
+          <target state="final">Також застосувати до запущених процесів</target>
+        </trans-unit>
+        <trans-unit id="ApplyOnRunningCheckBox.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Instruct PPM to search for running processes and apply selected options during the save operation.</source>
+          <target state="final">Вказати PPM, що під час зберігання треба знайти та застосувати налаштування до запущений процесів.</target>
+        </trans-unit>
+        <trans-unit id="SaveButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Saves the changes. Configuration will be applied next time when the new instance of the process will start.</source>
+          <target state="final">Зберігає зміни. Налаштування будуть застосовані до процесів, які будуть запущені у майбутньому.</target>
+        </trans-unit>
+        <trans-unit id="ApplyOnRunningButton.Content" translate="yes" xml:space="preserve">
+          <source>Apply on running processes</source>
+          <target state="final">Застосувати до запущений процесів</target>
+        </trans-unit>
+        <trans-unit id="ApplyOnRunningButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Finds related running processes and applies the configuration on them.</source>
+          <target state="final">Знайти запущені процеси та застосувати ці налаштування до них.</target>
+        </trans-unit>
+        <trans-unit id="ResetButton.ToolTipService.ToolTip" translate="yes" xml:space="preserve">
+          <source>Resets the configuration to the default state.</source>
+          <target state="final">Скидує до налаштувань за замовчуванням.</target>
         </trans-unit>
       </group>
     </body>
@@ -191,7 +215,7 @@
         </trans-unit>
         <trans-unit id="ProcessorConfigurationModifiedToolTipEnd" translate="yes" xml:space="preserve">
           <source>Click Apply to save the changes.</source>
-          <target state="translated">Натисніть "Застосувати", щоб зберегти зміни.</target>
+          <target state="final">Натисніть "Застосувати", щоб зберегти зміни.</target>
         </trans-unit>
       </group>
     </body>

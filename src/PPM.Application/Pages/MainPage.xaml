@@ -25,6 +25,7 @@
                     <Style TargetType="TextBox" BasedOn="{StaticResource AutoSuggestBoxTextBoxStyle}">
                         <Setter Property="IsSpellCheckEnabled" Value="False"/>
                         <Setter Property="MaxLength" Value="100"/>
+                        <Setter Property="AccessKey" Value="A"/>
                     </Style>
                 </AutoSuggestBox.TextBoxStyle>
                 <AutoSuggestBox.ItemTemplate>
@@ -109,11 +110,12 @@
                                                   x:Uid="MemoryPriorityCombobox"/>
                                     </userControls:ControlWithHeader>
                                 </StackPanel>
-                                <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft"
-                                            Spacing="8" Padding="8"
-                                            Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}">
-                                    <Button x:Uid="ResetButton" Command="{x:Bind ResetCommand}" MinWidth="100"></Button>    
-                                </StackPanel>
+                                <Border Grid.Row="1" Padding="8" Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" >
+                                        <Button x:Uid="ApplyOnRunningButton" Command="{x:Bind ApplyCommand}" MinWidth="100">Apply</Button>
+                                        <Button x:Uid="ResetButton" Command="{x:Bind ResetCommand}" MinWidth="100"></Button>
+                                    </StackPanel>
+                                </Border>
                             </Grid>
                         </Expander.Content>
                     </Expander>
@@ -134,15 +136,16 @@
                 </TransitionCollection>
             </ListView.ItemContainerTransitions>
         </ListView>
-        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft"
-                    Grid.Column="0" Grid.Row="3" 
-                    Spacing="8"
-                    Padding="16,16" Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}">
-            <Button x:Uid="CancelButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Command="{x:Bind ViewModel.ReloadCommand}"
-                    Width="100" AccessKey="C"  TabIndex="1"/>
-            <Button x:Uid="ApplyButton" x:Name="saveButton" IsEnabled="{x:Bind ViewModel.SaveCancelAvailable, Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" Command="{x:Bind ViewModel.SaveChangesCommand}"
-                    Width="100" Content="Apply" AccessKey="A" TabIndex="0"/>
-        </StackPanel>
+
+        <Border Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}" Padding="16,16" Grid.Column="0" Grid.Row="3">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                <CheckBox x:Uid="ApplyOnRunningCheckBox" IsChecked="{x:Bind ViewModel.ApplyOnRunningProcesses, Mode=TwoWay}" AccessKey="R"/>
+                <Button x:Uid="SaveButton" x:Name="saveButton" IsEnabled="{x:Bind ViewModel.IsSaveAvailable, Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" Command="{x:Bind ViewModel.SaveChangesCommand}"
+                    Width="100" Content="Save" AccessKey="S" TabIndex="0"/>
+                <Button x:Uid="CancelButton" IsEnabled="{x:Bind ViewModel.IsCancelAvailable, Mode=OneWay}" Command="{x:Bind ViewModel.ReloadCommand}"
+                        Width="100" AccessKey="C"  TabIndex="1"/>
+            </StackPanel>
+        </Border>
     </Grid>
 
     <Page.Resources>

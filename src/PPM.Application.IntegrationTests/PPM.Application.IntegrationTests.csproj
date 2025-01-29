@@ -47,6 +47,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\PPM.Application\PPM.Application.csproj" />
+	  <ProjectReference Include="..\PPM.TestApp\PPM.TestApp.csproj" />
 	</ItemGroup>
 	<PropertyGroup>
 		<BaseOutputPath>..\bin\</BaseOutputPath>

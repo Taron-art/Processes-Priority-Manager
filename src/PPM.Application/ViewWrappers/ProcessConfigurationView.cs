@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Affinity_manager.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -13,10 +14,11 @@ namespace Affinity_manager.ViewWrappers
     {
         private bool _isDirty = false;
 
-        public ProcessConfigurationView(ProcessConfiguration configuration, IOptionsProvider optionsProvider)
+        public ProcessConfigurationView(ProcessConfiguration configuration, IOptionsProvider optionsProvider, IProcessConfigurationApplier configurationApplier)
         {
             ProcessConfiguration = configuration;
             OptionsProvider = optionsProvider;
+            ConfigurationApplier = configurationApplier;
             AffinityView = new AffinityView(configuration.CpuAffinityMask, optionsProvider.NumberOfLogicalCpus);
 
             ProcessConfiguration.PropertyChanged += OnProcessConfigurationPropertyChanged;
@@ -26,6 +28,8 @@ namespace Affinity_manager.ViewWrappers
         public ProcessConfiguration ProcessConfiguration { get; }
 
         public IOptionsProvider OptionsProvider { get; }
+
+        public IProcessConfigurationApplier ConfigurationApplier { get; }
 
         public string Name => ProcessConfiguration.Name;
 
@@ -159,6 +163,13 @@ namespace Affinity_manager.ViewWrappers
         public void Reset()
         {
             ProcessConfiguration.Reset();
+        }
+
+        [RelayCommand]
+        public async Task ApplyAsync()
+        {
+            byte numberOfLogicalCpus = OptionsProvider.NumberOfLogicalCpus <= 64 ? (byte)OptionsProvider.NumberOfLogicalCpus : (byte)0;
+            await Task.Run(() => ConfigurationApplier.ApplyIfPresent(numberOfLogicalCpus, ProcessConfiguration));
         }
 
         public void MarkDirty()

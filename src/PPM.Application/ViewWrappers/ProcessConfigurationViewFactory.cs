@@ -8,16 +8,18 @@ namespace Affinity_manager.ViewWrappers
     {
         private readonly IOptionsProvider _optionsProvider;
         private readonly IEqualityComparer<ProcessConfigurationView> _comparer;
+        private readonly IProcessConfigurationApplier _configurationApplier;
 
-        public ProcessConfigurationViewFactory(IOptionsProvider optionsProvider, IEqualityComparer<ProcessConfigurationView> comparer)
+        public ProcessConfigurationViewFactory(IOptionsProvider optionsProvider, IEqualityComparer<ProcessConfigurationView> comparer, IProcessConfigurationApplier configurationApplier)
         {
             _optionsProvider = optionsProvider;
             _comparer = comparer;
+            _configurationApplier = configurationApplier;
         }
 
         public ProcessConfigurationView Create(ProcessConfiguration configuration)
         {
-            return new ProcessConfigurationView(configuration, _optionsProvider);
+            return new ProcessConfigurationView(configuration, _optionsProvider, _configurationApplier);
         }
 
         public BindingCollectionWithUniqunessCheck<ProcessConfigurationView> CreateCollection(IEnumerable<ProcessConfiguration> processConfigurations)

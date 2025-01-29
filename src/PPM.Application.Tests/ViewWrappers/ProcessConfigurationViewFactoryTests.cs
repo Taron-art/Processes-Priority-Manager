@@ -12,6 +12,7 @@ namespace PPM.Application.Tests.ViewWrappers
     {
         private IOptionsProvider _optionsProvider;
         private IEqualityComparer<ProcessConfigurationView> _comparer;
+        private IProcessConfigurationApplier _configurationApplier;
         private ProcessConfigurationViewFactory _factory;
 
         [SetUp]
@@ -19,7 +20,8 @@ namespace PPM.Application.Tests.ViewWrappers
         {
             _optionsProvider = A.Fake<IOptionsProvider>();
             _comparer = A.Fake<IEqualityComparer<ProcessConfigurationView>>();
-            _factory = new ProcessConfigurationViewFactory(_optionsProvider, _comparer);
+            _configurationApplier = A.Fake<IProcessConfigurationApplier>();
+            _factory = new ProcessConfigurationViewFactory(_optionsProvider, _comparer, _configurationApplier);
         }
 
         [Test]
@@ -36,6 +38,7 @@ namespace PPM.Application.Tests.ViewWrappers
             Assert.That(result, Is.InstanceOf<ProcessConfigurationView>());
             Assert.That(result.ProcessConfiguration, Is.SameAs(configuration));
             Assert.That(result.OptionsProvider, Is.SameAs(_optionsProvider));
+            Assert.That(result.ConfigurationApplier, Is.SameAs(_configurationApplier));
         }
 
         [Test]

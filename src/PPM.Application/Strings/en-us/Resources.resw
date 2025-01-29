@@ -132,8 +132,17 @@
   <data name="ApplicationNameColumn.Text" xml:space="preserve">
     <value>Application Name</value>
   </data>
-  <data name="ApplyButton.Content" xml:space="preserve">
-    <value>Apply</value>
+  <data name="ApplyOnRunningButton.Content" xml:space="preserve">
+    <value>Apply on running processes</value>
+  </data>
+  <data name="ApplyOnRunningButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Finds related running processes and applies the configuration on them.</value>
+  </data>
+  <data name="SaveButton.Content" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Saves the changes. Configuration will be applied next time when the new instance of the process will start.</value>
   </data>
   <data name="CancelButton.Content" xml:space="preserve">
     <value>Cancel</value>
@@ -170,7 +179,16 @@
   <data name="VeryLowCheckBox.Content" xml:space="preserve">
     <value>Very Low</value>
   </data>
+  <data name="ApplyOnRunningCheckBox.Content" xml:space="preserve">
+    <value>Also apply on running processes</value>
+  </data>
+  <data name="ApplyOnRunningCheckBox.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Instruct PPM to search for running processes and apply selected options during the save operation.</value>
+  </data>
   <data name="ResetButton.Content" xml:space="preserve">
     <value>Default</value>
+  </data>
+  <data name="ResetButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Resets the configuration to the default state.</value>
   </data>
 </root>

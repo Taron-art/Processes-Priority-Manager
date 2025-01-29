@@ -10,14 +10,16 @@ namespace Affinity_manager.ViewModels
         string? NewProcessName { get; set; }
         IReadOnlyObservableCollection<ProcessConfigurationView> ProcessesConfigurations { get; }
         ProcessConfigurationView? SelectedView { get; set; }
-        bool SaveCancelAvailable { get; }
+        bool IsSaveAvailable { get; }
         bool IsInterfaceVisible { get; }
+        bool ApplyOnRunningProcesses { get; set; }
 
         public IRelayCommand AddCommand { get; }
 
         public IAsyncRelayCommand SaveChangesCommand { get; }
 
         public IAsyncRelayCommand ReloadCommand { get; }
+        bool IsCancelAvailable { get; }
 
         ProcessInfoView[] GetAutoCompleteList();
     }

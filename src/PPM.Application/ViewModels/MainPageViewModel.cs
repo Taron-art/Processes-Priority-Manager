@@ -12,7 +12,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Affinity_manager.ViewModels
 {
-    public partial class MainPageViewModel(IProcessConfigurationsRepository repository, IProcessConfigurationViewFactory viewFactory, IAutocompleteProvider autocompleteView)
+    public partial class MainPageViewModel(IProcessConfigurationsRepository repository, IProcessConfigurationViewFactory viewFactory, IAutocompleteProvider autocompleteView, IProcessConfigurationApplier configurationApplier)
         : ObservableObject, IMainPageViewModel
     {
         [ObservableProperty]
@@ -23,10 +23,20 @@ namespace Affinity_manager.ViewModels
         [ObservableProperty]
         private ProcessConfigurationView? _selectedView;
 
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsSaveAvailable))]
+        private bool _applyOnRunningProcesses = false;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsSaveAvailable))]
+        [NotifyPropertyChangedFor(nameof(IsCancelAvailable))]
+        private bool _saveInProgress = false;
+
         private IProcessConfigurationsRepository Repository { get; } = repository;
 
         public IProcessConfigurationViewFactory ViewFactory { get; } = viewFactory;
         public IAutocompleteProvider AutocompleteProvider { get; } = autocompleteView;
+        public IProcessConfigurationApplier ConfigurationApplier { get; } = configurationApplier;
 
         public IReadOnlyObservableCollection<ProcessConfigurationView> ProcessesConfigurations
         {
@@ -36,7 +46,21 @@ namespace Affinity_manager.ViewModels
             }
         }
 
-        public bool SaveCancelAvailable => ProcessesConfigurations.Any(item => item.IsDirty);
+        public bool IsSaveAvailable
+        {
+            get
+            {
+                return !SaveInProgress && ((ApplyOnRunningProcesses && ProcessesConfigurations.Any()) || ProcessesConfigurations.Any(item => item.IsDirty));
+            }
+        }
+
+        public bool IsCancelAvailable
+        {
+            get
+            {
+                return !SaveInProgress && ProcessesConfigurations.Any(item => item.IsDirty);
+            }
+        }
 
         public bool IsInterfaceVisible
         {
@@ -88,9 +112,14 @@ namespace Affinity_manager.ViewModels
         public async Task SaveChangesAsync()
         {
             bool fillProcessesCalled = false;
+            SaveInProgress = true;
             try
             {
-
+                Task[]? applyTasks = null;
+                if (ApplyOnRunningProcesses)
+                {
+                    applyTasks = ProcessesConfigurations.Select(item => item.ApplyAsync()).ToArray();
+                }
                 await Repository.SaveAndRestartServiceAsync(ProcessesConfigurations.Where(item => item.IsDirty).Select(
                     item => item.ProcessConfiguration),
                     () =>
@@ -103,6 +132,11 @@ namespace Affinity_manager.ViewModels
                 {
                     await FillProcesses();
                 }
+
+                if (applyTasks != null)
+                {
+                    await Task.WhenAll(applyTasks);
+                }
             }
             catch (ValidationException e)
             {
@@ -111,6 +145,10 @@ namespace Affinity_manager.ViewModels
             catch (ServiceNotInstalledException)
             {
                 OnShowMessage(Strings.PPM.ServiceNotFountErrorMessage);
+            }
+            finally
+            {
+                SaveInProgress = false;
             }
         }
 
@@ -158,12 +196,14 @@ namespace Affinity_manager.ViewModels
             }
 
             OnPropertyChanged(nameof(ProcessesConfigurations));
-            OnPropertyChanged(nameof(SaveCancelAvailable));
+            OnPropertyChanged(nameof(IsSaveAvailable));
+            OnPropertyChanged(nameof(IsCancelAvailable));
         }
 
         private void OnProcessAffinitiesItemsChanged(object? sender, EventArgs e)
         {
-            OnPropertyChanged(nameof(SaveCancelAvailable));
+            OnPropertyChanged(nameof(IsSaveAvailable));
+            OnPropertyChanged(nameof(IsCancelAvailable));
         }
 
         private void OnShowMessage(string message)

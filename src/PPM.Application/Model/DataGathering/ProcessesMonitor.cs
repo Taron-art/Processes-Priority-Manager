@@ -72,7 +72,7 @@ namespace Affinity_manager.Model.DataGathering
                 }
                 catch (Win32Exception)
                 {
-                    // System process or exited process, just skip it.
+                    // System process just skip it.
                     _processesToIgnore[process.ProcessName] = 0;
                 }
                 catch (InvalidOperationException)
