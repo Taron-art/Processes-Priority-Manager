@@ -26,6 +26,11 @@ namespace Affinity_manager.Model.CRUD
         public async Task SaveAndRestartServiceAsync(IEnumerable<ProcessConfiguration> items, Func<Task>? readyToGetCallback = null)
         {
             ProcessConfiguration[] itemsArray = items.ToArray();
+            if (itemsArray.Length == 0)
+            {
+                return;
+            }
+
             ThrowIfHaveInvalidNonEmptyItems(itemsArray);
 
             await Task.Run(() => _processAffinitiesManager.SaveToRegistry(items));

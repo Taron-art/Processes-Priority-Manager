@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Affinity_manager.Model;
 using Affinity_manager.ViewWrappers;
 using FakeItEasy;
@@ -16,20 +17,22 @@ namespace PPM.Application.Tests.ViewWrappers
         private ProcessConfigurationView _view;
         private ProcessConfiguration _configuration;
         private IOptionsProvider _optionsProvider;
+        private IProcessConfigurationApplier _configurationApplier;
 
         [SetUp]
         public void SetUp()
         {
             _configuration = new("TestName.exe");
             _optionsProvider = A.Fake<IOptionsProvider>(options => options.Strict());
+            _configurationApplier = A.Fake<IProcessConfigurationApplier>(options => options.Strict());
             A.CallTo(() => _optionsProvider.NumberOfLogicalCpus).Returns(5U);
 
-            List<EnumViewWrapper<CpuPriorityClass>> priorityClasses = [];
+            List<EnumViewWrapper<CpuPriorityClass>> priorityClasses = new();
             A.CallTo(() => _optionsProvider.CpuPriorities).Returns(priorityClasses);
 
-            List<EnumViewWrapper<IoPriority>> ioPriorities = [];
+            List<EnumViewWrapper<IoPriority>> ioPriorities = new();
             A.CallTo(() => _optionsProvider.IoPriorities).Returns(ioPriorities);
-            _view = new ProcessConfigurationView(_configuration, _optionsProvider);
+            _view = new ProcessConfigurationView(_configuration, _optionsProvider, _configurationApplier);
         }
 
         [Test]
@@ -40,7 +43,7 @@ namespace PPM.Application.Tests.ViewWrappers
             Assert.That(_view.AffinityView, Is.Not.Null);
             Assert.That(_view.AffinityView.AffinityMask, Is.EqualTo(_view.ProcessConfiguration.CpuAffinityMask));
 
-            _view = new ProcessConfigurationView(_configuration, _optionsProvider);
+            _view = new ProcessConfigurationView(_configuration, _optionsProvider, _configurationApplier);
             Assert.That(_view.CpuPriorities, Is.SameAs(_optionsProvider.CpuPriorities));
             Assert.That(_view.IoPriorities, Is.SameAs(_optionsProvider.IoPriorities));
             Assert.That(_view.AffinityView.LogicalCpus, Has.Count.EqualTo(5));
@@ -80,37 +83,37 @@ namespace PPM.Application.Tests.ViewWrappers
                 new TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>(
                     (ProcessConfiguration configuration) => configuration.CpuPriority = CpuPriorityClass.High,
                     view => view.CpuPriority)
-                .SetArgDisplayNames(nameof(ProcessConfiguration.CpuPriority), nameof(ProcessConfigurationView.CpuPriority));
+                    .SetArgDisplayNames(nameof(ProcessConfiguration.CpuPriority), nameof(ProcessConfigurationView.CpuPriority));
 
             yield return (TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>)
                 new TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>(
                     (ProcessConfiguration configuration) => configuration.IoPriority = IoPriority.Low,
                     view => view.IoPriority)
-                .SetArgDisplayNames(nameof(ProcessConfiguration.IoPriority), nameof(ProcessConfigurationView.IoPriority));
+                    .SetArgDisplayNames(nameof(ProcessConfiguration.IoPriority), nameof(ProcessConfigurationView.IoPriority));
 
             yield return (TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>)
                 new TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>(
                     (ProcessConfiguration configuration) => configuration.IoPriority = IoPriority.Low,
                     view => view.MemoryAndIoPrioritiesAreLowest)
-                .SetArgDisplayNames(nameof(ProcessConfiguration.IoPriority), nameof(ProcessConfigurationView.MemoryAndIoPrioritiesAreLowest));
+                    .SetArgDisplayNames(nameof(ProcessConfiguration.IoPriority), nameof(ProcessConfigurationView.MemoryAndIoPrioritiesAreLowest));
 
             yield return (TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>)
                 new TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>(
                     (ProcessConfiguration configuration) => configuration.CpuAffinityMask = 1234U,
                     view => view.CpuAffinityMask)
-                .SetArgDisplayNames(nameof(ProcessConfiguration.CpuAffinityMask), nameof(ProcessConfigurationView.CpuAffinityMask));
+                    .SetArgDisplayNames(nameof(ProcessConfiguration.CpuAffinityMask), nameof(ProcessConfigurationView.CpuAffinityMask));
 
             yield return (TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>)
                 new TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>(
                     (ProcessConfiguration configuration) => configuration.MemoryPriority = PagePriority.VeryLow,
                     view => view.MemoryPriority)
-                .SetArgDisplayNames(nameof(ProcessConfiguration.MemoryPriority), nameof(ProcessConfigurationView.MemoryPriority));
+                    .SetArgDisplayNames(nameof(ProcessConfiguration.MemoryPriority), nameof(ProcessConfigurationView.MemoryPriority));
 
             yield return (TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>)
                 new TestCaseData<Action<ProcessConfiguration>, Expression<Func<ProcessConfigurationView, object?>>>(
                     (ProcessConfiguration configuration) => configuration.MemoryPriority = PagePriority.VeryLow,
                     view => view.MemoryAndIoPrioritiesAreLowest)
-                .SetArgDisplayNames(nameof(ProcessConfiguration.MemoryPriority), nameof(ProcessConfigurationView.MemoryAndIoPrioritiesAreLowest));
+                    .SetArgDisplayNames(nameof(ProcessConfiguration.MemoryPriority), nameof(ProcessConfigurationView.MemoryAndIoPrioritiesAreLowest));
         }
 
         [TestCaseSource(nameof(SetActions))]
@@ -199,6 +202,20 @@ namespace PPM.Application.Tests.ViewWrappers
 
             string expectedToolTip = $"{Affinity_manager.Strings.PPM.ProcessorConfigurationModifiedToolTipStart} {Affinity_manager.Strings.PPM.ProcessorConfigurationModifiedToolTipEndDefaultState}";
             Assert.That(_view.ToolTip, Is.EqualTo(expectedToolTip));
+        }
+
+        [Test]
+        public async Task ApplyAsync_ShouldCallConfigurationApplierWithCorrectParameters()
+        {
+            // Arrange
+            byte expectedNumberOfLogicalCpus = _optionsProvider.NumberOfLogicalCpus <= 64 ? (byte)_optionsProvider.NumberOfLogicalCpus : (byte)0;
+            A.CallTo(() => _configurationApplier.ApplyIfPresent(expectedNumberOfLogicalCpus, _configuration)).Returns(true);
+            // Act
+            await _view.ApplyAsync();
+
+            // Assert
+            A.CallTo(() => _configurationApplier.ApplyIfPresent(expectedNumberOfLogicalCpus, _configuration))
+                .MustHaveHappenedOnceExactly();
         }
     }
 }

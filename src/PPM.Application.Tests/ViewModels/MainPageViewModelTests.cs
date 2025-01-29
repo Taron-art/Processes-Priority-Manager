@@ -10,6 +10,7 @@ using Affinity_manager.ViewModels;
 using Affinity_manager.ViewWrappers;
 using FakeItEasy;
 using FluentAssertions;
+using FluentAssertions.Events;
 using NUnit.Framework;
 
 namespace PPM.Application.Tests.ViewModels
@@ -20,6 +21,7 @@ namespace PPM.Application.Tests.ViewModels
         private IProcessConfigurationsRepository _repository;
         private IProcessConfigurationViewFactory _viewFactory;
         private IAutocompleteProvider _autocompleteProvider;
+        private IProcessConfigurationApplier _configurationApplier;
         private MainPageViewModel _viewModel;
 
         [SetUp]
@@ -28,7 +30,8 @@ namespace PPM.Application.Tests.ViewModels
             _repository = A.Fake<IProcessConfigurationsRepository>();
             _viewFactory = A.Fake<IProcessConfigurationViewFactory>();
             _autocompleteProvider = A.Fake<IAutocompleteProvider>();
-            _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider);
+            _configurationApplier = A.Fake<IProcessConfigurationApplier>();
+            _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider, _configurationApplier);
         }
 
         [Test]
@@ -37,7 +40,7 @@ namespace PPM.Application.Tests.ViewModels
             // Arrange
             _viewModel.NewProcessName = "TestProcess.exe";
             ProcessConfiguration processConfiguration = new("TestProcess");
-            ProcessConfigurationView processConfigurationView = new(processConfiguration, A.Fake<IOptionsProvider>());
+            ProcessConfigurationView processConfigurationView = new(processConfiguration, A.Fake<IOptionsProvider>(), _configurationApplier);
             A.CallTo(() => _viewFactory.Create(A<ProcessConfiguration>.Ignored)).Returns(processConfigurationView);
 
             // Act
@@ -91,15 +94,15 @@ namespace PPM.Application.Tests.ViewModels
             IOptionsProvider optionsProviderMock = A.Fake<IOptionsProvider>();
 
             ProcessConfiguration processConfiguration = new("TestProcess");
-            ProcessConfigurationView processConfigurationView = new(processConfiguration, optionsProviderMock);
+            ProcessConfigurationView processConfigurationView = new(processConfiguration, optionsProviderMock, _configurationApplier);
 
             ProcessConfiguration processConfiguration1 = new("TestProcess2");
-            ProcessConfigurationView processConfigurationView1 = new(processConfiguration1, optionsProviderMock);
+            ProcessConfigurationView processConfigurationView1 = new(processConfiguration1, optionsProviderMock, _configurationApplier);
 
             processConfigurationView.AffinityView.AffinityMask = 1U;
             BindingCollectionWithUniqunessCheck<ProcessConfigurationView> processAffinities = new() { processConfigurationView, processConfigurationView1 };
             A.CallTo(() => _viewFactory.CreateCollection(A<IEnumerable<ProcessConfiguration>>.Ignored)).Returns(processAffinities);
-            _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider);
+            _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider, _configurationApplier);
             await _viewModel.ReloadAsync();
 
             using FluentAssertions.Events.IMonitor<MainPageViewModel> monitor = _viewModel.Monitor();
@@ -111,7 +114,7 @@ namespace PPM.Application.Tests.ViewModels
             A.CallTo(() => _repository.SaveAndRestartServiceAsync(A<IEnumerable<ProcessConfiguration>>.That.IsSameSequenceAs(new[] { processConfiguration }), A<Func<Task>>.That.IsNotNull())).MustHaveHappened()
                 .Then(A.CallTo(() => _repository.Get()).MustHaveHappened());
             monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.ProcessesConfigurations);
-            monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.SaveCancelAvailable);
+            monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.IsSaveAvailable);
         }
 
         [Test]
@@ -119,7 +122,7 @@ namespace PPM.Application.Tests.ViewModels
         {
             // Arrange
             ProcessConfiguration processConfiguration = new("TestProcess");
-            ProcessConfigurationView processConfigurationView = new(processConfiguration, A.Fake<IOptionsProvider>());
+            ProcessConfigurationView processConfigurationView = new(processConfiguration, A.Fake<IOptionsProvider>(), _configurationApplier);
 
             // These are expectations that are returned before Save.
             BindingCollectionWithUniqunessCheck<ProcessConfigurationView> processViews = new() { processConfigurationView };
@@ -135,7 +138,7 @@ namespace PPM.Application.Tests.ViewModels
             A.CallTo(() => _repository.Get()).Returns(repositoryListAfterSave);
             A.CallTo(() => _viewFactory.CreateCollection(repositoryListAfterSave)).Returns(processViewsAfterSave);
 
-            _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider);
+            _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider, _configurationApplier);
             await _viewModel.ReloadAsync();
 
             using FluentAssertions.Events.IMonitor<MainPageViewModel> monitor = _viewModel.Monitor();
@@ -147,7 +150,7 @@ namespace PPM.Application.Tests.ViewModels
             A.CallTo(() => _repository.SaveAndRestartServiceAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored)).MustHaveHappened()
                 .Then(A.CallTo(() => _repository.Get()).MustHaveHappened());
             monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.ProcessesConfigurations);
-            monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.SaveCancelAvailable);
+            monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.IsSaveAvailable);
             Assert.That(_viewModel.ProcessesConfigurations, Is.SameAs(processViewsAfterSave));
         }
 
@@ -156,7 +159,7 @@ namespace PPM.Application.Tests.ViewModels
         {
             // Arrange
             ProcessConfiguration processConfiguration = new("TestProcess");
-            ProcessConfigurationView processConfigurationView = new(processConfiguration, A.Fake<IOptionsProvider>());
+            ProcessConfigurationView processConfigurationView = new(processConfiguration, A.Fake<IOptionsProvider>(), _configurationApplier);
             BindingCollectionWithUniqunessCheck<ProcessConfigurationView> processConfigurations = new() { processConfigurationView };
             A.CallTo(() => _viewFactory.CreateCollection(A<IEnumerable<ProcessConfiguration>>.Ignored)).Returns(processConfigurations);
 
@@ -201,6 +204,59 @@ namespace PPM.Application.Tests.ViewModels
 
             monitor.Should().Raise(nameof(_viewModel.ShowMessage))
                 .WithArgs<string>((message) => message.Equals(message));
+        }
+
+        [Test]
+        public void SaveChangesAsync_ShouldSetSaveInProgressToFalse_WhenSaveIsCompleted()
+        {
+            using IMonitor<MainPageViewModel> monitor = _viewModel.Monitor();
+            // Arrange
+            A.CallTo(() => _repository.SaveAndRestartServiceAsync(A<IEnumerable<ProcessConfiguration>>.Ignored, A<Func<Task>>.Ignored))
+                .Invokes(() =>
+                {
+                    Assert.That(_viewModel.SaveInProgress, Is.True);
+                    monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.SaveInProgress);
+                    monitor.Clear();
+                })
+                .Returns(Task.CompletedTask);
+
+
+            // Act
+            Assert.DoesNotThrowAsync(() => _viewModel.SaveChangesAsync());
+            // Assert
+            Assert.That(_viewModel.SaveInProgress, Is.False);
+
+            monitor.Should().RaisePropertyChangeFor((viewModel) => viewModel.SaveInProgress);
+        }
+
+        [Test]
+        public async Task SaveChangesAsync_ShouldApplyConfigurationsAsync([Values(true, false)] bool applyOnRunningProcess)
+        {
+            // Arrange
+            var optionsProvider = A.Fake<IOptionsProvider>();
+            A.CallTo(() => optionsProvider.NumberOfLogicalCpus).Returns(5u);
+
+            ProcessConfiguration processConfiguration = new("TestProcess");
+            A.CallTo(() => _repository.Get()).Returns(new List<ProcessConfiguration> { processConfiguration });
+
+            ProcessConfigurationView processConfigurationView = new(processConfiguration, optionsProvider, _configurationApplier);
+
+            BindingCollectionWithUniqunessCheck<ProcessConfigurationView> processAffinities = new() { processConfigurationView };
+            A.CallTo(() => _viewFactory.CreateCollection(A<IEnumerable<ProcessConfiguration>>.Ignored)).Returns(processAffinities);
+            _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider, _configurationApplier);
+            _viewModel.ApplyOnRunningProcesses = applyOnRunningProcess;
+            await _viewModel.ReloadAsync();
+            // Act
+            await _viewModel.SaveChangesAsync();
+            // Assert
+            if (applyOnRunningProcess)
+            {
+                A.CallTo(() => _configurationApplier.ApplyIfPresent(5, processConfigurationView.ProcessConfiguration)).MustHaveHappened();
+            }
+            else
+            {
+                A.CallTo(() => _configurationApplier.ApplyIfPresent(5, processConfigurationView.ProcessConfiguration)).WithAnyArguments().MustNotHaveHappened();
+            }
         }
 
         [Test]

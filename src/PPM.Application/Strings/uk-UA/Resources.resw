@@ -30,9 +30,6 @@
   <data name="IoPriorityColumn.Text" xml:space="preserve">
     <value>Пріоритет Вх/Вих та ОЗП</value>
   </data>
-  <data name="ApplyButton.Content" xml:space="preserve">
-    <value>Застосувати</value>
-  </data>
   <data name="CancelButton.Content" xml:space="preserve">
     <value>Відмінити</value>
   </data>
@@ -67,5 +64,26 @@
   </data>
   <data name="ResetButton.Content" xml:space="preserve">
     <value>За замовчуванням</value>
+  </data>
+  <data name="SaveButton.Content" xml:space="preserve">
+    <value>Зберегти</value>
+  </data>
+  <data name="ApplyOnRunningCheckBox.Content" xml:space="preserve">
+    <value>Також застосувати до запущених процесів</value>
+  </data>
+  <data name="ApplyOnRunningCheckBox.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Вказати PPM, що під час зберігання треба знайти та застосувати налаштування до запущений процесів.</value>
+  </data>
+  <data name="SaveButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Зберігає зміни. Налаштування будуть застосовані до процесів, які будуть запущені у майбутньому.</value>
+  </data>
+  <data name="ApplyOnRunningButton.Content" xml:space="preserve">
+    <value>Застосувати до запущений процесів</value>
+  </data>
+  <data name="ApplyOnRunningButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Знайти запущені процеси та застосувати ці налаштування до них.</value>
+  </data>
+  <data name="ResetButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Скидує до налаштувань за замовчуванням.</value>
   </data>
 </root>
