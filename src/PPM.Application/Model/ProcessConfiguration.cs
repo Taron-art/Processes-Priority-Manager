@@ -1,4 +1,7 @@
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Affinity_manager.Model
@@ -29,8 +32,9 @@ namespace Affinity_manager.Model
         }
 
         [FileExtensions(Extensions = ".exe", ErrorMessageResourceType = typeof(Strings.Validation), ErrorMessageResourceName = nameof(Strings.Validation.ProcessNameMustHaveExeExtension))]
+        [MaxLength(100, ErrorMessageResourceType = typeof(Strings.Validation), ErrorMessageResourceName = nameof(Strings.Validation.ProcessNameMustBeLessThanHundredChars))]
+        [CustomValidation(typeof(ProcessConfiguration), nameof(ValidateNameAsPath))]
         public string Name { get; }
-
 
         public bool IsEmpty
         {
@@ -54,6 +58,18 @@ namespace Affinity_manager.Model
         public override string ToString()
         {
             return Name;
+        }
+
+        public static ValidationResult? ValidateNameAsPath(string name, ValidationContext context)
+        {
+            ProcessConfiguration configuration = (ProcessConfiguration)context.ObjectInstance;
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            if (configuration.Name.Any(character => invalidChars.Contains(character)))
+            {
+                return new ValidationResult(Strings.Validation.ProcessNameCannotContainInvalidCharacters);
+            }
+
+            return ValidationResult.Success;
         }
     }
 }

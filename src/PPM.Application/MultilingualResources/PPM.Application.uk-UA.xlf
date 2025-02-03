@@ -283,6 +283,14 @@
           <source>Process Name must have ".exe" extension.</source>
           <target state="final">Назва застосунка мусить мати розширення ".exe".</target>
         </trans-unit>
+        <trans-unit id="ProcessNameCannotContainInvalidCharacters" translate="yes" xml:space="preserve">
+          <source>Process name cannot contain invalid characters.</source>
+          <target state="translated">Ім'я процесу не може мати неприпустимий символів.</target>
+        </trans-unit>
+        <trans-unit id="ProcessNameMustBeLessThanHundredChars" translate="yes" xml:space="preserve">
+          <source>Process name must not exceed 100 characters.</source>
+          <target state="translated">Ім'я процесу не може бути довше за 100 символів.</target>
+        </trans-unit>
       </group>
     </body>
   </file>
