@@ -1,6 +1,6 @@
 [package]
 name = "pm_affinityservice"
-version = "0.5.0"
+version = "0.6.0"
 edition = "2021"
 
 [package.metadata.winres]
@@ -12,15 +12,15 @@ name = "PPM_Service"
 path = "src/main.rs"
 
 [dependencies]
-windows-service = "0.7.0"
+windows-service = "0.7"
 log = "0.4"
-simplelog = "0.11"
-wmi = "0.14"
+simplelog = "0.12"
+wmi = "0.15"
 serde = { version = "1.0", features = ["derive"] }
-winreg = "0.52"
+winreg = "0.55"
 
 [dependencies.windows]
-version = "0.58"
+version = "0.59"
 features = [
     "Win32_System_Threading",
     "Win32_System_ProcessStatus"
