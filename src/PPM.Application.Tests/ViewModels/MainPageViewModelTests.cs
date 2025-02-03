@@ -12,6 +12,7 @@ using FakeItEasy;
 using FluentAssertions;
 using FluentAssertions.Events;
 using NUnit.Framework;
+using PPM.Unsafe;
 
 namespace PPM.Application.Tests.ViewModels
 {
@@ -40,7 +41,7 @@ namespace PPM.Application.Tests.ViewModels
             // Arrange
             _viewModel.NewProcessName = "TestProcess.exe";
             ProcessConfiguration processConfiguration = new("TestProcess");
-            ProcessConfigurationView processConfigurationView = new(processConfiguration, A.Fake<IOptionsProvider>(), _configurationApplier);
+            ProcessConfigurationView processConfigurationView = new(processConfiguration, CreateFakeOptionsProvider(), _configurationApplier);
             A.CallTo(() => _viewFactory.Create(A<ProcessConfiguration>.Ignored)).Returns(processConfigurationView);
 
             // Act
@@ -75,7 +76,7 @@ namespace PPM.Application.Tests.ViewModels
             // Arrange
             _viewModel.NewProcessName = "testexe";
 
-            using var monitor = _viewModel.Monitor();
+            using IMonitor<MainPageViewModel> monitor = _viewModel.Monitor();
 
             // Act
             _viewModel.Add();
@@ -91,7 +92,7 @@ namespace PPM.Application.Tests.ViewModels
         public async Task SaveChangesAsync_ShouldSaveDirtyProcessConfigurations()
         {
             // Arrange
-            IOptionsProvider optionsProviderMock = A.Fake<IOptionsProvider>();
+            IOptionsProvider optionsProviderMock = CreateFakeOptionsProvider();
 
             ProcessConfiguration processConfiguration = new("TestProcess");
             ProcessConfigurationView processConfigurationView = new(processConfiguration, optionsProviderMock, _configurationApplier);
@@ -105,7 +106,7 @@ namespace PPM.Application.Tests.ViewModels
             _viewModel = new MainPageViewModel(_repository, _viewFactory, _autocompleteProvider, _configurationApplier);
             await _viewModel.ReloadAsync();
 
-            using FluentAssertions.Events.IMonitor<MainPageViewModel> monitor = _viewModel.Monitor();
+            using IMonitor<MainPageViewModel> monitor = _viewModel.Monitor();
 
             // Act
             await _viewModel.SaveChangesAsync();
@@ -122,7 +123,7 @@ namespace PPM.Application.Tests.ViewModels
         {
             // Arrange
             ProcessConfiguration processConfiguration = new("TestProcess");
-            ProcessConfigurationView processConfigurationView = new(processConfiguration, A.Fake<IOptionsProvider>(), _configurationApplier);
+            ProcessConfigurationView processConfigurationView = new(processConfiguration, CreateFakeOptionsProvider(), _configurationApplier);
 
             // These are expectations that are returned before Save.
             BindingCollectionWithUniqunessCheck<ProcessConfigurationView> processViews = new() { processConfigurationView };
@@ -159,7 +160,7 @@ namespace PPM.Application.Tests.ViewModels
         {
             // Arrange
             ProcessConfiguration processConfiguration = new("TestProcess");
-            ProcessConfigurationView processConfigurationView = new(processConfiguration, A.Fake<IOptionsProvider>(), _configurationApplier);
+            ProcessConfigurationView processConfigurationView = new(processConfiguration, CreateFakeOptionsProvider(), _configurationApplier);
             BindingCollectionWithUniqunessCheck<ProcessConfigurationView> processConfigurations = new() { processConfigurationView };
             A.CallTo(() => _viewFactory.CreateCollection(A<IEnumerable<ProcessConfiguration>>.Ignored)).Returns(processConfigurations);
 
@@ -233,8 +234,7 @@ namespace PPM.Application.Tests.ViewModels
         public async Task SaveChangesAsync_ShouldApplyConfigurationsAsync([Values(true, false)] bool applyOnRunningProcess)
         {
             // Arrange
-            var optionsProvider = A.Fake<IOptionsProvider>();
-            A.CallTo(() => optionsProvider.NumberOfLogicalCpus).Returns(5u);
+            IOptionsProvider optionsProvider = CreateFakeOptionsProvider();
 
             ProcessConfiguration processConfiguration = new("TestProcess");
             A.CallTo(() => _repository.Get()).Returns(new List<ProcessConfiguration> { processConfiguration });
@@ -278,6 +278,15 @@ namespace PPM.Application.Tests.ViewModels
             // Assert
             Assert.That(result, Is.SameAs(expectedList));
             A.CallTo(() => _autocompleteProvider.GetAutocompleteList(processName)).MustHaveHappened();
+        }
+
+
+        private static IOptionsProvider CreateFakeOptionsProvider()
+        {
+            IOptionsProvider optionsProvider = A.Fake<IOptionsProvider>();
+            A.CallTo(() => optionsProvider.NumberOfLogicalCpus).Returns(5u);
+            A.CallTo(() => optionsProvider.ProcessorCoresInfo).Returns((IReadOnlyList<CoreInfo>)A.CollectionOfFake<CoreInfo>(5));
+            return optionsProvider;
         }
     }
 }

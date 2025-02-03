@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Affinity_manager.Model;
+using PPM.Unsafe;
 
 namespace Affinity_manager.ViewWrappers
 {
@@ -10,5 +11,6 @@ namespace Affinity_manager.ViewWrappers
         IReadOnlyList<EnumViewWrapper<PagePriority>> MemoryPriorities { get; }
 
         uint NumberOfLogicalCpus { get; }
+        IReadOnlyList<CoreInfo> ProcessorCoresInfo { get; }
     }
 }

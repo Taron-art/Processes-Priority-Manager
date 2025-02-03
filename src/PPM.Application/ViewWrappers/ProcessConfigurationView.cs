@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Affinity_manager.Model;
+using Affinity_manager.ViewWrappers.Affinity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -19,7 +20,7 @@ namespace Affinity_manager.ViewWrappers
             ProcessConfiguration = configuration;
             OptionsProvider = optionsProvider;
             ConfigurationApplier = configurationApplier;
-            AffinityView = new AffinityView(configuration.CpuAffinityMask, optionsProvider.NumberOfLogicalCpus);
+            AffinityView = new AffinityView(configuration.CpuAffinityMask, optionsProvider.ProcessorCoresInfo);
 
             ProcessConfiguration.PropertyChanged += OnProcessConfigurationPropertyChanged;
             AffinityView.PropertyChanged += OnAffinityViewPropertyChanged;

@@ -191,4 +191,13 @@
   <data name="ResetButton.ToolTipService.ToolTip" xml:space="preserve">
     <value>Resets the configuration to the default state.</value>
   </data>
+  <data name="ByPerformanceHeader.Text" xml:space="preserve">
+    <value>By performance:</value>
+  </data>
+  <data name="ByL3CacheHeader.Text" xml:space="preserve">
+    <value>By L3 cache:</value>
+  </data>
+  <data name="SmtCoresCheckBox.Content" xml:space="preserve">
+    <value>SMT cores</value>
+  </data>
 </root>

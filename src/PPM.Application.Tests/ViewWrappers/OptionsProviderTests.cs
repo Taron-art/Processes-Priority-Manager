@@ -3,6 +3,7 @@ using System.Linq;
 using Affinity_manager.Model;
 using Affinity_manager.ViewWrappers;
 using NUnit.Framework;
+using PPM.Unsafe;
 
 namespace PPM.Application.Tests.ViewWrappers
 {
@@ -45,6 +46,21 @@ namespace PPM.Application.Tests.ViewWrappers
         public void NumberOfLogicalCpus_CorrectValue()
         {
             Assert.That(_optionsProvider.NumberOfLogicalCpus, Is.EqualTo(Environment.ProcessorCount));
+        }
+
+        [Test]
+        public void ProcessorCoresInfo_SmokeValueTest()
+        {
+            Assert.That(_optionsProvider.ProcessorCoresInfo, Has.Count.EqualTo(Environment.ProcessorCount));
+
+            foreach (var coreInfo in _optionsProvider.ProcessorCoresInfo)
+            {
+                Assert.That(coreInfo.AssociatedGroups, Is.Not.Empty);
+                Assert.That(coreInfo.AssociatedGroups.OfType<PhysicalCoreGroup>, Is.Not.Empty);
+                Assert.That(coreInfo.AssociatedGroups.OfType<CacheCoreGroup>, Is.Not.Empty);
+                Assert.That(coreInfo.AssociatedGroups.OfType<PerformanceCoreGroup>, Is.Not.Empty);
+                Assert.Throws<InvalidOperationException>(() => coreInfo.AddAssociatedGroup(new PhysicalCoreGroup()));
+            }
         }
     }
 }

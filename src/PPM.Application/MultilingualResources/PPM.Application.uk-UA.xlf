@@ -104,6 +104,18 @@
           <source>Resets the configuration to the default state.</source>
           <target state="final">Скидує до налаштувань за замовчуванням.</target>
         </trans-unit>
+        <trans-unit id="ByPerformanceHeader.Text" translate="yes" xml:space="preserve">
+          <source>By performance:</source>
+          <target state="final">По швидкодії:</target>
+        </trans-unit>
+        <trans-unit id="ByL3CacheHeader.Text" translate="yes" xml:space="preserve">
+          <source>By L3 cache:</source>
+          <target state="final">По кешу 3 рівня:</target>
+        </trans-unit>
+        <trans-unit id="SmtCoresCheckBox.Content" translate="yes" xml:space="preserve">
+          <source>SMT cores</source>
+          <target state="final">Ядра SMT</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -214,8 +226,49 @@
           <target state="final">Він в стані за замовчуванням та буде прибранний при застосуванні змін.</target>
         </trans-unit>
         <trans-unit id="ProcessorConfigurationModifiedToolTipEnd" translate="yes" xml:space="preserve">
-          <source>Click Apply to save the changes.</source>
-          <target state="final">Натисніть "Застосувати", щоб зберегти зміни.</target>
+          <source>Click Save to save the changes.</source>
+          <target state="final">Натисніть "Зберегти", щоб зберегти зміни.</target>
+        </trans-unit>
+        <trans-unit id="PerformanceClassFormat" translate="yes" xml:space="preserve">
+          <source>Performance class: {0} (bigger — more performant)</source>
+          <target state="final">Клас швидкодії: {0} (більше — швидше)</target>
+        </trans-unit>
+        <trans-unit id="CacheLevelFormat" translate="yes" xml:space="preserve">
+          <source>Cache L{0}:</source>
+          <target state="final">Кеш {0} рівня:</target>
+        </trans-unit>
+        <trans-unit id="CacheAdditionFormat" translate="yes" xml:space="preserve">
+          <source> + {0}</source>
+          <target state="final"> + {0}</target>
+        </trans-unit>
+        <trans-unit id="PhysicalCoreGroupFormat" translate="yes" xml:space="preserve">
+          <source>Physical core: {0}</source>
+          <target state="final">Фізичне ядро: {0}</target>
+        </trans-unit>
+        <trans-unit id="GiBFormat" translate="yes" xml:space="preserve">
+          <source>{0} GiB</source>
+          <target state="final">{0} ГіБ</target>
+        </trans-unit>
+        <trans-unit id="MiBFormat" translate="yes" xml:space="preserve">
+          <source>{0} MiB</source>
+          <target state="final">{0} МіБ</target>
+        </trans-unit>
+        <trans-unit id="KiBFormat" translate="yes" xml:space="preserve">
+          <source>{0} KiB</source>
+          <target state="final">{0} КіБ</target>
+        </trans-unit>
+        <trans-unit id="ByteFormat" translate="yes" xml:space="preserve">
+          <source>{0} B</source>
+          <target state="final">{0} Б</target>
+        </trans-unit>
+        <trans-unit id="GroupWithCacheLabel" translate="yes" xml:space="preserve">
+          <source>Group {0} — {1}</source>
+          <target state="final">Група {0} — {1}</target>
+          <note from="MultilingualBuild" annotates="source" priority="2">Group 1 - 1 MiB</note>
+        </trans-unit>
+        <trans-unit id="GroupWithRegularLabel" translate="yes" xml:space="preserve">
+          <source>Group {0}</source>
+          <target state="final">Група {0}</target>
         </trans-unit>
       </group>
     </body>

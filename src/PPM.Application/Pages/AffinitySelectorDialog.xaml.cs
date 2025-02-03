@@ -1,5 +1,5 @@
 using System;
-using Affinity_manager.ViewWrappers;
+using Affinity_manager.ViewWrappers.Affinity;
 using Microsoft.UI.Xaml.Controls;
 
 namespace Affinity_manager.Pages
