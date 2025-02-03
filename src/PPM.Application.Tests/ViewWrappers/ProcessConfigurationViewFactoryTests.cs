@@ -4,6 +4,7 @@ using Affinity_manager.Model;
 using Affinity_manager.ViewWrappers;
 using FakeItEasy;
 using NUnit.Framework;
+using PPM.Unsafe;
 
 namespace PPM.Application.Tests.ViewWrappers
 {
@@ -19,6 +20,7 @@ namespace PPM.Application.Tests.ViewWrappers
         public void SetUp()
         {
             _optionsProvider = A.Fake<IOptionsProvider>();
+            A.CallTo(() => _optionsProvider.ProcessorCoresInfo).Returns([A.Fake<CoreInfo>()]);
             _comparer = A.Fake<IEqualityComparer<ProcessConfigurationView>>();
             _configurationApplier = A.Fake<IProcessConfigurationApplier>();
             _factory = new ProcessConfigurationViewFactory(_optionsProvider, _comparer, _configurationApplier);

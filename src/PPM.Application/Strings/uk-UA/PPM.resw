@@ -88,6 +88,37 @@
     <value>Він в стані за замовчуванням та буде прибранний при застосуванні змін.</value>
   </data>
   <data name="ProcessorConfigurationModifiedToolTipEnd" xml:space="preserve">
-    <value>Натисніть "Застосувати", щоб зберегти зміни.</value>
+    <value>Натисніть "Зберегти", щоб зберегти зміни.</value>
+  </data>
+  <data name="PerformanceClassFormat" xml:space="preserve">
+    <value>Клас швидкодії: {0} (більше — швидше)</value>
+  </data>
+  <data name="CacheLevelFormat" xml:space="preserve">
+    <value>Кеш {0} рівня:</value>
+  </data>
+  <data name="CacheAdditionFormat" xml:space="preserve">
+    <value> + {0}</value>
+  </data>
+  <data name="PhysicalCoreGroupFormat" xml:space="preserve">
+    <value>Фізичне ядро: {0}</value>
+  </data>
+  <data name="GiBFormat" xml:space="preserve">
+    <value>{0} ГіБ</value>
+  </data>
+  <data name="MiBFormat" xml:space="preserve">
+    <value>{0} МіБ</value>
+  </data>
+  <data name="KiBFormat" xml:space="preserve">
+    <value>{0} КіБ</value>
+  </data>
+  <data name="ByteFormat" xml:space="preserve">
+    <value>{0} Б</value>
+  </data>
+  <data name="GroupWithCacheLabel" xml:space="preserve">
+    <value>Група {0} — {1}</value>
+    <comment>Group 1 - 1 MiB</comment>
+  </data>
+  <data name="GroupWithRegularLabel" xml:space="preserve">
+    <value>Група {0}</value>
   </data>
 </root>

@@ -5,22 +5,41 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Affinity_manager.Pages"
     xmlns:views="using:Affinity_manager.ViewWrappers"
+    xmlns:views_affinity="using:Affinity_manager.ViewWrappers.Affinity"
     xmlns:xamlHelpers="using:Affinity_manager.XamlHelpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <UserControl.Resources>
         <UniformGridLayout x:Name="UniformGridLayout" MinRowSpacing="8" MinColumnSpacing="8"/>
+        <DataTemplate x:DataType="views_affinity:ICoreView" x:Name="coreGroupTemplate">
+            <CheckBox IsChecked="{x:Bind Selected, Mode=TwoWay}" Content="{x:Bind Label}" ToolTipService.ToolTip="{x:Bind Description}"/>
+        </DataTemplate>
     </UserControl.Resources>
-    <Grid Name="mainGrid" RowDefinitions="Auto, *" ColumnDefinitions="*" RowSpacing="16">
-        <CheckBox x:Uid="AllCpusCheckBox" Grid.Row="0" IsChecked="{x:Bind ProcessAffinity.AllCpus, Mode=TwoWay}"/>
-        <ScrollViewer x:Name="scrollViewer" Grid.Row="1">
-            <ItemsRepeater Layout="{StaticResource UniformGridLayout}" ItemsSource="{x:Bind ProcessAffinity.LogicalCpus, Mode=OneWay}" >
-                <ItemsRepeater.ItemTemplate>
-                    <DataTemplate x:DataType="views:CoreView">
-                        <CheckBox IsChecked="{x:Bind Value, Mode=TwoWay}" Content="{x:Bind Label}"></CheckBox>
-                    </DataTemplate>
-                </ItemsRepeater.ItemTemplate>
+    <Grid Name="mainGrid" RowDefinitions="*" ColumnDefinitions="Auto, *" ColumnSpacing="12">
+        <ScrollViewer Grid.Column ="0" Padding="0,0,12,0" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical" Spacing="8">
+                <CheckBox x:Uid="AllCpusCheckBox" Grid.Row="0" IsChecked="{x:Bind ProcessAffinity.AllCpus, Mode=TwoWay}"/>
+                <CheckBox x:Uid="SmtCoresCheckBox" Grid.Row="0" IsChecked="{x:Bind ProcessAffinity.SelectSmtCores, Mode=TwoWay}" Visibility="{x:Bind ProcessAffinity.ShowSmtCores}"/>
+                <TextBlock x:Uid="ByL3CacheHeader" Style="{ThemeResource BodyStrongTextBlockStyle}" Visibility="{x:Bind ProcessAffinity.CacheGroupView.ShouldBeDisplayed}"/>
+                <ItemsRepeater ItemsSource="{x:Bind ProcessAffinity.CacheGroupView.Groups}"  Visibility="{x:Bind ProcessAffinity.CacheGroupView.ShouldBeDisplayed}" 
+                               ItemTemplate="{StaticResource coreGroupTemplate}">
+                    <ItemsRepeater.Layout>
+                        <StackLayout Orientation="Vertical" Spacing="8"/>
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
+                <TextBlock x:Uid="ByPerformanceHeader" Style="{ThemeResource BodyStrongTextBlockStyle}" Visibility="{x:Bind ProcessAffinity.PerformanceGroupView.ShouldBeDisplayed}"/>
+                <ItemsRepeater ItemsSource="{x:Bind ProcessAffinity.PerformanceGroupView.Groups}"  Visibility="{x:Bind ProcessAffinity.PerformanceGroupView.ShouldBeDisplayed}"
+                               ItemTemplate="{StaticResource coreGroupTemplate}">
+                    <ItemsRepeater.Layout>
+                        <StackLayout Orientation="Vertical" Spacing="8"/>
+                    </ItemsRepeater.Layout>
+                </ItemsRepeater>
+            </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="scrollViewer" Grid.Column ="1">
+            <ItemsRepeater Layout="{StaticResource UniformGridLayout}" ItemsSource="{x:Bind ProcessAffinity.LogicalCpus, Mode=OneWay}" 
+                           ItemTemplate="{StaticResource coreGroupTemplate}">
             </ItemsRepeater>
         </ScrollViewer>
     </Grid>

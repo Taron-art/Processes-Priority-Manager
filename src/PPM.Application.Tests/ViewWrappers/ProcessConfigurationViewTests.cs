@@ -8,6 +8,7 @@ using FakeItEasy;
 using FluentAssertions;
 using FluentAssertions.Events;
 using NUnit.Framework;
+using PPM.Unsafe;
 
 namespace PPM.Application.Tests.ViewWrappers
 {
@@ -26,6 +27,7 @@ namespace PPM.Application.Tests.ViewWrappers
             _optionsProvider = A.Fake<IOptionsProvider>(options => options.Strict());
             _configurationApplier = A.Fake<IProcessConfigurationApplier>(options => options.Strict());
             A.CallTo(() => _optionsProvider.NumberOfLogicalCpus).Returns(5U);
+            A.CallTo(() => _optionsProvider.ProcessorCoresInfo).Returns((IReadOnlyList<CoreInfo>)A.CollectionOfFake<CoreInfo>(5));
 
             List<EnumViewWrapper<CpuPriorityClass>> priorityClasses = new();
             A.CallTo(() => _optionsProvider.CpuPriorities).Returns(priorityClasses);
@@ -42,6 +44,7 @@ namespace PPM.Application.Tests.ViewWrappers
             Assert.That(_view.OptionsProvider, Is.SameAs(_optionsProvider));
             Assert.That(_view.AffinityView, Is.Not.Null);
             Assert.That(_view.AffinityView.AffinityMask, Is.EqualTo(_view.ProcessConfiguration.CpuAffinityMask));
+            Assert.That(_view.AffinityView.CoresInfo, Is.SameAs(_optionsProvider.ProcessorCoresInfo));
 
             _view = new ProcessConfigurationView(_configuration, _optionsProvider, _configurationApplier);
             Assert.That(_view.CpuPriorities, Is.SameAs(_optionsProvider.CpuPriorities));

@@ -193,6 +193,37 @@
     <value>It is in the default state and will be removed on Apply.</value>
   </data>
   <data name="ProcessorConfigurationModifiedToolTipEnd" xml:space="preserve">
-    <value>Click Apply to save the changes.</value>
+    <value>Click Save to save the changes.</value>
+  </data>
+  <data name="PerformanceClassFormat" xml:space="preserve">
+    <value>Performance class: {0} (bigger — more performant)</value>
+  </data>
+  <data name="CacheLevelFormat" xml:space="preserve">
+    <value>Cache L{0}:</value>
+  </data>
+  <data name="CacheAdditionFormat" xml:space="preserve">
+    <value> + {0}</value>
+  </data>
+  <data name="PhysicalCoreGroupFormat" xml:space="preserve">
+    <value>Physical core: {0}</value>
+  </data>
+  <data name="GiBFormat" xml:space="preserve">
+    <value>{0} GiB</value>
+  </data>
+  <data name="MiBFormat" xml:space="preserve">
+    <value>{0} MiB</value>
+  </data>
+  <data name="KiBFormat" xml:space="preserve">
+    <value>{0} KiB</value>
+  </data>
+  <data name="ByteFormat" xml:space="preserve">
+    <value>{0} B</value>
+  </data>
+  <data name="GroupWithCacheLabel" xml:space="preserve">
+    <value>Group {0} — {1}</value>
+    <comment>Group 1 - 1 MiB</comment>
+  </data>
+  <data name="GroupWithRegularLabel" xml:space="preserve">
+    <value>Group {0}</value>
   </data>
 </root>

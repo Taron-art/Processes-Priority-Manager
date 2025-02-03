@@ -15,7 +15,6 @@ namespace Affinity_manager.Model.DataGathering
 
         // We use concurrent dictionary as concurrent hashset here, the value is irrelevant.
         private readonly ConcurrentDictionary<ProcessInfo, byte> _historicProcesses = new();
-        private IReadOnlyList<ProcessInfo>? _activeProcesses;
 
         private readonly Timer _timer;
         private readonly string _windowsPath = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
@@ -95,8 +94,6 @@ namespace Affinity_manager.Model.DataGathering
                     activeProcesses.Add(processInfo);
                 }
             }
-
-            _activeProcesses = activeProcesses;
         }
 
         public void Dispose()

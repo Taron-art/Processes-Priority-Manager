@@ -12,9 +12,8 @@ namespace Affinity_manager.ViewWrappers
     {
         private IReadOnlyList<EnumViewWrapper<IoPriority>>? _ioPriorities;
         private IReadOnlyList<EnumViewWrapper<CpuPriorityClass>>? _cpuPriorities;
-        private List<EnumViewWrapper<PagePriority>>? _memoryPriorities;
-
-        private uint? _nuberOfLogicalCpus;
+        private IReadOnlyList<EnumViewWrapper<PagePriority>>? _memoryPriorities;
+        private IReadOnlyList<CoreInfo>? _processorCoresInformation;
 
         public IReadOnlyList<EnumViewWrapper<CpuPriorityClass>> CpuPriorities
         {
@@ -44,19 +43,15 @@ namespace Affinity_manager.ViewWrappers
         {
             get
             {
-                return _nuberOfLogicalCpus ??= GetLogicalProcessors();
+                return (uint)ProcessorCoresInfo.Count;
             }
         }
 
-        private static uint GetLogicalProcessors()
+        public IReadOnlyList<CoreInfo> ProcessorCoresInfo
         {
-            try
+            get
             {
-                return CpuInfo.GetLogicalProcessorsCount();
-            }
-            catch (Exception)
-            {
-                return (uint)Environment.ProcessorCount;
+                return (_processorCoresInformation ??= _processorCoresInformation = CpuInfo.GetCoreInfos());
             }
         }
 
