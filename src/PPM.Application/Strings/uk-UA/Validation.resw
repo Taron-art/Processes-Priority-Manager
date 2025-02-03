@@ -15,4 +15,10 @@
   <data name="ProcessNameMustHaveExeExtension" xml:space="preserve">
     <value>Назва застосунка мусить мати розширення ".exe".</value>
   </data>
+  <data name="ProcessNameCannotContainInvalidCharacters" xml:space="preserve">
+    <value>Ім'я процесу не може мати неприпустимий символів.</value>
+  </data>
+  <data name="ProcessNameMustBeLessThanHundredChars" xml:space="preserve">
+    <value>Ім'я процесу не може бути довше за 100 символів.</value>
+  </data>
 </root>

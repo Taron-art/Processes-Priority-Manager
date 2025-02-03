@@ -143,9 +143,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\pm_affinityservice\target\release\PPM_Service.exe" Link="PPM_Service.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -363,5 +360,8 @@
     <PRIResource Update="Strings\en-us\Validation.resw">
       <Generator>ReswPlusAdvancedGenerator</Generator>
     </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\" />
   </ItemGroup>
 </Project>
