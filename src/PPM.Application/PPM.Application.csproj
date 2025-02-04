@@ -70,6 +70,7 @@
     </PackageReference>
     <PackageReference Include="securifybv.ShellLink" Version="0.1.0" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.1" />
+    <PackageReference Include="Vanara.PInvoke.ComCtl32" Version="4.0.4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -363,5 +364,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
