@@ -70,6 +70,7 @@
     </PackageReference>
     <PackageReference Include="securifybv.ShellLink" Version="0.1.0" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="9.0.1" />
+    <PackageReference Include="Vanara.PInvoke.ComCtl32" Version="4.0.4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -141,9 +142,6 @@
     <Page Update="Pages\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\pm_affinityservice\target\release\PPM_Service.exe" Link="PPM_Service.exe">
@@ -363,5 +361,13 @@
     <PRIResource Update="Strings\en-us\Validation.resw">
       <Generator>ReswPlusAdvancedGenerator</Generator>
     </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

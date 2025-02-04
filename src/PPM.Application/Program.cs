@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Affinity_manager.Configuration;
+using Affinity_manager.Exceptions;
 using Affinity_manager.Hosting;
 using Affinity_manager.Model;
 using Affinity_manager.Model.CRUD;
 using Affinity_manager.Model.DataGathering;
 using Affinity_manager.ViewModels;
 using Affinity_manager.ViewWrappers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -23,13 +26,16 @@ namespace Affinity_manager
             XamlCheckProcessRequirements();
 
             HostApplicationBuilder builder = Host.CreateEmptyApplicationBuilder(new HostApplicationBuilderSettings { Args = args });
+            builder.Configuration.AddJsonFile("appsettings.json", optional: false);
 
             AddDIServices(builder.Services);
+            builder.Services.Configure<ReportingSettings>(builder.Configuration.GetSection("ReportingSettings"));
             builder.Build().Run();
         }
 
         private static void AddDIServices(IServiceCollection services)
         {
+
             services.AddSingleton<App>();
             services.AddSingleton<Application>(static provider => provider.GetService<App>()!);
             services.AddTransient<MainWindow>();
@@ -49,6 +55,7 @@ namespace Affinity_manager
                 view.AddProcessProvider(provider.GetRequiredService<StartMenuShortcutsGatherer>());
                 return view;
             });
+            services.AddSingleton<UnhandledExceptionHandler>();
             services.AddHostedService<WinUIHostingService>();
         }
     }

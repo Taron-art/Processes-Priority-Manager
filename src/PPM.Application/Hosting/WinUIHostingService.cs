@@ -1,6 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Affinity_manager.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
@@ -12,14 +14,17 @@ namespace Affinity_manager.Hosting
         private readonly IServiceProvider _serviceProvider;
         private readonly IHostApplicationLifetime _applicationLifetime;
 
-        public WinUIHostingService(IServiceProvider serviceProvider, IHostApplicationLifetime applicationLifetime)
+        public WinUIHostingService(IServiceProvider serviceProvider, IHostApplicationLifetime applicationLifetime, UnhandledExceptionHandler exceptionHandler)
         {
             _serviceProvider = serviceProvider;
             _applicationLifetime = applicationLifetime;
+            ExceptionHandler = exceptionHandler;
         }
 
         private DispatcherQueue? _dispatcherQueue;
         private Application? _app;
+
+        public UnhandledExceptionHandler ExceptionHandler { get; }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
@@ -32,7 +37,8 @@ namespace Affinity_manager.Hosting
                     DispatcherQueueSynchronizationContext context = new(_dispatcherQueue);
                     SynchronizationContext.SetSynchronizationContext(context);
 
-                    _app = (Application?)_serviceProvider.GetService(typeof(Application));
+                    _app = (Application)_serviceProvider.GetRequiredService(typeof(Application));
+                    ExceptionHandler.AttachHandler(_app);
                 });
 
                 _dispatcherQueue = null;
