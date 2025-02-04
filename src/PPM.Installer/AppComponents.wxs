@@ -20,6 +20,7 @@
 		</Files>
 		<Files Include="!(bindpath.x64)\**.ico"/>
 		<Files Include="!(bindpath.x64)\en-us\*.mui" Directory="EN_US"/>
+		<File Name="appsettings.json" Source="!(bindpath.x64)\appsettings.json"/>
 		<Component Id="Registry_HKLM" Guid="1F167EEE-4394-4FBB-87A1-3AEA39137E64">
 			<RegistryKey Id="Settings" Root="HKLM" Key="SOFTWARE\Processes Priority Manager\" ForceDeleteOnUninstall="yes"></RegistryKey>
 		</Component>
