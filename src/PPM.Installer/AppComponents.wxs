@@ -22,7 +22,13 @@
 		<Files Include="!(bindpath.x64)\en-us\*.mui" Directory="EN_US"/>
 		<File Name="appsettings.json" Source="!(bindpath.x64)\appsettings.json"/>
 		<Component Id="Registry_HKLM" Guid="1F167EEE-4394-4FBB-87A1-3AEA39137E64">
-			<RegistryKey Id="Settings" Root="HKLM" Key="SOFTWARE\Processes Priority Manager\" ForceDeleteOnUninstall="yes"></RegistryKey>
+			<RegistryKey Root="HKLM" Key="SOFTWARE\Processes Priority Manager\">
+				<RegistryKey Key="Image Options">
+					<!-- This is a dummy value, that is used to make sure that the key is removed on uninstallation.
+					     The tool saves some options in this key that must be removed. These options are removed in RemoveProfiles custom action.-->
+					<RegistryValue Name="Installed" Value="1" Type="integer" KeyPath="yes"/>
+				</RegistryKey>
+			</RegistryKey>
 		</Component>
     </ComponentGroup>
   </Fragment>
