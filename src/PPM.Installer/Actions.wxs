@@ -2,7 +2,7 @@
 	<Fragment>
 		<CustomAction Id="RemoveProfiles" FileRef="MainExecutable" ExeCommand="--clear" Execute="immediate"/>
 		<InstallExecuteSequence>
-			<Custom Action="RemoveProfiles" Before='RemoveFiles' Condition='(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")'/>
+			<Custom Action="RemoveProfiles" Before='RemoveRegistryValues' Condition='(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")'/>
 		</InstallExecuteSequence>
 	</Fragment>
 </Wix>

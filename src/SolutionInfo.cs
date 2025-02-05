@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: System.Reflection.AssemblyVersionAttribute("0.6.0.0")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("0.6.0.0")]
+[assembly: AssemblyVersion("0.6.1.0")]
+[assembly: AssemblyFileVersion("6.1.0.0")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Processes Priority Manager")]
 [assembly: AssemblyCopyright("Copyright ©  2025")]
