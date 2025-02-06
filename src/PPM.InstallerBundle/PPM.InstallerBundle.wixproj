@@ -12,6 +12,9 @@
     </BindPath>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="tune.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="license.rtf" />
   </ItemGroup>
   <ItemGroup>

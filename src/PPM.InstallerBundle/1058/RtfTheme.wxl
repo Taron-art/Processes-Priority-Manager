@@ -1,0 +1,63 @@
+﻿<!--Переклад rtfLicense теми на українську. -->
+<WixLocalization Culture="uk-ua" Language="1058" xmlns="http://wixtoolset.org/schemas/v4/wxl">
+	<String Id="Caption" Value="Встановлення [WixBundleName]" />
+	<String Id="CheckingForUpdatesLabel" Value="Перевірка оновлень" />
+	<String Id="ConfirmCancelMessage" Value="Скасувати встановлення?" />
+	<String Id="ExecuteUpgradeRelatedBundleMessage" Value="Минула версія" />
+	<String Id="FailureCacheHeader" Value="Кешування не вдалося" />
+	<String Id="FailureCloseButton" Value="&amp;Закрити" />
+	<String Id="FailureHeader" Value="Встановлення не вдалося" />
+	<String Id="FailureHyperlinkLogText" Value="Одна або кілька помилок призвели до збою програми установки. Будь ласка, виправте проблеми, а потім повторіть установку. Для отримання додаткової інформації дивіться &lt;a href=&quot;#&quot;&gt;журнал&lt;/a&gt;." />
+	<String Id="FailureInstallHeader" Value="Встановлення не вдалося" />
+	<String Id="FailureLayoutHeader" Value="Розмітка не вдалася" /> <!--Хз що це-->
+    <String Id="FailureModifyHeader" Value="Змінювання не вдался" />
+    <String Id="FailureRepairHeader" Value="Відновлення не вдалося" />
+	<String Id="FailureRestartButton" Value="&amp;Перезавантажити" />
+	<String Id="FailureRestartText" Value="Для завершення відкату потрібно перезавантажити комп\'ютер" />
+	<String Id="FailureUninstallHeader" Value="Видалення не вдалося" />
+	<String Id="FailureUnsafeUninstallHeader" Value="Видалення не вдалося" />
+	<String Id="FilesInUseCloseRadioButton" Value="Закрийте програми та спробуйте їх перезапустити" />
+	<String Id="FilesInUseDontCloseRadioButton" Value="Не закривати додатки. Буде потрібне перезавантаження" />
+	<String Id="FilesInUseExitButton" Value="Ви&amp;хід" />
+    <String Id="FilesInUseIgnoreButton" Value="&amp;Ігнорувати" />
+	<String Id="FilesInUseLabel" Value="Наступні застосунки використовують файли які треба оновити:" />
+	<String Id="FilesInUseNetfxCloseRadioButton" Value="Закрити &amp;застосунки" />
+	<String Id="FilesInUseRetryButton" Value="&amp;Повторити" />
+	<String Id="FilesInUseTitle" Value="Файли використовуються" />
+	<String Id="HelpCloseButton" Value="Закрити" />
+	<String Id="HelpHeader" Value="Налаштування довідки" />
+	<String Id="HelpText" Value="/install | /repair | /delete | /layout | /layout [directory] - Установки, відновлення, видалення або&#xA;   створює повну локальну копію пакета в каталозі. Інсталяція за замовчуванням.&#xA;&#xA;/passive | /quiet - відображає мінімальний інтерфейс  без підказок і не показувє ніяких повідомлень та&#xA;   запитів. За замовчуванням відображаються призначений для користувача інтерфейс і всі запити.&#xA;&#xA;/norestart - придушує будь-яку спробу перезапуску. За замовчуванням для користувача інтерфейс запитує перед перезапуском.&#xA;/log log. xt - журнали у певний файл. За замовчуванням файл журналу створюється %TEMP%." />
+	<String Id="InstallAcceptCheckbox" Value="Я &amp;погоджуюсь з умовами ліцензії" />
+	<String Id="InstallCancelButton" Value="&amp;Відмінити" />
+	<String Id="InstallInstallButton" Value="В&amp;станов." />  <!-- Повне слово не влазить коли є іконка UAC. -->
+	<String Id="InstallOptionsButton" Value="Параметри" />
+	<String Id="InstallVersion" Value="Версія [WixBundleVersion]" />
+	<String Id="ModifyCancelButton" Value="&amp;Відмінити" />
+	<String Id="ModifyHeader" Value="Змінити налаштування установки" />
+	<String Id="ModifyRepairButton" Value="В&amp;ідновити" />
+	<String Id="ModifyUninstallButton" Value="В&amp;идалити" />
+	<String Id="OptionsBrowseButton" Value="&amp;Огляд" />
+	<String Id="OptionsCancelButton" Value="&amp;Відмінити" />
+	<String Id="OptionsHeader" Value="Параметри встановлення" />
+	<String Id="OptionsLocationLabel" Value="Встановити в:" />
+	<String Id="OptionsOkButton" Value="&amp;ОК" />
+	<String Id="OverallProgressPackageText" Value="Ініціалізація..." />
+	<String Id="ProgressCancelButton" Value="Відміна" />
+	<String Id="ProgressHeader" Value="Застосування змін" /> <!--Це показується на діалозі прогресу, може бути як встановлення, видаллення, відновлення-->
+	<String Id="ProgressLabel" Value="Обробка:" />
+	<String Id="SuccessCacheHeader" Value="Кешування успішно завершено" />
+	<String Id="SuccessCloseButton" Value="&amp;Закрити" />
+	<String Id="SuccessHeader" Value="Установка успішно завершена" />
+	<String Id="SuccessInstallHeader" Value="Встановлення успішно завершено" />
+	<String Id="SuccessLaunchButton" Value="Запустити" />
+	<String Id="SuccessLayoutHeader" Value="Розмітка успішно завершена" />
+    <String Id="SuccessModifyHeader" Value="Модифікація успішно завершена" />
+    <String Id="SuccessRepairHeader" Value="Відновлення успішно завершено" />
+	<String Id="SuccessRestartButton" Value="&amp;Перезавантажити" />
+	<String Id="SuccessRestartText" Value="Перед використанням системи потрібно перезавантажити комп\'ютер" />
+	<String Id="SuccessUninstallHeader" Value="Видалення успішно завершено" />
+	<String Id="SuccessUninstallRestartText" Value="Ви маєте перезапустити комп\'ютер для завершення видалення." />
+	<String Id="SuccessUnsafeUninstallHeader" Value="Видалення успішно завершено" />
+	<String Id="Title" Value="[WixBundleName]" />
+	<String Id="UpdateButton" Value="&amp;Оновити до версії [WixStdBAUpdateAvailable]" />
+</WixLocalization>
