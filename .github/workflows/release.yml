@@ -39,7 +39,7 @@ jobs:
     - name: Update version in code
       uses: actions/github-script@v7.0.1
       with:
-        Script: src\updateVersion.ps1 $RELEASE_VERSION
+        Script: src/updateVersion.ps1 $RELEASE_VERSION
           
     # Execute all unit tests in the solution
     - name: Execute unit tests
