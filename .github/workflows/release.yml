@@ -36,7 +36,7 @@ jobs:
     - name: Update version in code
       shell: pwsh
       run: |
-        src/updateVersion.ps1 ${GITHUB_REF#refs/*/}
+        src/updateVersion.ps1 ${{  github.ref_name }}
           
     # Execute all unit tests in the solution
     - name: Execute unit tests
