@@ -34,9 +34,9 @@ jobs:
       uses: microsoft/setup-msbuild@v2
               
     - name: Update version in code
-      uses: actions/github-script@v7.0.1
-      with:
-        Script: src/updateVersion.ps1 ${GITHUB_REF#refs/*/}
+      shell: pwsh
+      run: |
+        src/updateVersion.ps1 ${GITHUB_REF#refs/*/}
           
     # Execute all unit tests in the solution
     - name: Execute unit tests
