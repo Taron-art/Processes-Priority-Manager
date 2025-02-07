@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-
+        
     # Install the .NET Core workload
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
@@ -32,7 +32,12 @@ jobs:
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
-
+              
+    - name: Update version in code
+      shell: pwsh
+      run: |
+        src/updateVersion.ps1 ${{  github.ref_name }}
+          
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test src -c Release -p:Platform=x64
