@@ -1,10 +1,10 @@
-﻿<Project Sdk="WixToolset.Sdk/5.0.2">
+﻿<Project Sdk="WixToolset.Sdk/6.0.0">
   <PropertyGroup>
     <OutputType>Bundle</OutputType>
     <OutputName>PPM_Setup-$(Platform)</OutputName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="WixToolset.Bal.wixext" Version="5.0.2" />
+    <PackageReference Include="WixToolset.Bal.wixext" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <BindPath Include="obj\x64\$(Configuration)\publish\Affinity_manager">

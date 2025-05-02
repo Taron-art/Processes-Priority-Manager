@@ -34,15 +34,15 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="FluentAssertions" Version="[7.0.0]" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250401001" />
 		<PackageReference Include="NUnit" Version="4.3.2" />
-		<PackageReference Include="NUnit.Analyzers" Version="4.6.0">
+		<PackageReference Include="NUnit.Analyzers" Version="4.7.0">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
 
 	</ItemGroup>
 	<ItemGroup>
@@ -58,4 +58,13 @@
 	<ItemGroup>
 	  <PRIResource Remove="TestResults\**" />
 	</ItemGroup>
+	<!--We do not use WebView. It also produces build warnings.-->
+	<Target Name="RemoveUnnecessaryWebView2References" AfterTargets="ResolvePackageDependenciesForBuild">
+		<ItemGroup>
+			<ReferenceToBeRemoved Include="@(Reference)" Condition="'%(Reference.FileName)' == 'Microsoft.Web.WebView2.Core'"/>
+			<ReferenceToBeRemoved Include="@(Reference)" Condition="'%(Reference.FileName)' == 'Microsoft.Web.WebView2.WinForms'"/>
+			<ReferenceToBeRemoved Include="@(Reference)" Condition="'%(Reference.FileName)' == 'Microsoft.Web.WebView2.Wpf'"/>
+			<Reference Remove="@(ReferenceToBeRemoved)"/>
+		</ItemGroup>
+	</Target>
 </Project>
