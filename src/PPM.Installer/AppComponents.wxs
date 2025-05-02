@@ -12,7 +12,9 @@
 			</ServiceInstall>
 			<ServiceControl Id="PPM_Service_control" Name="PPM_Service" Start="install" Stop="both" Remove="uninstall" Wait="no"/>
 		</Component>
-		<Files Include="!(bindpath.x64)\*.dll"/>
+		<Files Include="!(bindpath.x64)\*.dll">
+			<Exclude Files="!(bindpath.x64)\Microsoft.Windows.Widgets.dll"></Exclude>
+		</Files>
 		<Files Include="!(bindpath.x64)\*.runtimeconfig.json"/>
 		<Files Include="!(bindpath.x64)\*.pri"/>
 		<Files Include="!(bindpath.x64)\**.png">
