@@ -30,8 +30,9 @@ namespace Affinity_manager.ViewWrappers.Affinity
             {
 #if DEBUG
                 return true;
-#endif
+#else
                 return Groups.Count > 1;
+#endif
             }
         }
 
