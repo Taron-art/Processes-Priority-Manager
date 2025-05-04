@@ -281,7 +281,7 @@ namespace Affinity_manager.ViewWrappers.Affinity
             }
         }
 
-        private TGroupView[] GetCoreGroups<TGroup, TGroupView>(CoreView[] coreViews, Func<TGroup, TGroupView> creator, Func<TGroup, bool>? filter = null)
+        private static TGroupView[] GetCoreGroups<TGroup, TGroupView>(CoreView[] coreViews, Func<TGroup, TGroupView> creator, Func<TGroup, bool>? filter = null)
             where TGroup : CoreGroup
             where TGroupView : CoreGroupView<TGroup>
         {

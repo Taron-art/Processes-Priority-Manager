@@ -7,7 +7,8 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct("Processes Priority Manager")]
 [assembly: AssemblyCopyright("Copyright ©  2025")]
 [assembly: AssemblyTrademark("")]
-[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows")]
+[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows10.0.17763")]
+
 
 [assembly: InternalsVisibleTo("PPM.Application.Tests")]
 [assembly: InternalsVisibleTo("PPM.Application.IntegrationTests")]
