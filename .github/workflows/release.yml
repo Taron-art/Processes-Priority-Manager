@@ -51,6 +51,6 @@ jobs:
       with:
         files: src/Release/*Setup*.exe
         fail_on_unmatched_files: true
-        prerelease: true
+        prerelease: false
         generate_release_notes: true
         
