@@ -5,11 +5,11 @@
 
 version: 2
 updates:
-  - package-ecosystem: "dotnet-sdk" # See documentation for possible values
+  - package-ecosystem: "nuget"
     directory: "/src/" # Location of package manifests
     schedule:
       interval: "weekly"
-  - package-ecosystem: "cargo" # See documentation for possible values
-    directory: "/src/" # Location of package manifests
+  - package-ecosystem: "cargo" 
+    directory: "/src/pm_affinityservice"
     schedule:
       interval: "weekly"
