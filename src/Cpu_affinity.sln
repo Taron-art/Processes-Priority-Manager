@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B69F6662-E1F8-4D32-96B6-32853EC9E787}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		global.json = global.json
 		SolutionInfo.cs = SolutionInfo.cs
 		tune.ico = tune.ico
 	EndProjectSection
@@ -61,5 +62,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5AFADF7D-6E40-415B-9400-AD6AB4F29F65}
 	EndGlobalSection
 EndGlobal
