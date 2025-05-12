@@ -63,7 +63,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.3916" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250401001" />
     <PackageReference Include="ReswPlus" Version="0.3.1.5" Publish="false">
       <TreatAsUsed>true</TreatAsUsed>
@@ -151,10 +151,10 @@
 	<!--We do not use WebView. It also produces build warnings.-->
 	<Target Name="RemoveUnnecessaryWebView2References" AfterTargets="ResolvePackageDependenciesForBuild">
 		<ItemGroup>
-			<ReferenceToBeRemoved Include="@(Reference)" Condition="'%(Reference.FileName)' == 'Microsoft.Web.WebView2.Core'"/>
-			<ReferenceToBeRemoved Include="@(Reference)" Condition="'%(Reference.FileName)' == 'Microsoft.Web.WebView2.WinForms'"/>
-			<ReferenceToBeRemoved Include="@(Reference)" Condition="'%(Reference.FileName)' == 'Microsoft.Web.WebView2.Wpf'"/>
-			<Reference Remove="@(ReferenceToBeRemoved)"/>
+			<ReferenceToBeRemoved Include="@(Reference)" Condition="'%(Reference.FileName)' == 'Microsoft.Web.WebView2.Core'" />
+			<ReferenceToBeRemoved Include="@(Reference)" Condition="'%(Reference.FileName)' == 'Microsoft.Web.WebView2.WinForms'" />
+			<ReferenceToBeRemoved Include="@(Reference)" Condition="'%(Reference.FileName)' == 'Microsoft.Web.WebView2.Wpf'" />
+			<Reference Remove="@(ReferenceToBeRemoved)" />
 		</ItemGroup>
 	</Target>
     <Target Name="WindowsAppSdk_Issue_3843_Workaround_MsixContent" AfterTargets="AddMicrosoftWindowsAppSDKPayloadFiles">
