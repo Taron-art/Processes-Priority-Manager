@@ -6,7 +6,7 @@
 		<bal:WixStandardBootstrapperApplication Theme="rtfLicense" LicenseFile="License.rtf" LogoFile="tune.png" ShowVersion="yes"/>
 		<Payload Id="theme_uk_ua" Compressed="yes" Name="1058\thm.wxl" SourceFile="1058\RtfTheme.wxl"></Payload>
     </BootstrapperApplication>
-	<Variable Name="InstallFolder" Type="formatted" Value="[ProgramFiles6432Folder][WixBundleName]"/>
+	<Variable Name="InstallFolder" Type="formatted" Value="[ProgramFiles6432Folder][WixBundleName]" bal:Overridable="yes"/>
     <Chain>
 		<MsiPackage SourceFile="PPM.Installer.msi" Compressed="true" Id="MainInstaller" Cache="remove">
 			<MsiProperty Name="INSTALLFOLDER" Value="[InstallFolder]"/>	
