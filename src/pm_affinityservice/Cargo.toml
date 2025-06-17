@@ -4,7 +4,7 @@ version = "0.0.0"
 edition = "2021"
 
 [package.metadata.winres]
-LegalCopyright = "Copyright 2025"
+LegalCopyright = "Copyright ©Artur Kharin 2025"
 ProductName = "Processes Priority Manager"
 
 [[bin]]
