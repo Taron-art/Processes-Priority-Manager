@@ -1,10 +1,10 @@
-[package]
+﻿[package]
 name = "pm_affinityservice"
 version = "0.0.0"
 edition = "2021"
 
 [package.metadata.winres]
-LegalCopyright = "Copyright �Artur Kharin 2025"
+LegalCopyright = "Copyright ©Artur Kharin 2025"
 ProductName = "Processes Priority Manager"
 
 [[bin]]
