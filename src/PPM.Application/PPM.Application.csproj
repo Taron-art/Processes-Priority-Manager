@@ -13,6 +13,7 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
     <TrimMode>partial</TrimMode>
+	<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
     <SelfContained>true</SelfContained>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
