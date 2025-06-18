@@ -51,6 +51,6 @@ jobs:
       with:
         files: src/Release/*Setup*.exe
         fail_on_unmatched_files: true
-        prerelease: ${{ github.ref_name == 'develop' && 'true' || 'false' }}
+        prerelease: ${{ github.ref_name == 'develop' && true || false }}
         generate_release_notes: true
         
