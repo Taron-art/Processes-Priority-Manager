@@ -45,12 +45,19 @@ jobs:
     # Build
     - name: Build the application
       run: dotnet build src\PPM.InstallerBundle\PPM.InstallerBundle.wixproj -c Release -p:Platform=x64 -o src\Release
+    
+    - name: Get source branch of tag
+      id: source
+      run: |
+        git fetch --prune --unshallow
+        branch=$(git branch -r --contains $GITHUB_SHA | grep -v '\->' | grep -v 'tags' | head -n 1 | sed 's#origin/##')
+        echo "source_branch=$branch" >> $GITHUB_OUTPUT
 
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
         files: src/Release/*Setup*.exe
         fail_on_unmatched_files: true
-        prerelease: ${{ github.ref_name == 'develop' && true || false }}
+        prerelease: ${{ steps.source.outputs.source_branch == 'develop' && true || false }}
         generate_release_notes: true
         
