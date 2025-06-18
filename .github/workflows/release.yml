@@ -50,15 +50,16 @@ jobs:
       id: source
       shell: bash
       run: |
-        git fetch --prune
-        branch=$(git branch -r --contains $GITHUB_SHA | grep -v '\->' | grep -v 'tags' | head -n 1 | sed 's#origin/##')
-        echo "source_branch=$branch" >> $GITHUB_OUTPUT
+          raw=$(git branch -r --contains ${{ github.ref }})
+          branch=${raw##*/}
+          echo "branch=$branch" >> $GITHUB_OUTPUT
+          echo "Branch is $branch."
 
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
         files: src/Release/*Setup*.exe
         fail_on_unmatched_files: true
-        prerelease: ${{ steps.source.outputs.source_branch == 'develop' && true || false }}
+        prerelease: ${{ steps.source.outputs.branch == 'develop' && true || false }}
         generate_release_notes: true
         
