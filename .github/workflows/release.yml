@@ -48,8 +48,9 @@ jobs:
     
     - name: Get source branch of tag
       id: source
+      shell: bash
       run: |
-        git fetch --prune --unshallow
+        git fetch --prune
         branch=$(git branch -r --contains $GITHUB_SHA | grep -v '\->' | grep -v 'tags' | head -n 1 | sed 's#origin/##')
         echo "source_branch=$branch" >> $GITHUB_OUTPUT
 
